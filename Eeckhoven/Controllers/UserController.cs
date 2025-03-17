@@ -1,3 +1,4 @@
+using Eeckhoven.ApplicationUserManager;
 using Eeckhoven.Constants;
 using Eeckhoven.Models;
 using Eeckhoven.Repositories;
@@ -13,12 +14,12 @@ namespace Eeckhoven.Controllers;
 public class UserController(
     UserRepository userRepository,
     LanguageRepository languageRepository,
-    UserManager<IdentityUser> userManager,
+    ApplicationUserManager.ApplicationUserManager userManager,
     ILogger<UserController> logger)
     : ControllerBase
 {
     [HttpPost("register")]
-    public ActionResult<ResultObject<MessageList>> Register(UserModel user)
+    public ActionResult<ResultObject<MessageList>> Register(UserModel? user)
     {
         if (user is null)
         {
@@ -27,10 +28,16 @@ public class UserController(
         
         var resultObject = new ResultObject<MessageList>();
         var validatedUser = user.ValidateForRegistration(userRepository);
+        var createdUsed = userManager.CreateAsync(ApplicationUser.FromUserModel(user));
         resultObject.Records.Add(validatedUser);
         if (!validatedUser.Any())
         {
             resultObject.IsError = true;
+        }
+        else
+        {
+            var newUser = new IdentityUser();
+            userRepository.Save(user);
         }
 
         return Ok(resultObject);
@@ -59,17 +66,17 @@ public class UserController(
     }
 
     [HttpPost("changeLanguage")]
-    public ActionResult<ResultObject<bool>> ChangeLanguage(LanguageEnum language)
+    public ActionResult<ResultObject<bool>> ChangeLanguage(Language language)
     {
         if (HttpContext.User is not CustomClaimsPrincipal currentUser)
         {
             logger.LogWarning("UserController::ChangeLanguage called with invalid user");
             return BadRequest("The current user is not the excepted type of principal");
         }
-        var userModel = userRepository.GetUserById(currentUser.CurrentUser.Id);
+
         currentUser.CurrentUser.Language = language;
         var result = new ResultObject<UserModel>();
-        if (userModel == null)
+        if (currentUser.CurrentUser.IsLoggedIn)
         {
             result = languageRepository.ChangeLanguage(currentUser.CurrentUser);
         }
@@ -80,27 +87,28 @@ public class UserController(
     }
 
     [HttpGet("getUser")]
-    public ActionResult<UserModel> GetUser(string id)
+    public ResultObject<UserModel> GetUser(string id)
     {
-        var resul2t = userManager.CreateAsync(new IdentityUser() {UserName = "dqwdqwdwqd", Email = "dqwdqwdwqd@gmail.com" }, "Hsg626^2hsdsad(82");
-        return Ok(resul2t);
+        var result = new ResultObject<UserModel>();
+        
         if (!Guid.TryParse(id, out var userId))
         {
             logger.LogWarning("UserController::GetUser called with invalid id");
-            return BadRequest("ID cannot be null or empty");
+            result.SystemMessages.Add("ID cannot be null or empty");
         }
 
-        var result = userRepository.GetUserById(userId);
-        if (result != null)
+        var model = userRepository.GetUserById(userId);
+        if (model != null)
         {
-            logger.LogInformation($"UserController::GetUser called for user {result.FirstName} {result.LastName}");
+            result.AddResult(model);
+            logger.LogInformation($"UserController::GetUser called for user {model.FirstName} {model.LastName}");
         }
         else
         {
             logger.LogWarning("UserController::GetUser no user found");
         }
 
-        return Ok(result);
+        return result;
     }
     
     

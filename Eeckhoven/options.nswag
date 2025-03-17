@@ -10,7 +10,7 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": null,
+      "clientBaseClass": "http://localhost:5240",
       "configurationClass": null,
       "generateClientClasses": true,
       "generateClientInterfaces": false,
@@ -93,7 +93,10 @@
       "serviceHost": null,
       "serviceSchemes": null,
       "output": null,
-      "newLineBehavior": "Auto"
+      "newLineBehavior": "Auto",
+      "customHeaders": {
+        "Authorization": "Bearer {localStorage.getItem('token')}"
+      }
     }
   }
 }

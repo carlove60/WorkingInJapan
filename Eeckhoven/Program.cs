@@ -1,41 +1,85 @@
 using System.Text;
+using System.Text.Json.Serialization;
+using Eeckhoven.ApplicationSignInManager;
+using Eeckhoven.ApplicationUserManager;
 using Eeckhoven.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Eeckhoven.Database;
 using Eeckhoven.Extensions;
+using Eeckhoven.Middleware;
 using Eeckhoven.Repositories;
+using Eeckhoven.Swagger;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using NSwag;
+using NSwag.Generation.Processors.Security;
+using OpenApiSecurityScheme = Microsoft.OpenApi.Models.OpenApiSecurityScheme;
+using OpenApiServer = Microsoft.OpenApi.Models.OpenApiServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
-builder.Services.AddOpenApiDocument();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});;
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SchemaFilter<EnumSchemaFilter>();
+    c.AddServer(new OpenApiServer { Url = "http://localhost:5240" });
+});
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.Title = "My API";
+    
+    // Add JWT Bearer Security
+    config.AddSecurity("JWT", Enumerable.Empty<string>(), new NSwag.OpenApiSecurityScheme
+    {
+        Type = OpenApiSecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = OpenApiSecurityApiKeyLocation.Header,
+        Description = "Type 'Bearer {your JWT token}'"
+    });
+
+    config.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<UserRepository, UserRepository>();
 builder.Services.AddScoped<ClassRepository, ClassRepository>();
 builder.Services.AddScoped<LessonRepository, LessonRepository>();
 builder.Services.AddScoped<LanguageRepository, LanguageRepository>();
-
+builder.Services.AddScoped<ApplicationPasswordValidator, ApplicationPasswordValidator>();
+builder.Services.AddScoped<ApplicationUserManager>();
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySQL(connectionString, mySqlOptions => mySqlOptions.MigrationsHistoryTable("__EFMigrationsHistory")
     ));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddUserManager<ApplicationUserManager>()
+    .AddSignInManager<ApplicationSignInManager>()
+    .AddPasswordValidator<ApplicationPasswordValidator>();
 
+builder.Services.AddTransient<ICustomUserValidator<ApplicationUser>, CustomUserValidator<ApplicationUser>>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 var configuration = builder.Configuration;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.RequireHttpsMetadata = false; // For development (use true in production)
+        options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -55,6 +99,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 var app = builder.Build();
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -66,8 +111,11 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         options.RoutePrefix = string.Empty;
     });
+    
     app.Services.CreateClientApi();
 }
+app.UseMiddleware<JwtMiddleware>(); // Auto-refresh token on activity
+
 // Enable authentication
 app.UseAuthentication();
 

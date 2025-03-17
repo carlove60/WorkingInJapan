@@ -7,5 +7,5 @@ public class ValidationMessage
 {
     public string MessageEnglish { get; set; } = "";
     public string MessageJapanese { get; set; } = "";
-    public MessageTypeEnum Type { get; set; } = MessageTypeEnum.Info;
+    public MessageType Type { get; set; } = MessageType.Info;
 }

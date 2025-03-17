@@ -1,6 +1,6 @@
 namespace Eeckhoven.Enums;
 
-public enum LanguageEnum
+public enum Language
 {
     Japanese,
     English

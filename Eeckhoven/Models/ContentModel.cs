@@ -1,4 +1,4 @@
-namespace Eeckhoven.Messages;
+namespace Eeckhoven.Models;
 
 public class ContentModel
 {

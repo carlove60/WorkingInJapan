@@ -54,13 +54,13 @@ public class UserRepository : BaseRepository
         return _applicationDbContext.Users.FirstOrDefault((u) => u.Id == id);
     }
     
-    public ResultObject<bool> ChangeLanguage(UserModel userModel, LanguageEnum language)
+    public ResultObject<bool> ChangeLanguage(UserModel userModel, Language language)
     {
         ResultObject<bool> result = new ResultObject<bool>();
         var user = _applicationDbContext.Users.FirstOrDefault();
         if (user == null)
         {
-            result.Messages.AddError("User not found", "ユーザーが見つかりませんでした");
+            result.UserMessages.AddError("User not found", "ユーザーが見つかりませんでした");
             result.IsError = true;
         }
         else
@@ -79,7 +79,7 @@ public class UserRepository : BaseRepository
         var validationMessages = model.Validate();
         if (validationMessages.Any())
         {
-            resultObject.Messages.AddRange(validationMessages);
+            resultObject.UserMessages.AddRange(validationMessages);
             return resultObject;
         }
         var userEntity = _applicationDbContext.Users.FirstOrDefault((user) => user.Id == model.Id);

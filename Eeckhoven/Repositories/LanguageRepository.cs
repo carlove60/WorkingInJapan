@@ -13,7 +13,7 @@ public class LanguageRepository(ApplicationDbContext applicationDbContext) : Bas
         var user = _applicationDbContext.Users.FirstOrDefault();
         if (user is null)
         {
-            result.Messages.AddError("User not found", "ユーザーが見つかりませんでした");
+            result.UserMessages.AddError("User not found", "ユーザーが見つかりませんでした");
             result.IsError = true;
         }
         else

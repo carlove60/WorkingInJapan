@@ -1,6 +1,6 @@
 namespace Eeckhoven.Enums;
 
-public enum MessageTypeEnum
+public enum MessageType
 {
     Warning,
     Error,
