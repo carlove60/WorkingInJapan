@@ -6,5 +6,5 @@ public class MessageModel
 {
     public Guid Id { get; set; }
     public string Message { get; set; }
-    public MessageTypeEnum MessageTypeType { get; set; }
+    public MessageType MessageTypeType { get; set; }
 }

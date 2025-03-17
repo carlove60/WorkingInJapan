@@ -1,8 +1,9 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Eeckhoven.CustomSignInManager;
+using Eeckhoven.CustomUserManager;
 using Eeckhoven.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -12,43 +13,66 @@ namespace Eeckhoven.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<UserModel> _userManager;
-    private readonly SignInManager<UserModel> _signInManager;
+    private readonly ApplicatinUserManager _userManager;
+    private readonly ApplicationSignInManager _signInManager;
     private readonly IConfiguration _configuration;
+    private readonly ApplicationPasswordValidator _passwordValidator;
 
-    public AuthController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IConfiguration configuration)
+    public AuthController(ApplicatinUserManager userManager, ApplicationSignInManager signInManager, IConfiguration configuration, ApplicationPasswordValidator passwordValidator)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
+        _passwordValidator = passwordValidator;
     }
     
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserModel model)
+    public async Task<ResultObject<string>> Register([FromBody] UserRegistrationModel model)
     {
-        var user = await _userManager.FindByEmailAsync(model.IdentityUser.Email);
-        if (user != null && await _userManager.CheckPasswordAsync(user, model.IdentityUser.PasswordHash))
+        var applicationUser = new ApplicationUser();
+        applicationUser.UserRegistrationModel = model;
+        var validationResult = await _passwordValidator.ValidateAsync(_userManager, applicationUser, model.Password);
+
+        var resultObject = new ResultObject<string>();
+        if (!validationResult.Succeeded)
         {
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = GenerateJwtToken(user, roles);
-            return Ok(new { token });
+
+            resultObject.IsError = true;
+            resultObject.BadRequest("No", 403);
+            return resultObject;
         }
 
-        return Unauthorized();
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user != null)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = GenerateJwtToken(user.UserModel, roles);
+
+            resultObject.AddResult( token);
+        }
+        else
+        {
+            resultObject.BadRequest("", 403);
+        }
+
+        return resultObject;
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] UserModel model)
+    public async Task<ResultObject<IActionResult>> Login([FromBody] LoginModel model)
     {
-        var user = await _userManager.FindByEmailAsync(model.IdentityUser.Email);
-        if (user != null && await _userManager.CheckPasswordAsync(user, model.IdentityUser.PasswordHash))
+        var resultObject = new ResultObject<IActionResult>();
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
         {
             var roles = await _userManager.GetRolesAsync(user);
-            var token = GenerateJwtToken(user, roles);
-            return Ok(new { token });
+            var token = GenerateJwtToken(user.UserModel, roles);
+            resultObject.AddResult(Ok(new { token }));
+            return resultObject;
         }
+        resultObject.AddResult(Unauthorized());
 
-        return Unauthorized();
+        return resultObject;
     }
 
     private string GenerateJwtToken(UserModel user, IList<string> roles)

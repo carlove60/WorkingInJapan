@@ -19,24 +19,41 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/UserRegistrationModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/UserRegistrationModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/UserRegistrationModel"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringResultObject"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringResultObject"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringResultObject"
+                }
+              }
+            }
           }
         }
       }
@@ -50,24 +67,41 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/LoginModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/LoginModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/LoginModel"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/IActionResultResultObject"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IActionResultResultObject"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IActionResultResultObject"
+                }
+              }
+            }
           }
         }
       }
@@ -252,7 +286,7 @@
             "name": "language",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/LanguageEnum"
+              "$ref": "#/components/schemas/Language"
             }
           }
         ],
@@ -300,17 +334,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserModel"
+                  "$ref": "#/components/schemas/UserModelResultObject"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserModel"
+                  "$ref": "#/components/schemas/UserModelResultObject"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserModel"
+                  "$ref": "#/components/schemas/UserModelResultObject"
                 }
               }
             }
@@ -369,6 +403,10 @@
   },
   "components": {
     "schemas": {
+      "ActionResult": {
+        "type": "object",
+        "additionalProperties": false
+      },
       "AddressModel": {
         "required": [
           "city",
@@ -407,62 +445,234 @@
         },
         "additionalProperties": false
       },
+      "BooleanActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "BooleanResultObject": {
         "type": "object",
         "properties": {
           "records": {
             "type": "array",
             "items": {
-              "type": "boolean"
+              "$ref": "#/components/schemas/BooleanActionResult"
             },
             "nullable": true
           },
-          "messages": {
+          "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
             },
             "nullable": true
           },
+          "systemMessages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
           "isError": {
+            "type": "boolean"
+          },
+          "httpErrorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "httpErrorMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IActionResult": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "IActionResultActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
+            "$ref": "#/components/schemas/IActionResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IActionResultResultObject": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IActionResultActionResult"
+            },
+            "nullable": true
+          },
+          "userMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationMessage"
+            },
+            "nullable": true
+          },
+          "systemMessages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "isError": {
+            "type": "boolean"
+          },
+          "httpErrorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "httpErrorMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IdentityUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "normalizedUserName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "normalizedEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailConfirmed": {
+            "type": "boolean"
+          },
+          "passwordHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "securityStamp": {
+            "type": "string",
+            "nullable": true
+          },
+          "concurrencyStamp": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumberConfirmed": {
+            "type": "boolean"
+          },
+          "twoFactorEnabled": {
+            "type": "boolean"
+          },
+          "lockoutEnd": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lockoutEnabled": {
+            "type": "boolean"
+          },
+          "accessFailedCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "JLPT": {
+        "enum": [
+          "N5",
+          "N4",
+          "N3",
+          "N2",
+          "N1",
+          "None"
+        ],
+        "type": "String"
+      },
+      "Language": {
+        "enum": [
+          "Japanese",
+          "English"
+        ],
+        "type": "String"
+      },
+      "LanguageLevel": {
+        "enum": [
+          "None",
+          "Some",
+          "Conversational",
+          "Business",
+          "Fluent",
+          "Native"
+        ],
+        "type": "String"
+      },
+      "LoginModel": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "remember": {
             "type": "boolean"
           }
         },
         "additionalProperties": false
       },
-      "CurriculumModel": {
-        "required": [
-          "description",
-          "id",
-          "lessons"
-        ],
+      "MessageListActionResult": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
           },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "lessons": {
+          "value": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ResumeModel"
+              "$ref": "#/components/schemas/ValidationMessage"
             },
             "nullable": true
           }
         },
         "additionalProperties": false
-      },
-      "LanguageEnum": {
-        "enum": [
-          0,
-          1
-        ],
-        "type": "integer",
-        "format": "int32"
       },
       "MessageListResultObject": {
         "type": "object",
@@ -470,59 +680,57 @@
           "records": {
             "type": "array",
             "items": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/ValidationMessage"
-              }
+              "$ref": "#/components/schemas/MessageListActionResult"
             },
             "nullable": true
           },
-          "messages": {
+          "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
             },
             "nullable": true
           },
+          "systemMessages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
           "isError": {
             "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "MessageTypeEnum": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "RemarkModel": {
-        "required": [
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
           },
-          "content": {
+          "httpErrorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "httpErrorMessage": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
+      "MessageType": {
+        "enum": [
+          "Warning",
+          "Error",
+          "Info"
+        ],
+        "type": "String"
+      },
+      "RegistrationType": {
+        "enum": [
+          "User",
+          "Company"
+        ],
+        "type": "String"
+      },
       "ResumeModel": {
         "required": [
-          "curriculum",
-          "curriculumId",
-          "description",
+          "content",
           "id",
-          "sections",
           "title"
         ],
         "type": "object",
@@ -531,58 +739,70 @@
             "type": "string",
             "format": "uuid"
           },
-          "curriculumId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "title": {
             "type": "string",
             "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "sections": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SectionModel"
-            },
-            "nullable": true
-          },
-          "curriculum": {
-            "$ref": "#/components/schemas/CurriculumModel"
-          },
-          "remarks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RemarkModel"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SectionModel": {
-        "required": [
-          "content",
-          "id"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
           },
           "content": {
             "type": "string",
             "nullable": true
           },
-          "remarks": {
+          "user": {
+            "$ref": "#/components/schemas/UserModel"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringResultObject": {
+        "type": "object",
+        "properties": {
+          "records": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RemarkModel"
+              "$ref": "#/components/schemas/StringActionResult"
             },
+            "nullable": true
+          },
+          "userMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationMessage"
+            },
+            "nullable": true
+          },
+          "systemMessages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "isError": {
+            "type": "boolean"
+          },
+          "httpErrorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "httpErrorMessage": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -594,14 +814,6 @@
           "id": {
             "type": "string",
             "format": "uuid"
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
           },
           "firstName": {
             "type": "string",
@@ -615,7 +827,7 @@
             "type": "string",
             "nullable": true
           },
-          "dateOfbirth": {
+          "dateOfBirth": {
             "type": "string",
             "format": "date-time"
           },
@@ -623,7 +835,7 @@
             "$ref": "#/components/schemas/AddressModel"
           },
           "language": {
-            "$ref": "#/components/schemas/LanguageEnum"
+            "$ref": "#/components/schemas/Language"
           },
           "role": {
             "type": "string",
@@ -631,6 +843,52 @@
           },
           "isLoggedIn": {
             "type": "boolean"
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "visaStatus": {
+            "$ref": "#/components/schemas/VisaStatus"
+          },
+          "jlpt": {
+            "$ref": "#/components/schemas/JLPT"
+          },
+          "japaneseLevel": {
+            "$ref": "#/components/schemas/LanguageLevel"
+          },
+          "englishLevel": {
+            "$ref": "#/components/schemas/LanguageLevel"
+          },
+          "profilePicture": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailConfirmed": {
+            "type": "string",
+            "nullable": true
+          },
+          "identityUser": {
+            "$ref": "#/components/schemas/IdentityUser"
+          },
+          "resume": {
+            "$ref": "#/components/schemas/ResumeModel"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserModelActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
+            "$ref": "#/components/schemas/UserModel"
           }
         },
         "additionalProperties": false
@@ -641,19 +899,122 @@
           "records": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserModel"
+              "$ref": "#/components/schemas/UserModelActionResult"
             },
             "nullable": true
           },
-          "messages": {
+          "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
             },
             "nullable": true
           },
+          "systemMessages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
           "isError": {
             "type": "boolean"
+          },
+          "httpErrorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "httpErrorMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserRegistrationModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "address": {
+            "$ref": "#/components/schemas/AddressModel"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
+          "isLoggedIn": {
+            "type": "boolean"
+          },
+          "nationality": {
+            "type": "string",
+            "nullable": true
+          },
+          "visaStatus": {
+            "$ref": "#/components/schemas/VisaStatus"
+          },
+          "jlpt": {
+            "$ref": "#/components/schemas/JLPT"
+          },
+          "japaneseLevel": {
+            "$ref": "#/components/schemas/LanguageLevel"
+          },
+          "englishLevel": {
+            "$ref": "#/components/schemas/LanguageLevel"
+          },
+          "profilePicture": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailConfirmed": {
+            "type": "string",
+            "nullable": true
+          },
+          "identityUser": {
+            "$ref": "#/components/schemas/IdentityUser"
+          },
+          "resume": {
+            "$ref": "#/components/schemas/ResumeModel"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "confirmEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "confirmPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RegistrationType"
           }
         },
         "additionalProperties": false
@@ -670,7 +1031,19 @@
             "nullable": true
           },
           "type": {
-            "$ref": "#/components/schemas/MessageTypeEnum"
+            "$ref": "#/components/schemas/MessageType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidationMessageActionResult": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ActionResult"
+          },
+          "value": {
+            "$ref": "#/components/schemas/ValidationMessage"
           }
         },
         "additionalProperties": false
@@ -681,22 +1054,49 @@
           "records": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ValidationMessage"
+              "$ref": "#/components/schemas/ValidationMessageActionResult"
             },
             "nullable": true
           },
-          "messages": {
+          "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
             },
             "nullable": true
           },
+          "systemMessages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
           "isError": {
             "type": "boolean"
+          },
+          "httpErrorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "httpErrorMessage": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
+      },
+      "VisaStatus": {
+        "enum": [
+          "Working",
+          "HighlySkilled",
+          "IntraCompanyTransfee",
+          "Student",
+          "WorkingHoliday",
+          "Spouse",
+          "NoVisa"
+        ],
+        "type": "String"
       }
     }
   }

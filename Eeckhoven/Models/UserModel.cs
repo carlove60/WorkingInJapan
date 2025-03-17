@@ -11,12 +11,29 @@ public class UserModel
     public string LastName { get; set; }
     public string PhoneNumber { get; set; }
     
-    public DateTime DateOfbirth { get; set; }
+    public DateTime DateOfBirth { get; set; }
     public AddressModel Address { get; set; }
-    public LanguageEnum Language { get; set; } = LanguageEnum.English;
+    public Language Language { get; set; } = Language.English;
+    
     public string Role { get; set; } = RoleConstants.Guest;
 
-    public bool IsLoggedIn { get; set; } = false;
+    public bool IsLoggedIn { get; set; }
+    
+    public string Nationality { get; set; }
+
+    public VisaStatus VisaStatus { get; set; }
+    
+    public JLPT JLPT { get; set; } = JLPT.None;
+
+    public LanguageLevel JapaneseLevel { get; set; }
+
+    public LanguageLevel EnglishLevel { get; set; }
+    
+    public string ProfilePicture { get; set; }
+    
+    public string Email { get; set; }
+    
+    public string EmailConfirmed { get; set; }
     
     public IdentityUser IdentityUser { get; set; }
     

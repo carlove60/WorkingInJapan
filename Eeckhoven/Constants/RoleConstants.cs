@@ -6,7 +6,8 @@ public static class RoleConstants
 {
     public const string Employer = "Employer";
     public const string Employee = "Employee";
-    public const string Searcher = "Searcher";
+    public const string Searcher = "JobSearcher";
     public const string Guest = "Guest";
     public const string Admin = "Admin";
+    public const string Recruiter = "Recruiter";
 }
