@@ -48,4 +48,10 @@ public static class StringExtensions
     {
         return string.IsNullOrWhiteSpace(input);
     }
+    
+    public static string SafeReplace(this string input, string find, string replace, bool matchWholeWord)
+    {
+        var textToFind = matchWholeWord ? $@"\b{find}\b" : find;
+        return Regex.Replace(input, textToFind, replace);
+    }
 }

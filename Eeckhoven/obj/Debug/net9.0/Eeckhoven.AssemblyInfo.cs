@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Eeckhoven")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+58c565d101f0c762133d5b0e9d39c2784dc1e0e9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4b9f3cae38a47e300f0d6018cd753ad8235466f3")]
 [assembly: System.Reflection.AssemblyProductAttribute("Eeckhoven")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Eeckhoven")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -25,6 +25,7 @@ public class ResultObject<T>
     public void BadRequest(string message, int errorCode)
     {
         HttpErrorCode = errorCode;
+        IsError = true;
         HttpErrorMessage = message;
 
     }

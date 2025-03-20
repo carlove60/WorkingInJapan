@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Eeckhoven</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -41,5 +42,21 @@
     <ItemGroup>
       <Folder Include="Messages\" />
     </ItemGroup>
+    <Target
+      Name="Swagger"
+      AfterTargets="Build"
+      Condition="$(Configuration)=='Gen' Or $(GEN)=='true'">
+      <Message Text="Generating OpenAPI schema file." Importance="high" />
+      <!-- Restore the tool if needed -->
+      <Exec Command="dotnet tool restore" />
 
+      <!-- (1) Generate the external API. -->
+      <Exec
+        Command="dotnet swagger tofile --output ../app/src/_api/schema-api.json $(OutputPath)$(AssemblyName).dll v1"
+        EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development"
+        WorkingDirectory="$(ProjectDir)" />
+
+      <!-- (2) Generate TS bindings for the web app -->
+      <Exec Command="yarn gen" WorkingDirectory="../app" />
+    </Target>
 </Project>

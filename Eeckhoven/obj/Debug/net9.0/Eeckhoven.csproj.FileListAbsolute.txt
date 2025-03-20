@@ -158,3 +158,5 @@
 /Users/carlove/RiderProjects/Eeckhoven/Eeckhoven/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
 /Users/carlove/RiderProjects/Eeckhoven/Eeckhoven/bin/Debug/net9.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 /Users/carlove/RiderProjects/Eeckhoven/Eeckhoven/obj/Debug/net9.0/Eeckhoven.sourcelink.json
+/Users/carlove/RiderProjects/Eeckhoven/Eeckhoven/bin/Debug/net9.0/Eeckhoven.xml
+/Users/carlove/RiderProjects/Eeckhoven/Eeckhoven/obj/Debug/net9.0/Eeckhoven.xml

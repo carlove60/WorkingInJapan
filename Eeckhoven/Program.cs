@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using OpenApiSecurityScheme = Microsoft.OpenApi.Models.OpenApiSecurityScheme;
@@ -26,11 +27,35 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});;
+});
 builder.Services.AddSwaggerGen(c =>
 {
     c.SchemaFilter<EnumSchemaFilter>();
     c.AddServer(new OpenApiServer { Url = "http://localhost:5240" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+    c.DescribeAllParametersInCamelCase();
+    c.SupportNonNullableReferenceTypes();
 });
 builder.Services.AddOpenApiDocument(config =>
 {
@@ -57,8 +82,7 @@ builder.Services.AddScoped<ApplicationPasswordValidator, ApplicationPasswordVali
 builder.Services.AddScoped<ApplicationUserManager>();
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySQL(connectionString, mySqlOptions => mySqlOptions.MigrationsHistoryTable("__EFMigrationsHistory")
-    ));
+    options.UseMySQL(connectionString, mySqlOptions => mySqlOptions.MigrationsHistoryTable("__EFMigrationsHistory")));
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
@@ -72,7 +96,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll",
         policy => policy.AllowAnyOrigin()
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .WithExposedHeaders("X-Session-Status", "X-Custom-Header") // Allow headers to be read
+        );
 });
 var configuration = builder.Configuration;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

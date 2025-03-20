@@ -22,6 +22,7 @@ public class JwtMiddleware
     public async Task Invoke(HttpContext context)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        context.Response.Headers.Append("New-Token", "12321321");
 
         if (token != null)
         {
@@ -41,7 +42,7 @@ public class JwtMiddleware
                     if (user != null && user.RefreshTokenExpiryTime > DateTime.UtcNow)
                     {
                         var newToken = await new AuthService(userManager, _configuration).GenerateJwtToken(user);
-                        context.Response.Headers.Add("New-Token", newToken.Token);
+                        context.Response.Headers.Append("New-Token", newToken.Token);
                     }
                 }
             }
@@ -53,7 +54,7 @@ public class JwtMiddleware
     private ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]);
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]);
 
         try
         {

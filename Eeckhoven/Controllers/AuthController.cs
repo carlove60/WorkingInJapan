@@ -3,9 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using Eeckhoven.ApplicationUserManager;
 using Eeckhoven.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using NSwag.Annotations;
 
 namespace Eeckhoven.Controllers;
 
@@ -77,15 +77,13 @@ public class AuthController : ControllerBase
         return resultObject;
     }
     
-    [Authorize]
     [HttpGet("check-session")]
-    public IActionResult CheckSession()
-    {
+    public ActionResult<string> CheckSession()    {
         if (!User.Identity?.IsAuthenticated ?? false)
         {
-            return Unauthorized(new { message = "Session expired." });
+            return BadRequest("Session expired");
         }
-        return Ok(new { message = "Session is active." });
+        return Ok("Session is active");
     }
 
     private string GenerateJwtToken(UserModel user, IList<string> roles)

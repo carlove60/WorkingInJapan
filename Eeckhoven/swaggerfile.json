@@ -161,7 +161,24 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -483,24 +500,19 @@
             "format": "uuid"
           },
           "street": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "city": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "state": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "zipCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "country": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -524,22 +536,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BooleanActionResult"
-            },
-            "nullable": true
+            }
           },
           "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
-            },
-            "nullable": true
+            }
           },
           "systemMessages": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "isError": {
             "type": "boolean"
@@ -549,8 +558,7 @@
             "format": "int32"
           },
           "httpErrorMessage": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -578,22 +586,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/IActionResultActionResult"
-            },
-            "nullable": true
+            }
           },
           "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
-            },
-            "nullable": true
+            }
           },
           "systemMessages": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "isError": {
             "type": "boolean"
@@ -603,8 +608,7 @@
             "format": "int32"
           },
           "httpErrorMessage": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -613,8 +617,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "userName": {
             "type": "string",
@@ -705,12 +708,10 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "remember": {
             "type": "boolean"
@@ -741,22 +742,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MessageListActionResult"
-            },
-            "nullable": true
+            }
           },
           "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
-            },
-            "nullable": true
+            }
           },
           "systemMessages": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "isError": {
             "type": "boolean"
@@ -766,8 +764,7 @@
             "format": "int32"
           },
           "httpErrorMessage": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -800,12 +797,10 @@
             "format": "uuid"
           },
           "title": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "content": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "user": {
             "$ref": "#/components/schemas/UserModel"
@@ -837,22 +832,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/StringActionResult"
-            },
-            "nullable": true
+            }
           },
           "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
-            },
-            "nullable": true
+            }
           },
           "systemMessages": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "isError": {
             "type": "boolean"
@@ -862,8 +854,7 @@
             "format": "int32"
           },
           "httpErrorMessage": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -876,16 +867,13 @@
             "format": "uuid"
           },
           "firstName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "lastName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "phoneNumber": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "dateOfBirth": {
             "type": "string",
@@ -898,15 +886,13 @@
             "$ref": "#/components/schemas/Language"
           },
           "role": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "isLoggedIn": {
             "type": "boolean"
           },
           "nationality": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "visaStatus": {
             "$ref": "#/components/schemas/VisaStatus"
@@ -921,16 +907,13 @@
             "$ref": "#/components/schemas/LanguageLevel"
           },
           "profilePicture": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "email": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "emailConfirmed": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "identityUser": {
             "$ref": "#/components/schemas/IdentityUser"
@@ -960,22 +943,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/UserModelActionResult"
-            },
-            "nullable": true
+            }
           },
           "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
-            },
-            "nullable": true
+            }
           },
           "systemMessages": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "isError": {
             "type": "boolean"
@@ -985,8 +965,7 @@
             "format": "int32"
           },
           "httpErrorMessage": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -995,20 +974,16 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "confirmEmail": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "confirmPassword": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "type": {
             "$ref": "#/components/schemas/RegistrationType"
@@ -1020,12 +995,10 @@
         "type": "object",
         "properties": {
           "messageEnglish": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "messageJapanese": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "type": {
             "$ref": "#/components/schemas/MessageType"
@@ -1052,22 +1025,19 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessageActionResult"
-            },
-            "nullable": true
+            }
           },
           "userMessages": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ValidationMessage"
-            },
-            "nullable": true
+            }
           },
           "systemMessages": {
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
+            }
           },
           "isError": {
             "type": "boolean"
@@ -1077,8 +1047,7 @@
             "format": "int32"
           },
           "httpErrorMessage": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1095,6 +1064,17 @@
         ],
         "type": "String"
       }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "Bearer"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
 }

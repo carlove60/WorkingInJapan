@@ -1,5 +1,3 @@
-using NSwag;
-
 namespace Eeckhoven.Extensions;
 
 using Microsoft.OpenApi.Extensions;
@@ -13,7 +11,6 @@ public static class SwaggerExtensions
         var doc = sw.GetSwagger("v1", null, "/");
         var swaggerFile = doc.SerializeAsJson(Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0);
         File.WriteAllText("swaggerfile.json", swaggerFile);
-        var swagger = new GenerateNSwagClientCode();
-        swagger.Run();
+        _ = GenerateNSwagClientCode.Run();
     }
 }
