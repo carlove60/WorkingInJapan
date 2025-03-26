@@ -10,102 +10,6 @@
     }
   ],
   "paths": {
-    "/api/Auth/register": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRegistrationModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRegistrationModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRegistrationModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/StringResultObject"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StringResultObject"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StringResultObject"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Auth": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRegistrationModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRegistrationModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserRegistrationModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/StringResultObject"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StringResultObject"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StringResultObject"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Auth/login": {
       "post": {
         "tags": [
@@ -269,17 +173,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/RegistrationModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/RegistrationModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserModel"
+                "$ref": "#/components/schemas/RegistrationModel"
               }
             }
           }
@@ -290,17 +194,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/MessageListResultObject"
+                  "$ref": "#/components/schemas/UserModelResultObject"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MessageListResultObject"
+                  "$ref": "#/components/schemas/UserModelResultObject"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MessageListResultObject"
+                  "$ref": "#/components/schemas/UserModelResultObject"
                 }
               }
             }
@@ -719,56 +623,6 @@
         },
         "additionalProperties": false
       },
-      "MessageListActionResult": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ActionResult"
-          },
-          "value": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ValidationMessage"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "MessageListResultObject": {
-        "type": "object",
-        "properties": {
-          "records": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MessageListActionResult"
-            }
-          },
-          "userMessages": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ValidationMessage"
-            }
-          },
-          "systemMessages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "isError": {
-            "type": "boolean"
-          },
-          "httpErrorCode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "httpErrorMessage": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
       "MessageType": {
         "enum": [
           "Warning",
@@ -776,6 +630,27 @@
           "Info"
         ],
         "type": "String"
+      },
+      "RegistrationModel": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "confirmEmail": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/RegistrationType"
+          }
+        },
+        "additionalProperties": false
       },
       "RegistrationType": {
         "enum": [
@@ -808,53 +683,6 @@
           "userId": {
             "type": "string",
             "format": "uuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StringActionResult": {
-        "type": "object",
-        "properties": {
-          "result": {
-            "$ref": "#/components/schemas/ActionResult"
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "StringResultObject": {
-        "type": "object",
-        "properties": {
-          "records": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/StringActionResult"
-            }
-          },
-          "userMessages": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ValidationMessage"
-            }
-          },
-          "systemMessages": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "isError": {
-            "type": "boolean"
-          },
-          "httpErrorCode": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "httpErrorMessage": {
-            "type": "string"
           }
         },
         "additionalProperties": false
@@ -912,9 +740,6 @@
           "email": {
             "type": "string"
           },
-          "emailConfirmed": {
-            "type": "string"
-          },
           "identityUser": {
             "$ref": "#/components/schemas/IdentityUser"
           },
@@ -966,27 +791,6 @@
           },
           "httpErrorMessage": {
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UserRegistrationModel": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "confirmEmail": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "confirmPassword": {
-            "type": "string"
-          },
-          "type": {
-            "$ref": "#/components/schemas/RegistrationType"
           }
         },
         "additionalProperties": false
@@ -1068,7 +872,9 @@
     "securitySchemes": {
       "Bearer": {
         "type": "http",
-        "scheme": "Bearer"
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
       }
     }
   },
