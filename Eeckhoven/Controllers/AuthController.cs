@@ -1,65 +1,52 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Eeckhoven.ApplicationManager;
 using Eeckhoven.ApplicationUserManager;
 using Eeckhoven.Models;
+using Eeckhoven.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Namotion.Reflection;
 using NSwag.Annotations;
 
 namespace Eeckhoven.Controllers;
 
+/// <summary>
+/// 
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly ApplicationUserManager.ApplicationUserManager _userManager;
-    private readonly ApplicationSignInManager.ApplicationSignInManager _signInManager;
+    private readonly ApplicationManager.ApplicationUserManager _userManager;
+    private readonly ApplicationSignInManager _signInManager;
     private readonly IConfiguration _configuration;
     private readonly ApplicationPasswordValidator _passwordValidator;
+    private readonly AuthService _authService;
 
-    public AuthController(ApplicationUserManager.ApplicationUserManager userManager, ApplicationSignInManager.ApplicationSignInManager signInManager, IConfiguration configuration, ApplicationPasswordValidator passwordValidator)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="userManager"></param>
+    /// <param name="signInManager"></param>
+    /// <param name="configuration"></param>
+    /// <param name="passwordValidator"></param>
+    /// <param name="authService"></param>
+    public AuthController(ApplicationManager.ApplicationUserManager userManager, ApplicationSignInManager signInManager, IConfiguration configuration, ApplicationPasswordValidator passwordValidator, AuthService authService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
         _passwordValidator = passwordValidator;
+        _authService = authService;
     }
     
-    [HttpPost]
-    
-    [HttpPost("register")]
-    public async Task<ResultObject<string>> Register([FromBody] UserRegistrationModel model)
-    {
-        var applicationUser = new ApplicationUser();
-        applicationUser.UserRegistrationModel = model;
-        var validationResult = await _passwordValidator.ValidateAsync(_userManager, applicationUser, model.Password);
-
-        var resultObject = new ResultObject<string>();
-        if (!validationResult.Succeeded)
-        {
-
-            resultObject.IsError = true;
-            resultObject.BadRequest("No", 403);
-            return resultObject;
-        }
-
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user != null)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = GenerateJwtToken(user.UserModel, roles);
-
-            resultObject.AddResult( token);
-        }
-        else
-        {
-            resultObject.BadRequest("", 403);
-        }
-
-        return resultObject;
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     [HttpPost("login")]
     public async Task<ResultObject<IActionResult>> Login([FromBody] LoginModel model)
     {
@@ -67,9 +54,8 @@ public class AuthController : ControllerBase
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
         {
-            var roles = await _userManager.GetRolesAsync(user);
-            var token = GenerateJwtToken(user.UserModel, roles);
-            resultObject.AddResult(Ok(new { token }));
+            var token = _authService.GenerateJwtToken(user);
+            resultObject.AddResult(Ok(new { token.Result.Token }));
             return resultObject;
         }
         resultObject.AddResult(Unauthorized());
@@ -78,39 +64,12 @@ public class AuthController : ControllerBase
     }
     
     [HttpGet("check-session")]
-    public ActionResult<string> CheckSession()    {
+    public ActionResult<string> CheckSession()   
+    {
         if (!User.Identity?.IsAuthenticated ?? false)
         {
             return BadRequest("Session expired");
         }
         return Ok("Session is active");
-    }
-
-    private string GenerateJwtToken(UserModel user, IList<string> roles)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.IdentityUser.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: creds
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

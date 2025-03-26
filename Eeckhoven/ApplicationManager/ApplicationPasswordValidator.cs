@@ -1,14 +1,13 @@
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 
-namespace Eeckhoven.CustomUserManager;
+namespace Eeckhoven.ApplicationUserManager;
 
 public class ApplicationPasswordValidator : PasswordValidator<ApplicationUser>
 {
     public override Task<IdentityResult> ValidateAsync(UserManager<ApplicationUser> manager, ApplicationUser user, string? password)
     {
         var result = base.ValidateAsync(manager, user, password);
-        var registrationModel = user.UserRegistrationModel;
+        var registrationModel = user.RegistrationModel;
         if (!result.Result.Succeeded && registrationModel.Email != registrationModel.ConfirmEmail)
         {
             var existingErrors = result.Result.Errors.ToList();

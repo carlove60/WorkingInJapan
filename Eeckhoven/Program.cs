@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using Eeckhoven.ApplicationSignInManager;
+using Eeckhoven.ApplicationManager;
 using Eeckhoven.ApplicationUserManager;
 using Eeckhoven.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -92,7 +92,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddSignInManager<ApplicationSignInManager>()
     .AddPasswordValidator<ApplicationPasswordValidator>();
 
-builder.Services.AddTransient<ICustomUserValidator<ApplicationUser>, CustomUserValidator<ApplicationUser>>();
+builder.Services.AddTransient<IApplicationUserValidator<ApplicationUser>, ApplicationUserValidator<ApplicationUser>>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -140,7 +140,7 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
     
-    app.Services.CreateClientApi();
+    app.Services.GenerateApiJson();
 }
 app.UseMiddleware<JwtMiddleware>(); // Auto-refresh token on activity
 

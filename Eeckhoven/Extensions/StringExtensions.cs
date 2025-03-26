@@ -6,9 +6,17 @@ using Org.BouncyCastle.Utilities;
 
 namespace Eeckhoven.Extensions;
 
+/// <summary>
+/// 
+/// </summary>
 public static class StringExtensions
 {
     private const string PasswordSalt = "WhereIsMyStrongZero";
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
     public static bool IsValidEmail(this string email)
     {
         if (string.IsNullOrWhiteSpace(email))
@@ -20,6 +28,11 @@ public static class StringExtensions
         return result != null;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns></returns>
     public static bool IsValidPassword(this string password)
     {
         if (string.IsNullOrWhiteSpace(password))
@@ -32,6 +45,11 @@ public static class StringExtensions
         return regex.IsMatch(password);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns></returns>
     public static string Hash(this string password)
     {
         var hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -44,14 +62,13 @@ public static class StringExtensions
         return hashed;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
     public static bool IsEmptyOrWhiteSpace(this string input)
     {
         return string.IsNullOrWhiteSpace(input);
-    }
-    
-    public static string SafeReplace(this string input, string find, string replace, bool matchWholeWord)
-    {
-        var textToFind = matchWholeWord ? $@"\b{find}\b" : find;
-        return Regex.Replace(input, textToFind, replace);
     }
 }

@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace Eeckhoven.ApplicationSignInManager;
+namespace Eeckhoven.ApplicationManager;
 
 public class ApplicationSignInManager(
-    ApplicationUserManager.ApplicationUserManager userManager,
+    ApplicationUserManager userManager,
     IHttpContextAccessor contextAccessor,
     IUserClaimsPrincipalFactory<ApplicationUser> claimsFactory,
     IOptions<IdentityOptions> optionsAccessor,
@@ -18,7 +18,7 @@ public class ApplicationSignInManager(
     : SignInManager<ApplicationUser>(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes,
         confirmation)
 {
-    private readonly ApplicationUserManager.ApplicationUserManager _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+    private readonly ApplicationUserManager _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     private readonly ApplicationDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     private readonly IHttpContextAccessor _contextAccessor = contextAccessor ?? throw new ArgumentNullException(nameof(contextAccessor));
 

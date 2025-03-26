@@ -2,6 +2,9 @@ using Ardalis.SmartEnum;
 
 namespace Eeckhoven.Constants;
 
+/// <summary>
+/// 
+/// </summary>
 public static class RoleConstants
 {
     public const string Employer = "Employer";

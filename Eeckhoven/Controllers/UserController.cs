@@ -1,5 +1,4 @@
 using Eeckhoven.ApplicationUserManager;
-using Eeckhoven.Constants;
 using Eeckhoven.Models;
 using Eeckhoven.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -14,30 +13,30 @@ namespace Eeckhoven.Controllers;
 public class UserController(
     UserRepository userRepository,
     LanguageRepository languageRepository,
-    ApplicationUserManager.ApplicationUserManager userManager,
+    ApplicationManager.ApplicationUserManager userManager,
     ILogger<UserController> logger)
     : ControllerBase
 {
     [HttpPost("register")]
-    public ActionResult<ResultObject<MessageList>> Register(UserModel? user)
+    public ActionResult<ResultObject<UserModel>> Register(RegistrationModel? user)
     {
         if (user is null)
         {
-            return BadRequest("The user model is null.");
+            return BadRequest("The user model is null");
         }
         
-        var resultObject = new ResultObject<MessageList>();
-        var validatedUser = user.ValidateForRegistration(userRepository);
-        var createdUsed = userManager.CreateAsync(ApplicationUser.FromUserModel(user));
-        resultObject.Records.Add(validatedUser);
+        var resultObject = new ResultObject<UserModel>();
+        var validatedUser = userManager.ValidateForRegistration(user, userRepository);
         if (!validatedUser.Any())
         {
             resultObject.IsError = true;
+            resultObject.UserMessages.AddRange(validatedUser);
         }
         else
-        {
-            var newUser = new IdentityUser();
-            userRepository.Save(user);
+        {        
+            var createResult = userManager.CreateAsync(user);
+            createResult.Wait();
+            resultObject = createResult.Result;
         }
 
         return Ok(resultObject);

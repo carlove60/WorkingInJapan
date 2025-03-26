@@ -31,9 +31,11 @@ public class UserModel
     
     public string ProfilePicture { get; set; }
     
-    public string Email { get; set; }
-    
-    public string EmailConfirmed { get; set; }
+    public string Email
+    {
+        get { return IdentityUser.Email; }
+        set { IdentityUser.Email = value; }
+    }
     
     public IdentityUser IdentityUser { get; set; }
     

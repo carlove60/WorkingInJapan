@@ -1,39 +1,22 @@
+using Eeckhoven.ApplicationUserManager;
 using Eeckhoven.Models;
 using Eeckhoven.Repositories;
 
 namespace Eeckhoven.Extensions;
 
+/// <summary>
+/// 
+/// </summary>
 public static class UserModelExtensions
 {
-    public static MessageList ValidateForRegistration(this UserModel user, UserRepository userRepository)
-    {
-        var validatedUserModel = user.Validate();
-        if (validatedUserModel.Any())
-        {
-            return validatedUserModel;
-        }
-        var userExists = userRepository.GetUserByEmail(user.IdentityUser.Email);
-        var result = new MessageList();
-        if (userExists is not null)
-        {
-            result.AddError("There is already a user registered with this email.", "このメールアドレスで登録されたユーザーが既に存在します");
-        }
-        return result;
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     public static MessageList Validate(this UserModel model)
     {
         var result = new MessageList();
-        
-        if (string.IsNullOrWhiteSpace(model.FirstName))
-        {
-            result.AddError("First name is required", "名を入力してください");
-        }
-
-        if (string.IsNullOrWhiteSpace(model.LastName))
-        {
-            result.AddError("Last name is required","姓を入力してください");
-        }
         
         if (string.IsNullOrWhiteSpace(model.IdentityUser.Email))
         {

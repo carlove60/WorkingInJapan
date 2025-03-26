@@ -3,9 +3,16 @@ namespace Eeckhoven.Extensions;
 using Microsoft.OpenApi.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 
+/// <summary>
+/// 
+/// </summary>
 public static class SwaggerExtensions
 {
-    public static void CreateClientApi(this IServiceProvider provider)
+    /// <summary>
+    /// Generates a JSON file with all API calls and necessary models
+    /// </summary>
+    /// <param name="provider"></param>
+    public static void GenerateApiJson(this IServiceProvider provider)
     {
         var sw = provider.GetRequiredService<ISwaggerProvider>();
         var doc = sw.GetSwagger("v1", null, "/");

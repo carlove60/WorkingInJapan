@@ -6,12 +6,21 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Eeckhoven.Middleware;
 
+/// <summary>
+/// 
+/// </summary>
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IConfiguration _configuration;
     private readonly IServiceScopeFactory _scopeFactory;
     
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="next"></param>
+    /// <param name="configuration"></param>
+    /// <param name="scopeFactory"></param>
     public JwtMiddleware(RequestDelegate next, IConfiguration configuration, IServiceScopeFactory scopeFactory)
     {
         _next = next;
@@ -19,9 +28,13 @@ public class JwtMiddleware
         _scopeFactory = scopeFactory;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="context"></param>
     public async Task Invoke(HttpContext context)
     {
-        var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
         context.Response.Headers.Append("New-Token", "12321321");
 
         if (token != null)
@@ -29,21 +42,19 @@ public class JwtMiddleware
             var principal = GetPrincipalFromExpiredToken(token);
             if (principal != null)
             {
-                using (var scope = _scopeFactory.CreateScope())
+                using var scope = _scopeFactory.CreateScope();
+                // Get the scoped ApplicationUserManager inside the request scope
+                var userManager = scope.ServiceProvider.GetRequiredService<ApplicationManager.ApplicationUserManager>();
+
+                // Use userManager as needed
+
+                var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var user = await userManager.FindByIdAsync(userId);
+
+                if (user != null && user.TokenExpiryTime > DateTime.UtcNow)
                 {
-                    // Get the scoped ApplicationUserManager inside the request scope
-                    var userManager = scope.ServiceProvider.GetRequiredService<ApplicationUserManager.ApplicationUserManager>();
-
-                    // Use userManager as needed
-
-                    var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                    var user = await userManager.FindByIdAsync(userId);
-
-                    if (user != null && user.RefreshTokenExpiryTime > DateTime.UtcNow)
-                    {
-                        var newToken = await new AuthService(userManager, _configuration).GenerateJwtToken(user);
-                        context.Response.Headers.Append("New-Token", newToken.Token);
-                    }
+                    var newToken = await new AuthService(userManager, _configuration).GenerateJwtToken(user);
+                    context.Response.Headers.Append("New-Token", newToken.Token);
                 }
             }
         }
@@ -54,7 +65,7 @@ public class JwtMiddleware
     private ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]);
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!);
 
         try
         {

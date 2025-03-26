@@ -2,11 +2,21 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Eeckhoven.ApplicationUserManager;
 
-public class CustomUserValidator<TUser> : UserValidator<TUser>, ICustomUserValidator<TUser>
+/// <summary>
+/// 
+/// </summary>
+/// <typeparam name="TUser"></typeparam>
+public class ApplicationUserValidator<TUser> : UserValidator<TUser>, IApplicationUserValidator<TUser>
     where TUser : ApplicationUser
 {
 
-    public async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="manager"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    public override async Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
     {
         //Some Code
         //var result = await ValidateAsync(manager, user);
