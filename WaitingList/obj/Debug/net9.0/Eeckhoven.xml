@@ -1,0 +1,253 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Eeckhoven</name>
+    </assembly>
+    <members>
+        <member name="T:Eeckhoven.ApplicationUserManager.IdentityResultExtentions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.ApplicationUserManager.IdentityResultExtentions.ToMessageList(System.Collections.Generic.IEnumerable{Microsoft.AspNetCore.Identity.IdentityError})">
+            <summary>
+            
+            </summary>
+            <param name="errors"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eeckhoven.ApplicationUserManager.ApplicationUser">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.ApplicationUserManager.ApplicationUser.FromUserModel(Eeckhoven.Models.UserModel)">
+            <summary>
+            
+            </summary>
+            <param name="userModel"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eeckhoven.ApplicationUserManager.ApplicationUserValidator`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TUser"></typeparam>
+        </member>
+        <member name="M:Eeckhoven.ApplicationUserManager.ApplicationUserValidator`1.ValidateAsync(Microsoft.AspNetCore.Identity.UserManager{`0},`0)">
+            <summary>
+            
+            </summary>
+            <param name="manager"></param>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eeckhoven.ApplicationUserManager.IApplicationUserValidator`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TUser"></typeparam>
+        </member>
+        <member name="T:Eeckhoven.ApplicationManager.ApplicationUserManager">
+            <inheritdoc />
+        </member>
+        <member name="M:Eeckhoven.ApplicationManager.ApplicationUserManager.#ctor(Microsoft.AspNetCore.Identity.IUserStore{Eeckhoven.ApplicationUserManager.ApplicationUser},Microsoft.Extensions.Options.IOptions{Microsoft.AspNetCore.Identity.IdentityOptions},Microsoft.AspNetCore.Identity.IPasswordHasher{Eeckhoven.ApplicationUserManager.ApplicationUser},System.Collections.Generic.IEnumerable{Eeckhoven.ApplicationUserManager.IApplicationUserValidator{Eeckhoven.ApplicationUserManager.ApplicationUser}},System.Collections.Generic.IEnumerable{Eeckhoven.ApplicationUserManager.ApplicationPasswordValidator},Microsoft.AspNetCore.Identity.ILookupNormalizer,Microsoft.AspNetCore.Identity.IdentityErrorDescriber,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{Microsoft.AspNetCore.Identity.UserManager{Eeckhoven.ApplicationUserManager.ApplicationUser}},Eeckhoven.Repositories.UserRepository)">
+            <inheritdoc />
+        </member>
+        <member name="M:Eeckhoven.ApplicationManager.ApplicationUserManager.ValidateForRegistration(Eeckhoven.Models.RegistrationModel,Eeckhoven.Repositories.UserRepository)">
+            <summary>
+            
+            </summary>
+            <param name="user"></param>
+            <param name="userRepository"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Eeckhoven.Authorization.RoleTask.SeedRoles(System.IServiceProvider)">
+            <summary>
+            
+            </summary>
+            <param name="serviceProvider"></param>
+        </member>
+        <member name="T:Eeckhoven.Constants.RoleConstants">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Eeckhoven.Controllers.AuthController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.Controllers.AuthController.#ctor(Eeckhoven.ApplicationManager.ApplicationUserManager,Eeckhoven.ApplicationManager.ApplicationSignInManager,Microsoft.Extensions.Configuration.IConfiguration,Eeckhoven.ApplicationUserManager.ApplicationPasswordValidator,Eeckhoven.Services.AuthService)">
+            <summary>
+            
+            </summary>
+            <param name="userManager"></param>
+            <param name="signInManager"></param>
+            <param name="configuration"></param>
+            <param name="passwordValidator"></param>
+            <param name="authService"></param>
+        </member>
+        <member name="M:Eeckhoven.Controllers.AuthController.Login(Eeckhoven.Models.LoginModel)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eeckhoven.Extensions.StringExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.Extensions.StringExtensions.IsValidEmail(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Eeckhoven.Extensions.StringExtensions.IsValidPassword(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Eeckhoven.Extensions.StringExtensions.Hash(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Eeckhoven.Extensions.StringExtensions.IsEmptyOrWhiteSpace(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eeckhoven.Extensions.SwaggerExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.Extensions.SwaggerExtensions.GenerateApiJson(System.IServiceProvider)">
+            <summary>
+            Generates a JSON file with all API calls and necessary models
+            </summary>
+            <param name="provider"></param>
+        </member>
+        <member name="T:Eeckhoven.Extensions.UserModelExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.Extensions.UserModelExtensions.Validate(Eeckhoven.Models.UserModel)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Eeckhoven.Middleware.JwtMiddleware">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.Middleware.JwtMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.DependencyInjection.IServiceScopeFactory)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+            <param name="configuration"></param>
+            <param name="scopeFactory"></param>
+        </member>
+        <member name="M:Eeckhoven.Middleware.JwtMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:Eeckhoven.Migrations.Initial">
+            <inheritdoc />
+        </member>
+        <member name="M:Eeckhoven.Migrations.Initial.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Eeckhoven.Migrations.Initial.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Eeckhoven.Migrations.Initial.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Eeckhoven.Models.AuthResponse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.Models.AuthResponse.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="token"></param>
+        </member>
+        <member name="P:Eeckhoven.Models.AuthResponse.Token">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Eeckhoven.ResultObject`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Eeckhoven.ResultObject`1.Records">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Eeckhoven.ResultObject`1.SystemMessages">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Eeckhoven.ResultObject`1.IsError">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Eeckhoven.ResultObject`1.HttpErrorCode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.ResultObject`1.AddResult(Microsoft.AspNetCore.Mvc.ActionResult{`0})">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="T:Eeckhoven.Services.AuthService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Eeckhoven.Services.AuthService.#ctor(Microsoft.AspNetCore.Identity.UserManager{Eeckhoven.ApplicationUserManager.ApplicationUser},Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="userManager"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:Eeckhoven.Services.AuthService.GenerateJwtToken(Eeckhoven.ApplicationUserManager.ApplicationUser)">
+            <summary>
+            
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

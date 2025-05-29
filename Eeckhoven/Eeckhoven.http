@@ -1,6 +1,0 @@
-@Eeckhoven_HostAddress = http://localhost:5240
-
-GET {{Eeckhoven_HostAddress}}/user/
-Accept: application/json
-
-###
