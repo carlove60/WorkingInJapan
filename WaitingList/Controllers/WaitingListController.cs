@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WaitingList.Extensions;
 using WaitingList.Interfaces;
+using WaitingList.Models;
 using WaitingList.Requests;
 using WaitingList.Responses;
 
@@ -89,7 +90,7 @@ public class WaitingListController : ControllerBase
     /// <returns>A response indicating the result of adding the party to the waiting list.</returns>
     [Route("add-party-to-waitinglist")]
     [HttpPost]
-    public ActionResult<AddToQueueResponse> AddPartyToWaitingList(AddToQueueRequest? request)
+    public ActionResult<WaitingListModel> AddPartyToWaitingList(AddToQueueRequest? request)
     {
         if (request == null)
         {   

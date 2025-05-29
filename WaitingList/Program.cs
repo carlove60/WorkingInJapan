@@ -73,6 +73,7 @@ builder.Services.AddOpenApiDocument(config =>
 builder.Services.AddHostedService<EnsureBackgroundExistsBackgroundService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IWaitingListRepository, WaitingListRepository>();
+builder.Services.AddScoped<IPartyRepository, PartyRepository>();
 builder.Services.AddScoped<IWaitingListService, WaitingListService>();
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
