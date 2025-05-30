@@ -59,16 +59,20 @@ public class WaitingListService : IWaitingListService
         throw new NotImplementedException();
     }
 
-    public ResultObject<WaitingListEntity> GetMetaData()
+    public ResultObject<WaitingListEntity> GetWaitingList(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public ResultObject<WaitingListEntity> GetWaitingList(string name = Constants.DefaultWaitingListName)
     {
         var result = new ResultObject<WaitingListEntity>();
-        var waitingListResult = _waitingListRepository.GetWaitingList();
-        result.Messages.AddRange(waitingListResult.Messages);       
-        if (!waitingListResult.IsError && waitingListResult.Records.Count > 0)
-        {
-            var waitingList = waitingListResult.Records.Single();
-        }
+        return _waitingListRepository.GetWaitingList(name);
+       
+    }
 
-        return result;
+    public ResultObject<WaitingListEntity> GetMetaData()
+    {
+        return _waitingListRepository.GetWaitingList();
     }
 }

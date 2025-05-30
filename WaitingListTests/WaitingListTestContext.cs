@@ -1,14 +1,22 @@
 using Microsoft.EntityFrameworkCore;
-using WaitingList.Database;
-using WaitingList.Entities; // Adjust namespace to where your DbContext is
-using WaitingList.Models;
+using WaitingListBackend.Interfaces;
+using WaitingListBackend.Database;
+using WaitingListBackend.Entities;
 
-namespace WaitingList.Tests;
+namespace WaitingListTests;
 
 public abstract class TestBase : IDisposable
 {
     protected readonly ApplicationDbContext Context;
-    
+    protected readonly IWaitingListService WaitingListEntity;
+    protected readonly IWaitingListRepository WaitingListRepository;
+
+    public TestBase(IWaitingListRepository waitingListRepository, IWaitingListService waitingListService)
+    {
+        WaitingListRepository = waitingListRepository;
+        WaitingListEntity = waitingListService;
+    }
+
     protected TestBase()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()

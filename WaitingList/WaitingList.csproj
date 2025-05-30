@@ -38,6 +38,16 @@
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.3.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.3.1" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WaitingListBackend\WaitingListBackend.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="WaitingList">
+        <HintPath>..\WaitingListTests\bin\Debug\net9.0\WaitingList.dll</HintPath>
+      </Reference>
+    </ItemGroup>
     <Target
       Name="Swagger"
       AfterTargets="Build"

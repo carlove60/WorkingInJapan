@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using WaitingList.Models;
+using WaitingListBackend.Models;
 
 namespace WaitingList.Responses;
 

@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using WaitingList.Extensions;
-using WaitingList.Interfaces;
-using WaitingList.Models;
 using WaitingList.Requests;
 using WaitingList.Responses;
+using WaitingListBackend.Entities;
+using WaitingListBackend.Interfaces;
 
 namespace WaitingList.Controllers;
 
@@ -15,7 +14,6 @@ namespace WaitingList.Controllers;
 [Route("api/waitinglist")]
 public class WaitingListController : ControllerBase
 {
-    private readonly IWaitingListRepository _waitingListRepository;
     private readonly IWaitingListService _waitingListService;
 
     /// <summary>
@@ -23,9 +21,8 @@ public class WaitingListController : ControllerBase
     /// Provides endpoints for retrieving the current waiting list, managing metadata,
     /// and adding parties to the waiting list.
     /// </summary>
-    public WaitingListController(IWaitingListRepository waitingListRepository, IWaitingListService waitingListService)
+    public WaitingListController(IWaitingListService waitingListService)
     {
-        this._waitingListRepository = waitingListRepository;
         this._waitingListService = waitingListService;
     }
 
@@ -38,13 +35,13 @@ public class WaitingListController : ControllerBase
     [HttpGet]
     
     [Route("waiting-list")]
-    public ActionResult<WaitingListResponse> GetWaitingList([FromQuery] string waitingListName)
+    public ActionResult<WaitingListResponse> GetWaitingList([FromQuery] Guid? id)
     {
-        if (waitingListName.IsNullOrWhiteSpace())
+        if (id == null || id == Guid.Empty)
         {   
             return BadRequest("No waiting list name provided");  
         }
-        var result = _waitingListRepository.GetWaitingList(waitingListName);
+        var result = _waitingListService.GetMetaData();
         var response = new WaitingListResponse  { Messages = result.Messages,};
         return Ok(response);
     }
@@ -80,7 +77,7 @@ public class WaitingListController : ControllerBase
             return BadRequest("No request provided");  
         }
         
-        return Ok(_waitingListService.CheckIn(request));
+        return Ok(_waitingListService.CheckIn(request.WaitingListId, request.PartyId));
     }
 
     /// <summary>
@@ -96,7 +93,8 @@ public class WaitingListController : ControllerBase
         {   
             return BadRequest("No request provided");  
         }
-        
-        return Ok(_waitingListService.AddPartyToWaitingList(request));
+
+        var partyEntity = new PartyEntity { Name = request.PartyName, Size = request.PartySize};
+        return Ok(_waitingListService.AddPartyToWaitingList(partyEntity, request.WaitingListId));
     }
 }

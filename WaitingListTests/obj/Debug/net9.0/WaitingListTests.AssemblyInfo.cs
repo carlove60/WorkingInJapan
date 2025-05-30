@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WaitingListTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afd9e21bae898f1f168f25f541c4cb95045ee83d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e32327b4c2b75a801019050a5e713f2fca7283a2")]
 [assembly: System.Reflection.AssemblyProductAttribute("WaitingListTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WaitingListTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,9 +1,8 @@
-using WaitingList.Entities;
-using WaitingList.Models;
+using WaitingList.DTO;
 
 namespace WaitingList.Responses;
 
 public class WaitingListResponse : BaseResponse
 {
-    public List<PartyEntity> Parties { get; set; } = new List<PartyEntity>();
+    public List<PartyDto> Parties { get; set; } = new List<PartyDto>();
 }

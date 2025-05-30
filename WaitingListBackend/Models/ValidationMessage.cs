@@ -1,6 +1,6 @@
 using WaitingListBackend.Enums;
 
-namespace WaitingListBackend.Entities;
+namespace WaitingListBackend.Models;
 
 /// <summary>
 /// Represents a validation message that contains a text message and its associated type.

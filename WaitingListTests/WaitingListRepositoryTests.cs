@@ -1,6 +1,4 @@
-﻿using WaitingList.Models;
-using WaitingList.Repositories;
-using WaitingList.Tests;
+﻿using WaitingListBackend.Entities;
 
 namespace WaitingListTests;
 
@@ -11,13 +9,12 @@ public sealed class WaitingListRepositoryTests : TestBase
     public void GivenWaitingListExists_WhenRetrievingByName_ThenReturnsCorrectWaitingList
         ()
     {
-        var waitingListRepository = new WaitingListRepository(base.Context);
         Context.WaitingLists.Add(new WaitingListEntity
         {
             Name = "Test Waiting List"
         });
         Context.SaveChanges();
-        var waitingList = waitingListRepository.GetWaitingList("Test Waiting List");
-        Assert.IsTrue(waitingList.Records.First().Name == "Test Waiting List");;
+        var waitingList = WaitingListRepository.GetWaitingList("Test Waiting List");
+        Assert.IsTrue(waitingList.Records.FirstOrDefault().Name == "Test Waiting List");;
     }
 }

@@ -1,5 +1,5 @@
-using WaitingList.Database;
-using WaitingList.Models;
+using WaitingListBackend.Database;
+using WaitingListBackend.Entities;
 
 namespace WaitingList.BackgroundServices;
 

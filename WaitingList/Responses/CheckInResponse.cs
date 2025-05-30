@@ -1,4 +1,3 @@
-using WaitingList.Models;
 
 namespace WaitingList.Responses;
 

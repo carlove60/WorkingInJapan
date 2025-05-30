@@ -24,7 +24,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WaitingList\WaitingList.csproj" />
+      <Reference Include="WaitingList">
+        <HintPath>bin\Debug\net9.0\WaitingList.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WaitingListBackend\WaitingListBackend.csproj" />
     </ItemGroup>
 
 </Project>

@@ -4,39 +4,20 @@
         <name>WaitingList</name>
     </assembly>
     <members>
-        <member name="T:WaitingList.Controllers.PartyController">
-            <summary>
-            Controller responsible for managing operations related to the waiting list.
-            Provides endpoints for retrieving and managing waiting list data.
-            </summary>
-        </member>
-        <member name="M:WaitingList.Controllers.PartyController.#ctor(WaitingList.Interfaces.IWaitingListService)">
-            <summary>
-            
-            </summary>
-            <param name="waitingListService"></param>
-        </member>
-        <member name="M:WaitingList.Controllers.PartyController.CheckIn(WaitingList.Requests.CheckInRequest)">
-            <summary>
-            
-            </summary>
-            <param name="party"></param>
-            <returns></returns>
-        </member>
         <member name="T:WaitingList.Controllers.WaitingListController">
             <summary>
             Controller responsible for managing operations related to the waiting list.
             Provides endpoints for retrieving and managing waiting list data.
             </summary>
         </member>
-        <member name="M:WaitingList.Controllers.WaitingListController.#ctor(WaitingList.Interfaces.IWaitingListRepository,WaitingList.Interfaces.IWaitingListService)">
+        <member name="M:WaitingList.Controllers.WaitingListController.#ctor(WaitingListBackend.Interfaces.IWaitingListService)">
             <summary>
             Controller responsible for handling operations on a waiting list.
             Provides endpoints for retrieving the current waiting list, managing metadata,
             and adding parties to the waiting list.
             </summary>
         </member>
-        <member name="M:WaitingList.Controllers.WaitingListController.GetWaitingList(System.String)">
+        <member name="M:WaitingList.Controllers.WaitingListController.GetWaitingList(System.Nullable{System.Guid})">
             <summary>
             Retrieves the current waiting list and wraps it in a response object.
             This method interacts with the repository to fetch the waiting list data
@@ -73,7 +54,7 @@
             
             </summary>
         </member>
-        <member name="M:WaitingList.Extensions.ServiceProviderExtensions.GenerateApiJson(System.IServiceProvider)">
+        <member name="M:WaitingList.Extensions.ServiceProviderExtensions.GenerateSwaggerApiJson(System.IServiceProvider)">
             <summary>
             Generates a JSON file with all API calls and necessary models
             </summary>
@@ -136,64 +117,11 @@
             </summary>
             <param name="message">The informational message to be added to the message list.</param>
         </member>
-        <member name="T:WaitingList.Migrations.InitialCreate">
-            <inheritdoc />
-        </member>
-        <member name="M:WaitingList.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:WaitingList.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:WaitingList.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="T:WaitingList.Models.ValidationMessage">
-            <summary>
-            Represents a validation message that contains a text message and its associated type.
-            </summary>
-        </member>
-        <member name="P:WaitingList.Models.ValidationMessage.Message">
-            <summary>
-            Represents the content of the validation message.
-            </summary>
-        </member>
-        <member name="P:WaitingList.Models.ValidationMessage.Type">
-            <summary>
-            Gets or sets the type of the validation message, which defines the category or severity level of the message.
-            </summary>
-            <remarks>
-            The type is represented by the <c>MessageType</c> enumeration. Possible values include:
-            - success
-            - info
-            - warning
-            - error
-            </remarks>
-        </member>
-        <member name="T:WaitingList.ResultObject`1">
+        <member name="T:WaitingList.Result`1">
             <summary>
             
             </summary>
             <typeparam name="T"></typeparam>
-        </member>
-        <member name="T:WaitingList.Services.WaitingListService">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:WaitingList.Services.WaitingListService.#ctor(WaitingList.Interfaces.IWaitingListRepository,WaitingList.Interfaces.IPartyRepository)">
-            <summary>
-            
-            </summary>
-            <param name="waitingListRepository"></param>
-            <param name="partyRepository"></param>
-        </member>
-        <member name="M:WaitingList.Services.WaitingListService.AddPartyToWaitingList(WaitingList.Requests.AddToWaitingListRequest)">
-            <summary>
-            
-            </summary>
-            <param name="request"></param>
-            <returns></returns>
         </member>
     </members>
 </doc>

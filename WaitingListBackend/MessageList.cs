@@ -1,5 +1,6 @@
 using WaitingListBackend.Entities;
 using WaitingListBackend.Enums;
+using WaitingListBackend.Models;
 
 namespace WaitingListBackend;
 

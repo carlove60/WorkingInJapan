@@ -2460,6 +2460,20 @@
         "runtime": {
           "lib/net8.0/ZstdSharp.dll": {}
         }
+      },
+      "WaitingListBackend/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.11",
+          "MySql.EntityFrameworkCore": "8.0.11"
+        },
+        "compile": {
+          "bin/placeholder/WaitingListBackend.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WaitingListBackend.dll": {}
+        }
       }
     }
   },
@@ -6758,6 +6772,11 @@
         "zstdsharp.port.0.8.0.nupkg.sha512",
         "zstdsharp.port.nuspec"
       ]
+    },
+    "WaitingListBackend/1.0.0": {
+      "type": "project",
+      "path": "../WaitingListBackend/WaitingListBackend.csproj",
+      "msbuildProject": "../WaitingListBackend/WaitingListBackend.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6780,7 +6799,8 @@
       "Swashbuckle.AspNetCore >= 7.3.1",
       "Swashbuckle.AspNetCore.Swagger >= 7.3.1",
       "Swashbuckle.AspNetCore.SwaggerGen >= 7.3.1",
-      "Swashbuckle.AspNetCore.SwaggerUI >= 7.3.1"
+      "Swashbuckle.AspNetCore.SwaggerUI >= 7.3.1",
+      "WaitingListBackend >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6808,7 +6828,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/WaitingListBackend.csproj": {
+              "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/WaitingListBackend.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -1,15 +1,11 @@
 using System.ComponentModel.DataAnnotations;
-using WaitingList.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-
 namespace WaitingList;
 
 /// <summary>
 /// 
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ResultObject<T>
+public class Result<T>
 {
     [Required]    
     public List<T> Records { get; set; } = new List<T>();

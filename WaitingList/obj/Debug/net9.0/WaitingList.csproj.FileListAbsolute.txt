@@ -155,3 +155,5 @@
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList/obj/Debug/net9.0/WaitingList.genruntimeconfig.cache
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList/obj/Debug/net9.0/ref/WaitingList.dll
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList/obj/Debug/net9.0/staticwebassets.build.json.cache
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList/bin/Debug/net9.0/WaitingListBackend.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList/bin/Debug/net9.0/WaitingListBackend.pdb

@@ -1,18 +1,19 @@
+
+
 using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
-using WaitingList.Database;
-using WaitingList.Repositories;
-using WaitingList.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using WaitingList.BackgroundServices;
 using WaitingList.Extensions;
-using WaitingList.Interfaces;
-using WaitingList.Services;
+using WaitingList.Swagger;
+using WaitingListBackend.Database;
+using WaitingListBackend.Interfaces;
+using WaitingListBackend.Services;
 using OpenApiSecurityScheme = Microsoft.OpenApi.Models.OpenApiSecurityScheme;
 using OpenApiServer = Microsoft.OpenApi.Models.OpenApiServer;
 
@@ -70,8 +71,6 @@ builder.Services.AddOpenApiDocument(config =>
 });
 builder.Services.AddHostedService<EnsureBackgroundExistsBackgroundService>();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<IWaitingListRepository, WaitingListRepository>();
-builder.Services.AddScoped<IPartyRepository, PartyRepository>();
 builder.Services.AddScoped<IWaitingListService, WaitingListService>();
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -117,11 +116,16 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;
     });
     
-   app.Services.GenerateApiJson();
+   app.Services.GenerateSwaggerApiJson();
 }
 app.UseHttpsRedirection();
-app.MapControllers();
-app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+
 app.UseRouting();
-app.Run();
+
+app.UseCors("AllowAll"); // ✅ Moved up, after UseRouting and before UseAuthentication/UseAuthorization
+
+app.UseAuthentication(); // if you use authentication
+app.UseAuthorization();
+
+app.MapControllers();
+app.UseRouting();
