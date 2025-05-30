@@ -4,7 +4,7 @@ using WaitingListBackend.Interfaces;
 
 namespace WaitingListBackend.Repositories;
 
-internal class WaitingListRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IWaitingListRepository 
+public class WaitingListRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IWaitingListRepository
 {
     public ResultObject<WaitingListEntity> GetWaitingList(string name = Constants.DefaultWaitingListName)
     {

@@ -1,4 +1,3 @@
-using WaitingList.Enums;
 using WaitingListBackend.Models;
 
 namespace WaitingList;

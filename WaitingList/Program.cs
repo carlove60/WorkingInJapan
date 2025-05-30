@@ -13,6 +13,7 @@ using WaitingList.Extensions;
 using WaitingList.Swagger;
 using WaitingListBackend.Database;
 using WaitingListBackend.Interfaces;
+using WaitingListBackend.Repositories;
 using WaitingListBackend.Services;
 using OpenApiSecurityScheme = Microsoft.OpenApi.Models.OpenApiSecurityScheme;
 using OpenApiServer = Microsoft.OpenApi.Models.OpenApiServer;
@@ -72,6 +73,9 @@ builder.Services.AddOpenApiDocument(config =>
 builder.Services.AddHostedService<EnsureBackgroundExistsBackgroundService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IWaitingListService, WaitingListService>();
+builder.Services.AddScoped<IWaitingListRepository, WaitingListRepository>();
+builder.Services.AddScoped<IPartyRepository, PartyRepository>();
+
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySQL(connectionString ?? "", mySqlOptions => mySqlOptions.MigrationsHistoryTable("__EFMigrationsHistory")));
@@ -119,13 +123,8 @@ if (app.Environment.IsDevelopment())
    app.Services.GenerateSwaggerApiJson();
 }
 app.UseHttpsRedirection();
-
-app.UseRouting();
-
-app.UseCors("AllowAll"); // ✅ Moved up, after UseRouting and before UseAuthentication/UseAuthorization
-
-app.UseAuthentication(); // if you use authentication
-app.UseAuthorization();
-
 app.MapControllers();
+app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseRouting();
+app.Run();

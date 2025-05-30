@@ -4,7 +4,7 @@ using WaitingListBackend.Interfaces;
 
 namespace WaitingListBackend.Repositories;
 
-internal class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IPartyRepository
+public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IPartyRepository
 {
     public ResultObject<PartyEntity> AddParty(PartyEntity request)
     {

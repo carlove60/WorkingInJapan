@@ -56,8 +56,15 @@ public class WaitingListController : ControllerBase
     [Route("waitinglist-meta-data")]
     public ActionResult<WaitingListMetaDataResponse> GetMetaData()
     {
+        var result = new WaitingListMetaDataResponse();
         var response = _waitingListService.GetMetaData();
-        return Ok(response);
+        result.Messages = response.Messages;
+        if (response.Records.Count == 1)
+        {
+            result.TotalSeatsAvailable = response.Records.First().TotalSeatsAvailable;
+            result.WaitingListName = response.Records.First().Name;
+        }
+        return Ok(result);
     }
 
 
