@@ -61,7 +61,7 @@
             <param name="request">The request object containing the details required for checking in a party.</param>
             <returns>An action result containing a response object with the details of the checked-in party.</returns>
         </member>
-        <member name="M:WaitingList.Controllers.WaitingListController.AddPartyToWaitingList(WaitingList.Requests.AddToQueueRequest)">
+        <member name="M:WaitingList.Controllers.WaitingListController.AddPartyToWaitingList(WaitingList.Requests.AddToWaitingListRequest)">
             <summary>
             Adds a party to the waiting list based on the provided request.
             </summary>
@@ -175,6 +175,25 @@
             
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:WaitingList.Services.WaitingListService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WaitingList.Services.WaitingListService.#ctor(WaitingList.Interfaces.IWaitingListRepository,WaitingList.Interfaces.IPartyRepository)">
+            <summary>
+            
+            </summary>
+            <param name="waitingListRepository"></param>
+            <param name="partyRepository"></param>
+        </member>
+        <member name="M:WaitingList.Services.WaitingListService.AddPartyToWaitingList(WaitingList.Requests.AddToWaitingListRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

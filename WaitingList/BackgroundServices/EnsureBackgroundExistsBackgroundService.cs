@@ -43,7 +43,7 @@ public class EnsureBackgroundExistsBackgroundService : BackgroundService
             }
 
             _logger.LogInformation($"Creating WaitingList: {Constants.DefaultWaitingListName}");
-            var waitingList = new WaitingListModel
+            var waitingList = new WaitingListEntity
             {
                 Name = Constants.DefaultWaitingListName, TimeForService = _timeForService,
                 TotalSeatsAvailable = _totalSeatsAvailable

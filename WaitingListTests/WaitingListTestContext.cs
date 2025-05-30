@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using WaitingList.Database; // Adjust namespace to where your DbContext is
+using WaitingList.Database;
+using WaitingList.Entities; // Adjust namespace to where your DbContext is
 using WaitingList.Models;
 
 namespace WaitingList.Tests;
@@ -26,23 +27,21 @@ public abstract class TestBase : IDisposable
         // Add some test parties
         var parties = new[]
         {
-            new PartyModel
+            new PartyEntity
             {
                 Id = Guid.NewGuid(),
                 Name = "Test Party 1",
                 Size = 4,
-                IsReady = false
             },
-            new PartyModel
+            new PartyEntity
             {
                 Id = Guid.NewGuid(),
                 Name = "Test Party 2",
                 Size = 2,
-                IsReady = true
             }
         };
 
-        var waitingList = new WaitingListModel
+        var waitingList = new WaitingListEntity
         {
             Name = "WaitingList"
         };

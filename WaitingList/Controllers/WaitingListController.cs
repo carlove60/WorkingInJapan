@@ -45,7 +45,7 @@ public class WaitingListController : ControllerBase
             return BadRequest("No waiting list name provided");  
         }
         var result = _waitingListRepository.GetWaitingList(waitingListName);
-        var response = new WaitingListResponse { Result = result };
+        var response = new WaitingListResponse  { Messages = result.Messages,};
         return Ok(response);
     }
 
@@ -90,7 +90,7 @@ public class WaitingListController : ControllerBase
     /// <returns>A response indicating the result of adding the party to the waiting list.</returns>
     [Route("add-party-to-waitinglist")]
     [HttpPost]
-    public ActionResult<WaitingListModel> AddPartyToWaitingList(AddToQueueRequest? request)
+    public ActionResult<AddToWaitingListResponse> AddPartyToWaitingList(AddToWaitingListRequest? request)
     {
         if (request == null)
         {   

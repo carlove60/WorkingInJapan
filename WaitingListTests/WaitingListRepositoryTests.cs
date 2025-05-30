@@ -12,7 +12,7 @@ public sealed class WaitingListRepositoryTests : TestBase
         ()
     {
         var waitingListRepository = new WaitingListRepository(base.Context);
-        Context.WaitingLists.Add(new WaitingListModel
+        Context.WaitingLists.Add(new WaitingListEntity
         {
             Name = "Test Waiting List"
         });

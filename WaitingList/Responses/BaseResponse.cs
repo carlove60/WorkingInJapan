@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using WaitingList.Models;
 
 namespace WaitingList.Responses;
 
-public class BaseResponse<T>
+public class BaseResponse
 {
-    public ResultObject<T> Result { get; set; } = new ResultObject<T>();
+    [Required]    
+    public List<ValidationMessage> Messages { get; set; } = new List<ValidationMessage>();
 }

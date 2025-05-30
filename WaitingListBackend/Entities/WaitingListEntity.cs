@@ -1,8 +1,8 @@
-namespace WaitingList.Models;
+namespace WaitingListBackend.Entities;
 
-public class WaitingListModel
+public class WaitingListEntity
 {
-    public List<PartyModel> Parties { get; set; } = new List<PartyModel>();
+    public List<PartyEntity> Parties { get; set; } = new List<PartyEntity>();
     public string Name { get; set; }
     
     public int TotalSeatsAvailable { get; set; }

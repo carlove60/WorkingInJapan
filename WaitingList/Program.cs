@@ -1,11 +1,9 @@
-using System.ComponentModel;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using WaitingList.Database;
 using WaitingList.Repositories;
 using WaitingList.Swagger;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

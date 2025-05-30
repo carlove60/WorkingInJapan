@@ -4,6 +4,6 @@ namespace WaitingList.Interfaces;
 
 public interface IWaitingListRepository
 {
-    ResultObject<WaitingListModel> GetWaitingList(string name = Constants.DefaultWaitingListName);
-    ResultObject<WaitingListModel> GetWaitingList(Guid id);
+    ResultObject<WaitingListEntity> GetWaitingList(string name = Constants.DefaultWaitingListName);
+    ResultObject<WaitingListEntity> GetWaitingList(Guid id);
 }

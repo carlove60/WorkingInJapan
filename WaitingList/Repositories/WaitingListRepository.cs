@@ -6,9 +6,9 @@ namespace WaitingList.Repositories;
 
 public class WaitingListRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IWaitingListRepository 
 {
-    public ResultObject<WaitingListModel> GetWaitingList(string name = Constants.DefaultWaitingListName)
+    public ResultObject<WaitingListEntity> GetWaitingList(string name = Constants.DefaultWaitingListName)
     {
-        var result = new ResultObject<WaitingListModel>();
+        var result = new ResultObject<WaitingListEntity>();
         var waitingList = _applicationDbContext.WaitingLists.SingleOrDefault((x) => x.Name == name);
         if (waitingList == null)
         {
@@ -22,9 +22,9 @@ public class WaitingListRepository(ApplicationDbContext applicationDbContext) : 
         return result;
     }
 
-    public ResultObject<WaitingListModel> GetWaitingList(Guid id)
+    public ResultObject<WaitingListEntity> GetWaitingList(Guid id)
     {
-        var result = new ResultObject<WaitingListModel>();
+        var result = new ResultObject<WaitingListEntity>();
         var waitingList = _applicationDbContext.WaitingLists.SingleOrDefault((x) => x.Id == id);
         if (waitingList == null)
         {

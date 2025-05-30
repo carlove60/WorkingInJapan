@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingList", "WaitingList\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingListTests", "WaitingListTests\WaitingListTests.csproj", "{BE19C579-E12F-4061-B16D-C405052D8601}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingListBackend", "WaitingListBackend\WaitingListBackend.csproj", "{AC039CEE-9D7D-42B0-BBF2-3F9CB69CC529}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{BE19C579-E12F-4061-B16D-C405052D8601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE19C579-E12F-4061-B16D-C405052D8601}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE19C579-E12F-4061-B16D-C405052D8601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC039CEE-9D7D-42B0-BBF2-3F9CB69CC529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC039CEE-9D7D-42B0-BBF2-3F9CB69CC529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC039CEE-9D7D-42B0-BBF2-3F9CB69CC529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC039CEE-9D7D-42B0-BBF2-3F9CB69CC529}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

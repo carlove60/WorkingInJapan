@@ -2,5 +2,5 @@ namespace WaitingList.Requests;
 
 public class CheckInRequest
 {
-    public Guid Id { get; set; }
+    public Guid PartyId { get; set; }
 }

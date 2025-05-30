@@ -1,3 +1,4 @@
+using WaitingList.Entities;
 using WaitingList.Interfaces;
 using WaitingList.Models;
 using WaitingList.Requests;
@@ -5,25 +6,38 @@ using WaitingList.Responses;
 
 namespace WaitingList.Services;
 
+/// <summary>
+/// 
+/// </summary>
 public class WaitingListService : IWaitingListService
 {
-    private IWaitingListRepository _waitingListRepository;
-    private IPartyRepository _partyRepository;
+    private readonly IWaitingListRepository _waitingListRepository;
+    private readonly IPartyRepository _partyRepository;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="waitingListRepository"></param>
+    /// <param name="partyRepository"></param>
     public WaitingListService(IWaitingListRepository waitingListRepository, IPartyRepository partyRepository)
     {
-        this._waitingListRepository = waitingListRepository;
-        this._partyRepository = partyRepository;
+        _waitingListRepository = waitingListRepository;
+        _partyRepository = partyRepository;
     }
 
-    public AddToQueueResponse AddPartyToWaitingList(AddToQueueRequest request)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public AddToWaitingListResponse AddPartyToWaitingList(AddToWaitingListRequest request)
     {
-        var response = new AddToQueueResponse();
-        var party = _partyRepository.AddParty(request.Party);
+        var response = new AddToWaitingListResponse();
+        var partyModel = new PartyEntity { Name = request.PartyName, Size = request.PartySize};
+        var party = _partyRepository.AddParty(partyModel);
         if (party.IsError)
         {
-            response.Result.Messages.AddRange(party.Messages);
-            response.Result.IsError = party.IsError;
+            response.Messages.AddRange(party.Messages);
             return response;       
         }
 
@@ -48,11 +62,20 @@ public class WaitingListService : IWaitingListService
 
     public WaitingListMetaDataResponse GetMetaData()
     {
-        var result = this._waitingListRepository.GetWaitingList();
-        return new WaitingListMetaDataResponse { Result = result };
+        var result = new WaitingListMetaDataResponse();
+        var waitingListResult = _waitingListRepository.GetWaitingList();
+        result.Messages.AddRange(waitingListResult.Messages);       
+        if (!waitingListResult.IsError && waitingListResult.Records.Count > 0)
+        {
+            var waitingList = waitingListResult.Records.Single();
+            result.TotalSeatsAvailable = waitingList.TotalSeatsAvailable;
+            result.WaitingListName = waitingList.Name;       
+        }
+
+        return result;
     }
 
-    public PartyModel CheckIn(PartyRequest request)
+    public PartyEntity CheckIn(PartyRequest request)
     {
         throw new NotImplementedException();
     }

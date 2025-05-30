@@ -1,4 +1,5 @@
 using WaitingList.Database;
+using WaitingList.Entities;
 using WaitingList.Interfaces;
 using WaitingList.Models;
 using WaitingList.Requests;
@@ -7,12 +8,12 @@ namespace WaitingList.Repositories;
 
 public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IPartyRepository
 {
-    public ResultObject<PartyModel> AddParty(PartyModel request)
+    public ResultObject<PartyEntity> AddParty(PartyEntity request)
     {
-        var result = new ResultObject<PartyModel>();
+        var result = new ResultObject<PartyEntity>();
         try
         {
-            var newParty = new PartyModel
+            var newParty = new PartyEntity
             {
                 Name = request.Name,
                 Size = request.Size
@@ -31,9 +32,9 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
         return result;
     }
 
-    public ResultObject<PartyModel> GetParty(Guid id)
+    public ResultObject<PartyEntity> GetParty(Guid id)
     {
-       var result = new ResultObject<PartyModel>();
+       var result = new ResultObject<PartyEntity>();
        var party = _applicationDbContext.Parties.SingleOrDefault((x) => x.Id == id);
        if (party == null)
        {

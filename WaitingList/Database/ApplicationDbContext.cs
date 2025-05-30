@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WaitingList.Entities;
 using WaitingList.Models;
 
 namespace WaitingList.Database;
@@ -6,8 +7,8 @@ namespace WaitingList.Database;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : DbContext(options)
 {
-    public DbSet<PartyModel> Parties { get; set; }
-    public DbSet<WaitingListModel> WaitingLists { get; set; }
+    public DbSet<PartyEntity> Parties { get; set; }
+    public DbSet<WaitingListEntity> WaitingLists { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,15 +21,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     
     private static void CreateTables(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PartyModel>().ToTable("Parties");
+        modelBuilder.Entity<PartyEntity>().ToTable("Parties");
     }
 
     private static void SetLimits(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PartyModel>().Property((u) => u.Size).IsRequired();
-        modelBuilder.Entity<PartyModel>().Property((u) => u.Name).IsRequired();
-        modelBuilder.Entity<WaitingListModel>().Property((u) => u.Name).IsRequired();
-        modelBuilder.Entity<WaitingListModel>()
+        modelBuilder.Entity<PartyEntity>().Property((u) => u.Size).IsRequired();
+        modelBuilder.Entity<PartyEntity>().Property((u) => u.Name).IsRequired();
+        modelBuilder.Entity<WaitingListEntity>().Property((u) => u.Name).IsRequired();
+        modelBuilder.Entity<WaitingListEntity>()
             .HasIndex(w => w.Name)
             .IsUnique();
 
@@ -36,16 +37,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     private static void SetDefaults(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PartyModel>().Property((u) => u.Id).ValueGeneratedOnAdd();
-        modelBuilder.Entity<WaitingListModel>().Property((u) => u.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<PartyEntity>().Property((u) => u.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<WaitingListEntity>().Property((u) => u.Id).ValueGeneratedOnAdd();
     }
 
     private static void SetOneOnOneRelations(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PartyModel>()
-            .HasOne(psc => psc.WaitingListModel);
+        modelBuilder.Entity<PartyEntity>()
+            .HasOne(psc => psc.WaitingListEntity);
 
-        modelBuilder.Entity<WaitingListModel>()
+        modelBuilder.Entity<WaitingListEntity>()
             .HasMany(u => u.Parties);
     }
 }

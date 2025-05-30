@@ -6,7 +6,7 @@ namespace WaitingList.Interfaces;
 
 public interface IWaitingListService
 {
-    AddToQueueResponse AddPartyToWaitingList(AddToQueueRequest request);
+    AddToWaitingListResponse AddPartyToWaitingList(AddToWaitingListRequest request);
     CheckInResponse CheckIn(CheckInRequest request);
     
     WaitingListMetaDataResponse GetMetaData();

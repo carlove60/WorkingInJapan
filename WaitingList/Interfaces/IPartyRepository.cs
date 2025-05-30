@@ -1,3 +1,4 @@
+using WaitingList.Entities;
 using WaitingList.Models;
 using WaitingList.Requests;
 
@@ -5,7 +6,7 @@ namespace WaitingList.Interfaces;
 
 public interface IPartyRepository
 {
-    ResultObject<PartyModel> AddParty(PartyModel request);
+    ResultObject<PartyEntity> AddParty(PartyEntity request);
     
-    ResultObject<PartyModel> GetParty(Guid id);
+    ResultObject<PartyEntity> GetParty(Guid id);
 }

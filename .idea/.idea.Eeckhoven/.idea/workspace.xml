@@ -9,30 +9,66 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0faffc4c-e93d-45ac-b190-e6c159bb844a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WaitingList/Interfaces/IPartyRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WaitingList/Repositories/PartyRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingList/Responses/AddToWaitingListResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Database/ApplicationDbContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Entities/PartyEntity.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Entities/QueueModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Entities/ValidationMessage.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Entities/WaitingListEntity.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Enums/MessageType.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Interfaces/IPartyRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Interfaces/IWaitingListRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Interfaces/IWaitingListService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/MessageList.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Repositories/BaseRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Repositories/PartyRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Repositories/WaitingListRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/ResultObject.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WaitingListBackend/Services/WaitingListService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Eeckhoven/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Eeckhoven/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WaitingList.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList.sln" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/BackgroundServices/EnsureBackgroundExistsBackgroundService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/BackgroundServices/EnsureBackgroundExistsBackgroundService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Controllers/PartyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Controllers/PartyController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/Controllers/WaitingListController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Controllers/WaitingListController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Database/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Database/ApplicationDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Interfaces/IPartyRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Interfaces/IPartyRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/Interfaces/IWaitingListRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Interfaces/IWaitingListRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WaitingList/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Interfaces/IWaitingListService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Interfaces/IWaitingListService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Models/PartyModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Entities/PartyEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Models/QueueModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Entities/QueueModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Models/ValidationMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Entities/ValidationMessage.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Models/WaitingListModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Entities/WaitingListEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Repositories/PartyRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Repositories/PartyRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/Repositories/WaitingListRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Repositories/WaitingListRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WaitingList/Requests/AddToQueueRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Requests/AddToQueueRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WaitingList/Responses/AddToQueueResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Responses/AddToQueueResponse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WaitingList/ResultObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/ResultObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Requests/AddToQueueRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Requests/AddToWaitingListRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Requests/CheckInRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Requests/CheckInRequest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Responses/AddToQueueResponse.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Responses/BaseResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Responses/BaseResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Responses/CheckInResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Responses/CheckInResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Responses/WaitingListMetaDataResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Responses/WaitingListMetaDataResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/Responses/WaitingListResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Responses/WaitingListResponse.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/Services/WaitingListService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/Services/WaitingListService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/bin/Debug/net9.0/WaitingList.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/bin/Debug/net9.0/WaitingList.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/bin/Debug/net9.0/WaitingList.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/bin/Debug/net9.0/WaitingList.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/bin/Debug/net9.0/WaitingList.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/bin/Debug/net9.0/WaitingList.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.AssemblyInfoInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.csproj.CoreCompileInputs.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.sourcelink.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.xml" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/WaitingList.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/ref/WaitingList.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/ref/WaitingList.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/refint/WaitingList.dll" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/refint/WaitingList.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/Debug/net9.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingList/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingList/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingListTests/WaitingListRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingListTests/WaitingListRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingListTests/WaitingListTestContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingListTests/WaitingListTestContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingListTests/obj/Debug/net9.0/WaitingListTests.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingListTests/obj/Debug/net9.0/WaitingListTests.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingListTests/obj/Debug/net9.0/WaitingListTests.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingListTests/obj/Debug/net9.0/WaitingListTests.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingListTests/obj/Debug/net9.0/WaitingListTests.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingListTests/obj/Debug/net9.0/WaitingListTests.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WaitingListTests/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/WaitingListTests/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +114,10 @@
     <setting file="file://$PROJECT_DIR$/WaitingList/Controllers/PartyController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Controllers/WaitingListController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Database/ApplicationDbContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WaitingList/Entities/PartyEntity.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WaitingList/Entities/QueueModel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WaitingList/Entities/ValidationMessage.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WaitingList/Entities/WaitingListEntity.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Enums/MessageType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Extensions/ServiceProviderExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Extensions/StringExtensions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -86,20 +126,16 @@
     <setting file="file://$PROJECT_DIR$/WaitingList/Interfaces/IWaitingListRepository.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Interfaces/IWaitingListService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/MessageList.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WaitingList/Models/PartyModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WaitingList/Models/QueueModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WaitingList/Models/ValidationMessage.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WaitingList/Models/WaitingListModel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Repositories/BaseRepository.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Repositories/PartyRepository.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Repositories/WaitingListRepository.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WaitingList/Requests/AddToQueueRequest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WaitingList/Requests/AddToWaitingListRequest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Requests/CheckInRequest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Requests/PartyRequest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Requests/WaitingListRequest.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WaitingList/Responses/AddToQueueResponse.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WaitingList/Responses/AddToWaitingListResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Responses/BaseResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Responses/CheckInResponse.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/Responses/WaitingListMetaDataResponse.cs" root0="FORCE_HIGHLIGHTING" />
@@ -108,6 +144,7 @@
     <setting file="file://$PROJECT_DIR$/WaitingList/Services/WaitingListService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/obj/project.packagespec.json" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingList/swaggerfile.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WaitingListBackend/Class1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingListTests/MSTestSettings.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingListTests/WaitingListRepositoryTests.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WaitingListTests/WaitingListTestContext.cs" root0="FORCE_HIGHLIGHTING" />
@@ -132,7 +169,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;.NET Launch Settings Profile.NaturalEnglish: http.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WaitingList: http.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.WaitingList: http.executor&quot;: &quot;Debug&quot;,
     &quot;HTTP Request.NaturalEnglish | #1.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -216,7 +253,7 @@
       <workItem from="1743238633209" duration="11379000" />
       <workItem from="1743330641266" duration="19525000" />
       <workItem from="1748321397839" duration="8000" />
-      <workItem from="1748321422768" duration="39825000" />
+      <workItem from="1748321422768" duration="48089000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />
@@ -290,7 +327,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748535528847</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Allow for errors and css">
+      <option name="closed" value="true" />
+      <created>1748558909279</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1748558909279</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -320,7 +365,8 @@
     <MESSAGE value="Register functionality added" />
     <MESSAGE value="Swagger updated" />
     <MESSAGE value="Initial" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial" />
+    <MESSAGE value="Allow for errors and css" />
+    <option name="LAST_COMMIT_MESSAGE" value="Allow for errors and css" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -350,19 +396,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/WaitingList/Repositories/WaitingListRepository.cs</url>
-          <line>12</line>
-          <properties documentPath="$PROJECT_DIR$/WaitingList/Repositories/WaitingListRepository.cs" containingFunctionPresentation="Method 'GetWaitingList'">
-            <startOffsets>
-              <option value="545" />
-            </startOffsets>
-            <endOffsets>
-              <option value="569" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="38" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet_Exception_Breakpoints">
           <properties exception="System.OperationCanceledException" breakIfHandledByOtherCode="false" displayValue="System.OperationCanceledException" />

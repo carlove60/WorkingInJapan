@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WaitingList.Entities;
 using WaitingList.Interfaces;
 using WaitingList.Models;
 using WaitingList.Requests;
@@ -30,7 +31,7 @@ public class PartyController : ControllerBase
     /// <returns></returns>
     [Route("check-in")]
     [HttpPost]
-    public ActionResult<ResultObject<PartyModel>> CheckIn(CheckInRequest party)
+    public ActionResult<ResultObject<PartyEntity>> CheckIn(CheckInRequest party)
     {
 
         return Ok(_waitingListService.CheckIn(party));
