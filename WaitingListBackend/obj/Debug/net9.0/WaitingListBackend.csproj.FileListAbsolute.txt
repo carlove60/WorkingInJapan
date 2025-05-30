@@ -1,0 +1,13 @@
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/bin/Debug/net9.0/WaitingListBackend.deps.json
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/bin/Debug/net9.0/WaitingListBackend.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/bin/Debug/net9.0/WaitingListBackend.pdb
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.csproj.AssemblyReference.cache
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.GeneratedMSBuildEditorConfig.editorconfig
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.AssemblyInfoInputs.cache
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.AssemblyInfo.cs
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.csproj.CoreCompileInputs.cache
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.sourcelink.json
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/refint/WaitingListBackend.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/WaitingListBackend.pdb
+/Users/carlove/RiderProjects/Eeckhoven/WaitingListBackend/obj/Debug/net9.0/ref/WaitingListBackend.dll
