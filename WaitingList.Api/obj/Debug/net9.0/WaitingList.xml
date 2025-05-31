@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WaitingList</name>
+    </assembly>
+    <members>
+        <member name="T:WaitingList.Controllers.WaitingListController">
+            <summary>
+            Controller responsible for managing operations related to the waiting list.
+            Provides endpoints for retrieving and managing waiting list data.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.#ctor(WaitingListBackend.Interfaces.IWaitingListService)">
+            <summary>
+            Controller responsible for handling operations on a waiting list.
+            Provides endpoints for retrieving the current waiting list, managing metadata,
+            and adding parties to the waiting list.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.GetWaitingList(System.Nullable{System.Guid})">
+            <summary>
+            Retrieves the current waiting list and wraps it in a response object.
+            This method interacts with the repository to fetch the waiting list data
+            and encapsulates the result for the API response.
+            </summary>
+            <returns>An action result containing a response object with the waiting list data.</returns>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.GetMetaData">
+             <summary>
+             Retrieves the metadata associated with the waiting list.
+            
+             This method interacts with the service layer to obtain and return metadata
+             </summary>
+             <returns>An action result containing a response object with the metadata of the waiting list.</returns>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.CheckIn(WaitingList.Requests.CheckInRequest)">
+            <summary>
+            Checks in a party to the waiting list based on the request provided.
+            This action validates the input request and processes the check-in
+            operation through the waiting list service.
+            </summary>
+            <param name="request">The request object containing the details required for checking in a party.</param>
+            <returns>An action result containing a response object with the details of the checked-in party.</returns>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.AddPartyToWaitingList(WaitingList.Requests.AddToWaitingListRequest)">
+            <summary>
+            Adds a party to the waiting list based on the provided request.
+            </summary>
+            <param name="request">An object containing details about the party to be added to the waiting list.</param>
+            <returns>A response indicating the result of adding the party to the waiting list.</returns>
+        </member>
+        <member name="T:WaitingList.Extensions.ServiceProviderExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WaitingList.Extensions.ServiceProviderExtensions.GenerateSwaggerApiJson(System.IServiceProvider)">
+            <summary>
+            Generates a JSON file with all API calls and necessary models
+            </summary>
+            <param name="provider"></param>
+        </member>
+        <member name="T:WaitingList.Extensions.StringExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WaitingList.Extensions.StringExtensions.IsValidEmail(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WaitingList.Extensions.StringExtensions.IsValidPassword(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WaitingList.Extensions.StringExtensions.Hash(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WaitingList.Extensions.StringExtensions.IsNullOrWhiteSpace(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="T:WaitingList.Extensions.WaitingListDtoExtensions">
+            <summary>
+            Provides extension methods for converting entities to DTOs in the context of WaitingList operations.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Extensions.WaitingListDtoExtensions.ToDto(WaitingListBackend.Entities.WaitingListEntity)">
+            <summary>
+            Converts a <see cref="T:WaitingListBackend.Entities.WaitingListEntity"/> object to a <see cref="T:WaitingList.DTO.WaitingListDto"/> object.
+            </summary>
+            <param name="waitingList">The <see cref="T:WaitingListBackend.Entities.WaitingListEntity"/> to be converted.</param>
+            <returns>A <see cref="T:WaitingList.DTO.WaitingListDto"/> object containing the converted data.</returns>
+        </member>
+        <member name="T:WaitingList.MessageList">
+            <summary>
+            Represents a collection of validation messages with utility functions for adding error, warning, or informational messages.
+            Inherits from the <see cref="T:System.Collections.Generic.List`1" /> class.
+            </summary>
+        </member>
+        <member name="M:WaitingList.MessageList.AddError(System.String)">
+            <summary>
+            Adds an error message to the message list with a predefined message type.
+            </summary>
+            <param name="message">The error message to be added to the message list.</param>
+        </member>
+        <member name="M:WaitingList.MessageList.AddWarning(System.String)">
+            <summary>
+            Adds a warning message to the message list with a predefined message type.
+            </summary>
+            <param name="message">The warning message to be added to the message list.</param>
+        </member>
+        <member name="M:WaitingList.MessageList.AddInfo(System.String)">
+            <summary>
+            Adds an informational message to the message list with a predefined message type.
+            </summary>
+            <param name="message">The informational message to be added to the message list.</param>
+        </member>
+        <member name="T:WaitingList.Result`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+    </members>
+</doc>
