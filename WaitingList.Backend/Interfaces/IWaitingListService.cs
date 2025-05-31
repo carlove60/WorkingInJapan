@@ -10,6 +10,5 @@ public interface IWaitingListService
     
     public ResultObject<WaitingListDto> CheckIn(PartyDto partyEntity);
     
-    public ResultObject<WaitingListDto> GetMetaData();
-
+    public ResultObject<WaitingListDto> GetWaitingList(string name = Constants.DefaultWaitingListName);
 }

@@ -2,9 +2,8 @@ namespace WaitingList.DTO;
 
 public class PartyDto
 {
-    public Guid Id { get; set; }
-    
-    public Guid WaitingListId { get; set; }
+    public string WaitingListName { get; set; }
+    public Guid SessionId { get; set; }
     public string Name { get; set; }
     public int Size { get; set; }
 }

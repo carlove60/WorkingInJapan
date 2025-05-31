@@ -14,6 +14,8 @@ public class PartyEntity
     
     public DateTime? ServiceStartedAt { get; set; }
     
+    public Guid SessionId { get; set; } 
+    
     public Guid WaitingListId { get; set; }
     
     [Required]

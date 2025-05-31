@@ -1,6 +1,7 @@
 using WaitingList.DTO;
 using WaitingList.Extensions;
 using WaitingListBackend.Entities;
+using WaitingListBackend.Extensions;
 using WaitingListBackend.Interfaces;
 using WaitingListBackend.Models;
 
@@ -80,19 +81,30 @@ public class WaitingListService : IWaitingListService
     public ResultObject<WaitingListDto> GetWaitingList(string name = Constants.DefaultWaitingListName)
     {
         var result = new ResultObject<WaitingListDto>();
-        var waitingList = _waitingListRepository.GetWaitingList(name);
+        var waitingList = _waitingListRepository.GetWaitingList();
         result.Messages = waitingList.Messages;
-        result.Records.Add(waitingList.Records.FirstOrDefault()?.ToDto());
+        var waitingListDto = GetDto(waitingList.Records.FirstOrDefault());
+        if (waitingListDto != null)
+        {
+            result.Records.Add(waitingListDto);
+        }
         return result;
     }
 
-    public ResultObject<WaitingListDto> GetMetaData()
+    private WaitingListDto? GetDto(WaitingListEntity? waitingList)
     {
-        var result = new ResultObject<WaitingListDto>();
-        var waitingList = _waitingListRepository.GetWaitingList();
-        result.Messages = waitingList.Messages;
-        result.Records.Add(waitingList.Records.FirstOrDefault()?.ToDto());
-        return result;
+        if (waitingList == null)
+        {
+            return null;  
+        }
+
+        var waitingListDto = new WaitingListDto();
+        waitingListDto.Name = waitingList.Name;
+        waitingListDto.TotalSeats = waitingList.TotalSeats;
+        waitingListDto.Parties = waitingList.Parties.ToDto();
+        waitingListDto.Id = waitingList.Id;
+        waitingListDto.TotalSeatsAvailable = WaitinglistCapacityLeft(waitingList);
+        return waitingListDto;   
     }
 
 
@@ -106,6 +118,7 @@ public class WaitingListService : IWaitingListService
     private int WaitinglistCapacityLeft(WaitingListEntity waitingList)
     {
         var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt != null);
-        return parties.Sum((p) => p.Size);  
+        var currentlySeatedAmount =  parties.Sum((p) => p.Size);  
+        return waitingList.TotalSeats - currentlySeatedAmount;   
     }
 }

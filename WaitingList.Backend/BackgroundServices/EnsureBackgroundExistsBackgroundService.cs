@@ -7,6 +7,7 @@ using WaitingListBackend.Entities;
 namespace WaitingListBackend.BackgroundServices;
 
 public class EnsureBackgroundExistsBackgroundService(
+    
     ILogger<EnsureBackgroundExistsBackgroundService> logger,
     IServiceScopeFactory scopeFactory)
     : BackgroundService

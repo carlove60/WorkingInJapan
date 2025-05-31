@@ -26,24 +26,18 @@ public class WaitingListController : ControllerBase
         this._waitingListService = waitingListService;
     }
 
-    /// <summary>
-    /// Retrieves the current waiting list and wraps it in a response object.
-    /// This method interacts with the repository to fetch the waiting list data
-    /// and encapsulates the result for the API response.
-    /// </summary>
-    /// <returns>An action result containing a response object with the waiting list data.</returns>
     [HttpGet]
-    
-    [Route("waiting-list")]
-    public ActionResult<WaitingListResponse> GetWaitingList([FromQuery] Guid? id)
+    [Route("/waiting-list")]
+    public ActionResult<WaitingListMetaDataResponse> GetWaitingList()
     {
-        if (id == null || id == Guid.Empty)
-        {   
-            return BadRequest("No waiting list name provided");  
+        var result = new WaitingListMetaDataResponse();
+        var response = _waitingListService.GetWaitingList();
+        result.Messages = response.Messages;
+        if (response.Records.Count == 1)
+        {
+            result.WaitingList = response.Records.First();
         }
-        var result = _waitingListService.GetMetaData();
-        var response = new WaitingListResponse  { Messages = result.Messages,};
-        return Ok(response);
+        return Ok(result);   
     }
 
     /// <summary>
@@ -53,11 +47,11 @@ public class WaitingListController : ControllerBase
     /// </summary>
     /// <returns>An action result containing a response object with the metadata of the waiting list.</returns>
     [HttpGet]
-    [Route("waitinglist-meta-data")]
-    public ActionResult<WaitingListMetaDataResponse> GetMetaData()
+    [Route("default-waiting-list")]
+    public ActionResult<WaitingListMetaDataResponse> GetDefaultWaitingList()
     {
         var result = new WaitingListMetaDataResponse();
-        var response = _waitingListService.GetMetaData();
+        var response = _waitingListService.GetWaitingList();
         result.Messages = response.Messages;
         if (response.Records.Count == 1)
         {

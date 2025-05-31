@@ -9,7 +9,9 @@ using Microsoft.OpenApi.Models;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using WaitingList.Extensions;
+using WaitingList.Middleware;
 using WaitingList.Swagger;
+using WaitingListBackend;
 using WaitingListBackend.BackgroundServices;
 using WaitingListBackend.Database;
 using WaitingListBackend.Interfaces;
@@ -17,7 +19,6 @@ using WaitingListBackend.Repositories;
 using WaitingListBackend.Services;
 using OpenApiSecurityScheme = Microsoft.OpenApi.Models.OpenApiSecurityScheme;
 using OpenApiServer = Microsoft.OpenApi.Models.OpenApiServer;
-using WaitingListBackend.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
@@ -81,15 +82,32 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IWaitingListService, WaitingListService>();
 builder.Services.AddScoped<IWaitingListRepository, WaitingListRepository>();
 builder.Services.AddScoped<IPartyRepository, PartyRepository>();
+builder.Services.AddScoped<IPartyService, PartyService>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromDays(1);
+    options.Cookie.Name = Constants.WaitingListSessionKey;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Lax; // ✅ Important for Chrome
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Or Always for HTTPS
+});
 
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithExposedHeaders("X-Session-Status", "X-Custom-Header") // Allow headers to be read
+        policy => 
+            policy.WithOrigins(
+                    "http://localhost:3000",  // React
+                    "http://localhost:4200",  // Angular
+                    "http://localhost:5173",  // Vite default
+                    "http://localhost:5174"   // Vite now
+                )
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
         );
 });
 var configuration = builder.Configuration;
@@ -126,8 +144,11 @@ if (app.Environment.IsDevelopment())
    app.Services.GenerateSwaggerApiJson();
 }
 app.UseHttpsRedirection();
-app.MapControllers();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.UseRouting();
+app.UseAuthorization();
+app.UseSession();
+app.UseSessionValidation();
+app.MapControllers();
 app.Run();
