@@ -42,7 +42,15 @@ public class PartyController : ControllerBase
             return BadRequest("No session found, please fill in your name on the waiting list first");
         }
 
-        return Ok(_partyService.CheckIn(sessionId));
+        var result = _partyService.CheckIn(sessionId);
+        var response = new CheckInResponse();
+        response.Messages = result.Messages;
+        if (result.Records.Count == 1)
+        {
+            response.Party = result.Records.First();
+        }
+
+        return Ok(response);
     }
 
     /// <summary>

@@ -14,22 +14,18 @@ public class ConcludeServiceBackgroundService(
 {
 
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var backgroundServiceName = nameof(ConcludeServiceBackgroundService);
         logger.LogInformation($"{backgroundServiceName} running.");
 
-        if (!stoppingToken.IsCancellationRequested)
+        while (!stoppingToken.IsCancellationRequested)
         {
             using var scope = scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             logger.LogInformation($"Doing background work...");
             var result =
                 dbContext.WaitingLists.Select((x) => x);
-            if (!result.Any())
-            {
-                return Task.CompletedTask;
-            }
 
             foreach (var waitingList in result.Include(waitingListEntity => waitingListEntity.Parties))
             {
@@ -38,7 +34,7 @@ public class ConcludeServiceBackgroundService(
                 {
                     logger.LogInformation($"Checking if service has been concluded for party {party.Name} on waiting list {waitingList.Name}");
                     var timeOfService = party.Size * Constants.TimeForServicePerPerson;
-                    if (timeOfService > Constants.TotalSeatsPerWaitingList)
+                    if (party.ServiceStartedAt?.AddSeconds(timeOfService) < DateTime.Now)
                     {
                         party.ServiceEndedAt = DateTime.Now;
                     }
@@ -48,7 +44,7 @@ public class ConcludeServiceBackgroundService(
             
             dbContext.SaveChanges();
             logger.LogInformation($"{backgroundServiceName} stopping.");
+            await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
         }
-        return Task.CompletedTask;
     }
 }

@@ -1,9 +1,9 @@
 
+using WaitingList.Contracts.DTOs;
+
 namespace WaitingList.Responses;
 
 public class CheckInResponse : BaseResponse
 {
-    public bool Success { get; set; }
-    
-    public string Name { get; set; }
+    public PartyDto Party { get; set; }
 }

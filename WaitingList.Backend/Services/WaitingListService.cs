@@ -1,4 +1,5 @@
 using WaitingList.Contracts.DTOs;
+using WaitingList.Extensions;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Extensions;
 using WaitingListBackend.Interfaces;
@@ -44,7 +45,14 @@ public class WaitingListService : IWaitingListService
             }
 
             var waitingList = waitingListResult.Records.First();
-               
+            
+            var existingParty = waitingList.Parties.FirstOrDefault((p) => p.SessionId == partyDto.SessionId && p.ServiceStartedAt == null);;
+            if (existingParty != null)
+            {
+                response.Records.Add(waitingList.ToDto());
+                return response;  
+            }
+
             var hasSeatCapacity = WaitingListHasSeatCapacity(waitingList, partyDto.Size);
             if (!hasSeatCapacity)
             {
@@ -99,14 +107,14 @@ public class WaitingListService : IWaitingListService
 
     private bool WaitingListHasSeatCapacity(WaitingListEntity waitingList, int amountOfSeatsNeeded)
     {
-        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null);
+        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null && !p.CheckedIn);
         var amountOfSeatsTaken = parties.Sum((p) => p.Size);  
         return amountOfSeatsTaken + amountOfSeatsNeeded <= waitingList.TotalSeats;;
     }
 
     private int CalculateSeatsAvailable(WaitingListEntity waitingList)
     {
-        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null);
+        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null && !p.CheckedIn);
         var currentlySeatedAmount =  parties.Sum((p) => p.Size);  
         return waitingList.TotalSeats - currentlySeatedAmount;   
     }

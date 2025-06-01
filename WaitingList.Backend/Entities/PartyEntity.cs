@@ -18,6 +18,8 @@ public class PartyEntity
     
     public DateTime CreatedOn { get; set; }
     
+    public bool CheckedIn { get; set; }
+    
     [Required]
     public string SessionId { get; set; } 
     

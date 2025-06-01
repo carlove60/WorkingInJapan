@@ -39,6 +39,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     private static void SetDefaults(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PartyEntity>().Property((u) => u.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<PartyEntity>().Property((u) => u.CheckedIn).HasDefaultValue("false");
         modelBuilder.Entity<PartyEntity>().Property((u) => u.CreatedOn).HasColumnType("timestamp")
             .HasDefaultValueSql("CURRENT_TIMESTAMP");
         modelBuilder.Entity<WaitingListEntity>().Property((u) => u.Id).ValueGeneratedOnAdd();

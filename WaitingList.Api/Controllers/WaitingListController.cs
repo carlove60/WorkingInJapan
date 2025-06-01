@@ -74,6 +74,14 @@ public class WaitingListController : ControllerBase
             return Ok(party);
         }
 
+        var result = new AddToWaitingListResponse();
+        var addResult = _waitingListService.AddPartyToWaitingList(request.Party);
+        result.Messages = addResult.Messages;
+        if (addResult.Messages.Count == 0)
+        {
+            result.Party = _partyService.GetParty(request.Party.SessionId).Records.First();;
+        }
+
         return Ok(_waitingListService.AddPartyToWaitingList(request.Party));
     }
 }

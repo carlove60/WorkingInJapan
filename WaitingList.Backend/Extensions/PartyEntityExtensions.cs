@@ -12,6 +12,6 @@ public static class PartyEntityExtensions
     
     public static PartyDto ToDto(this PartyEntity partyEntity)
     {
-        return new PartyDto { Name = partyEntity.Name, Size = partyEntity.Size, WaitingListName = partyEntity.WaitingListEntity?.Name, SessionId = partyEntity.SessionId};
+        return new PartyDto { CheckedIn = partyEntity.CheckedIn, Name = partyEntity.Name, Size = partyEntity.Size, WaitingListName = partyEntity.WaitingListEntity?.Name, SessionId = partyEntity.SessionId};
     }
 }

@@ -35,7 +35,8 @@ public class PartyService : IPartyService
             return result;
         }
 
-        party.ServiceStartedAt = DateTime.Now; 
+        party.ServiceStartedAt = DateTime.Now;
+        party.CheckedIn = true;
         _partyRepository.SaveParty(party); 
         result.Records.Add(party.ToDto()); 
         result.Messages.AddSuccess("Party checked in successfully."); 
@@ -44,37 +45,35 @@ public class PartyService : IPartyService
     }
 
     
-    private ResultObject<PartyDto> CanCheckIn(PartyEntity partyEntity)
+    private ResultObject<bool> CanCheckIn(PartyEntity partyEntity)
     {
-        var result = new ResultObject<PartyDto>();
+        var result = new ResultObject<bool>();
         var waitingListResult = _waitingListRepository.GetWaitingList(partyEntity.WaitingListId);
         result.Messages.AddRange(waitingListResult.Messages);
         if (!waitingListResult.Records.Any())
         {
-            return result;
+            result.Records.Add(false);
+            return result;       
         }
         
         var waitingList = waitingListResult.Records.Single();
-        var nextPartyToCheckIn = waitingList.Parties.Where((p) => p.ServiceStartedAt == null && p.ServiceEndedAt == null)
+        var nextPartyToCheckIn = waitingList.Parties.Where((p) => !p.CheckedIn)
             .OrderBy((p) => p.CreatedOn)
-            .First();
+            .FirstOrDefault();
 
         var party = partyEntity.ToDto();
         var partiesInService = waitingList.Parties
             .Where((p) => p.ServiceStartedAt != null && p.ServiceEndedAt == null);
 
         var timeStillInService = CalculateRemainingServiceTime(partiesInService, waitingList.TimeForService);
-        if (timeStillInService == 0 && nextPartyToCheckIn.SessionId == party.SessionId && PartySizeFits(waitingList, nextPartyToCheckIn.Size))
+        if (timeStillInService == 0 && nextPartyToCheckIn != null && nextPartyToCheckIn.SessionId == party.SessionId && PartySizeFits(waitingList, nextPartyToCheckIn.Size))
         {
-            party.CanCheckIn = true;
+            result.Records.Add(true);
         } 
         else
         {
-            party.CanCheckIn = false;
+            result.Records.Add(false);
         }
-        
-        result.Records.Add(party);
-        
         
         return result;
     }
@@ -90,13 +89,25 @@ public class PartyService : IPartyService
         }
         
         var partyEntity = party.Records.First();
+        if (partyEntity.ServiceEndedAt != null && partyEntity.CheckedIn)
+        {
+            ResetParty(partyEntity);
+        }
+
         var checkedInParty = CanCheckIn(partyEntity);
         result.Messages.AddRange(checkedInParty.Messages);
+        var partyDto = partyEntity.ToDto();
         if (checkedInParty.Records.Count == 1)
         {
-            result.Records.Add(checkedInParty.Records.First());
+            partyDto.CanCheckIn = checkedInParty.Records.First();
         }
+        result.Records.Add(partyDto);
         return result;
+    }
+    
+    private void ResetParty(PartyEntity partyEntity)
+    {
+        _partyRepository.RemoveParty(partyEntity);
     }
     
     private int CalculateRemainingServiceTime(IEnumerable<PartyEntity> partiesInService, int timeForService)

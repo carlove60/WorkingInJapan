@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,27 +17,33 @@ public class EnsureBackgroundExistsBackgroundService(
         var backgroundServiceName = nameof(EnsureBackgroundExistsBackgroundService);
         logger.LogInformation($"{backgroundServiceName} started.");
 
-        while (!stoppingToken.IsCancellationRequested)
+        if (!stoppingToken.IsCancellationRequested)
         {
             using var scope = scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             logger.LogInformation("Checking for default waiting list...");
-            var result = dbContext.WaitingLists.FirstOrDefault(wl => wl.Name == Constants.DefaultWaitingListName);
+            var waitingListEntity = dbContext.WaitingLists.Include((wL) => wL.Parties).FirstOrDefault(wl => wl.Name == Constants.DefaultWaitingListName);
 
-            if (result == null)
+            if (waitingListEntity == null)
             {
                 logger.LogInformation($"Creating WaitingList: {Constants.DefaultWaitingListName}");
-                var waitingList = new WaitingListEntity
+                waitingListEntity = new WaitingListEntity
                 {
                     Name = Constants.DefaultWaitingListName,
                     TimeForService = Constants.TimeForServicePerPerson,
                     TotalSeats = Constants.TotalSeatsPerWaitingList
                 };
 
-                dbContext.Add(waitingList);
-                dbContext.SaveChanges();
+                dbContext.Add(waitingListEntity);
             }
+            else
+            {
+                dbContext.RemoveRange(waitingListEntity.Parties);
+            }
+            
+            dbContext.SaveChanges();
+
 
             // Run every 3 seconds
             await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
