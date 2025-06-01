@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WaitingList.Api</name>
+    </assembly>
+    <members>
+        <member name="T:WaitingList.Controllers.PartyController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WaitingList.Controllers.PartyController.#ctor(WaitingListBackend.Interfaces.IPartyService)">
+            <summary>
+            Controller responsible for handling operations on a waiting list.
+            Provides endpoints for retrieving the current waiting list, managing metadata,
+            and adding parties to the waiting list.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Controllers.PartyController.CheckIn">
+            <summary>
+            Checks in a party to the waiting list based on the request provided.
+            This action validates the input request and processes the check-in
+            operation through the waiting list service.
+            </summary>
+            <param name="request">The request object containing the details required for checking in a party.</param>
+            <returns>An action result containing a response object with the details of the checked-in party.</returns>
+        </member>
+        <member name="M:WaitingList.Controllers.PartyController.GetParty">
+            <summary>
+            Retrieves information about the party associated with the current session.
+            If no session is found, returns a bad request response with an appropriate error message.
+            </summary>
+            <returns>A response containing the party details and any related messages.</returns>
+        </member>
+        <member name="T:WaitingList.Controllers.WaitingListController">
+            <summary>
+            Controller responsible for managing operations related to the waiting list.
+            Provides endpoints for retrieving and managing waiting list data.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.#ctor(WaitingListBackend.Interfaces.IWaitingListService,WaitingListBackend.Interfaces.IPartyService)">
+            <summary>
+            Controller responsible for handling operations on a waiting list.
+            Provides endpoints for retrieving the current waiting list, managing metadata,
+            and adding parties to the waiting list.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.GetWaitingList">
+             <summary>
+             Retrieves the metadata associated with the waiting list.
+            
+             This method interacts with the service layer to obtain and return metadata
+             </summary>
+             <returns>An action result containing a response object with the metadata of the waiting list.</returns>
+        </member>
+        <member name="M:WaitingList.Controllers.WaitingListController.AddPartyToWaitingList(WaitingList.Requests.AddToWaitingListRequest)">
+            <summary>
+            Adds a party to the waiting list based on the provided request.
+            </summary>
+            <param name="request">An object containing details about the party to be added to the waiting list.</param>
+            <returns>A response indicating the result of adding the party to the waiting list.</returns>
+        </member>
+        <member name="T:WaitingList.Extensions.ServiceCollectionExtensions">
+            <summary>
+            Provides extension methods for configuring services in the Dependency Injection (DI) container.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Extensions.ServiceCollectionExtensions.AddUserSession(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures user session settings, including idle timeout, cookie options,
+            and distributed memory cache for session state management within the application.
+            </summary>
+            <param name="services">The service collection to which the session configuration will be added.</param>
+            <returns>The service collection with session configuration applied.</returns>
+        </member>
+        <member name="M:WaitingList.Extensions.ServiceCollectionExtensions.AddServicesAndRepositories(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds required services and repositories to the service collection,
+            including hosted services, API explorers,
+            scoped services, and repository implementations for DI.
+            </summary>
+            <param name="services">The service collection to which the services and repositories will be added.</param>
+            <returns>The service collection with the required services and repositories configured.</returns>
+        </member>
+        <member name="M:WaitingList.Extensions.ServiceCollectionExtensions.AddDatabaseConnection(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.String)">
+            <summary>
+            Configures the database connection for the application using the provided connection string.
+            </summary>
+            <param name="services">The service collection to which the database connection will be added.</param>
+            <param name="connectionString">The connection string for the database.</param>
+            <returns>The service collection with the database connection configuration added.</returns>
+        </member>
+        <member name="M:WaitingList.Extensions.ServiceCollectionExtensions.AddSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configures Swagger generation and adds related settings to the service collection.
+            </summary>
+            <param name="services">The service collection to which Swagger generation will be added.</param>
+            <returns>The service collection with the Swagger configuration added.</returns>
+        </member>
+        <member name="M:WaitingList.Extensions.ServiceCollectionExtensions.AddWebCors(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Adds CORS policy to the service collection.
+            </summary>
+            <param name="services">The service collection to which the CORS configuration will be added.</param>
+            <returns>The service collection with the CORS configuration added.</returns>
+        </member>
+        <member name="T:WaitingList.Extensions.ServiceProviderExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:WaitingList.Extensions.ServiceProviderExtensions.GenerateSwaggerApiJson(System.IServiceProvider)">
+            <summary>
+            Generates a JSON file with all API calls and necessary models
+            </summary>
+            <param name="provider"></param>
+        </member>
+        <member name="T:WaitingList.Extensions.SessionExtensions">
+            <summary>
+            Provides extension methods for working with the .Net Core useSession middleware
+            </summary>
+        </member>
+        <member name="M:WaitingList.Extensions.SessionExtensions.GetSessionId(Microsoft.AspNetCore.Http.ISession)">
+            <summary>
+            Retrieves the existing session ID from the session, or generates a new one if no session ID exists.
+            </summary>
+            <param name="session">The session where the session ID is stored or created.</param>
+            <returns>The session ID as a string. If no session ID exists, a new one is created, stored, and returned.</returns>
+        </member>
+        <member name="M:WaitingList.Extensions.SessionExtensions.CreateSessionId(Microsoft.AspNetCore.Http.ISession)">
+            <summary>
+            Creates a new session ID, stores it in the provided session, and returns it.
+            </summary>
+            <param name="session">The session where the new session ID is stored.</param>
+            <returns>The newly created session ID as a string.</returns>
+        </member>
+        <member name="T:WaitingList.Middleware.SessionMiddleware">
+            <summary>
+            Middleware that processes HTTP requests and responses to ensure a session ID is associated with the current session
+            and included in the response headers.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Middleware.SessionMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:WaitingList.Middleware.SessionMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Invokes the middleware to process HTTP requests and responses,
+            ensuring that a session ID is associated with the current session and added to the response headers.
+            </summary>
+            <param name="context">The <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/> representing the current HTTP request and response.</param>
+            <returns>
+            A <see cref="T:System.Threading.Tasks.Task"/> that represents the execution of the middleware.
+            </returns>
+        </member>
+        <member name="T:WaitingList.Middleware.SessionValidationMiddlewareExtensions">
+            <summary>
+            Provides extension methods for SessionValidationMiddleware to simplify its integration into an application's request pipeline.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Middleware.SessionValidationMiddlewareExtensions.UseSessionMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Adds the <see cref="T:WaitingList.Middleware.SessionMiddleware"/> to the application's request pipeline.
+            This middleware is responsible for validating session-related data in incoming HTTP requests.
+            </summary>
+            <param name="builder">The application builder used to configure the middleware pipeline.</param>
+            <returns>
+            The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> instance with the <see cref="T:WaitingList.Middleware.SessionMiddleware"/> added.
+            </returns>
+        </member>
+        <member name="T:WaitingList.Middleware.SessionTrackingMiddlewareExtensions">
+            <summary>
+            Provides extension methods for SessionValidationMiddleware to simplify its integration into an application's request pipeline.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Middleware.SessionTrackingMiddlewareExtensions.useSessionTrackingMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Adds the <see cref="T:WaitingList.Middleware.SessionMiddleware"/> to the application's request pipeline.
+            This middleware is responsible for validating session-related data in incoming HTTP requests.
+            </summary>
+            <param name="builder">The application builder used to configure the middleware pipeline.</param>
+            <returns>
+            The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> instance with the <see cref="T:WaitingList.Middleware.SessionMiddleware"/> added.
+            </returns>
+        </member>
+        <member name="T:WaitingList.Swagger.EnumSchemaFilter">
+            <summary>
+            A schema filter that modifies the OpenAPI schema for enumeration
+            Allowing for strings to be set
+            </summary>
+            <remarks>
+            The <c>EnumSchemaFilter</c> class implements the <c>ISchemaFilter</c> interface to
+            customize the OpenAPI schema generation for enumeration types. This filter ensures
+            that enumerations are presented as string values in the OpenAPI documentation.
+            </remarks>
+        </member>
+    </members>
+</doc>

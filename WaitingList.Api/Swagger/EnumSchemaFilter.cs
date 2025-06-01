@@ -25,7 +25,7 @@ public class EnumSchemaFilter : ISchemaFilter
             schema.Enum.Clear();
             foreach (var name in Enum.GetNames(context.Type))
             {
-                schema.Enum.Add(new OpenApiString(name));
+                schema.Enum.Add(new OpenApiString(name.ToLower()));
             }
         }
     }

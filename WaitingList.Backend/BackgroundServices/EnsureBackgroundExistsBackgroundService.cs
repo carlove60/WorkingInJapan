@@ -7,42 +7,41 @@ using WaitingListBackend.Entities;
 namespace WaitingListBackend.BackgroundServices;
 
 public class EnsureBackgroundExistsBackgroundService(
-    
     ILogger<EnsureBackgroundExistsBackgroundService> logger,
     IServiceScopeFactory scopeFactory)
     : BackgroundService
 {
-    private readonly int _timeForService = 3;
-    private readonly int _totalSeatsAvailable = 10;
-
-
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var backgroundServiceName = nameof(EnsureBackgroundExistsBackgroundService);
-        logger.LogInformation($"{backgroundServiceName} running.");
+        logger.LogInformation($"{backgroundServiceName} started.");
 
-        if (!stoppingToken.IsCancellationRequested)
+        while (!stoppingToken.IsCancellationRequested)
         {
             using var scope = scopeFactory.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            logger.LogInformation($"Doing background work...");
-            var result =
-                dbContext.WaitingLists.FirstOrDefault((wl) => wl.Name == Constants.DefaultWaitingListName);
-            if (result != null)
+
+            logger.LogInformation("Checking for default waiting list...");
+            var result = dbContext.WaitingLists.FirstOrDefault(wl => wl.Name == Constants.DefaultWaitingListName);
+
+            if (result == null)
             {
-                return Task.CompletedTask;
+                logger.LogInformation($"Creating WaitingList: {Constants.DefaultWaitingListName}");
+                var waitingList = new WaitingListEntity
+                {
+                    Name = Constants.DefaultWaitingListName,
+                    TimeForService = Constants.TimeForServicePerPerson,
+                    TotalSeats = Constants.TotalSeatsPerWaitingList
+                };
+
+                dbContext.Add(waitingList);
+                dbContext.SaveChanges();
             }
 
-            logger.LogInformation($"Creating WaitingList.Api: {Constants.DefaultWaitingListName}");
-            var waitingList = new WaitingListEntity
-            {
-                Name = Constants.DefaultWaitingListName, TimeForService = _timeForService,
-                TotalSeats = _totalSeatsAvailable
-            };
-            dbContext.Add(waitingList);
-            dbContext.SaveChanges();
-            logger.LogInformation($"{backgroundServiceName} stopping.");
+            // Run every 3 seconds
+            await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
         }
-        return Task.CompletedTask;
+
+        logger.LogInformation($"{backgroundServiceName} stopping.");
     }
 }

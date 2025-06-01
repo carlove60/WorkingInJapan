@@ -1,9 +1,7 @@
-using WaitingList.DTO;
-using WaitingList.Extensions;
+using WaitingList.Contracts.DTOs;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Extensions;
 using WaitingListBackend.Interfaces;
-using WaitingListBackend.Models;
 
 namespace WaitingListBackend.Services;
 
@@ -27,61 +25,52 @@ public class WaitingListService : IWaitingListService
     }
 
     /// <summary>
-    /// 
+    /// Adds a party to the waiting list if there is sufficient capacity.
     /// </summary>
-    /// <param name="partyEntity"></param>
-    /// <param name="waitingListId"></param>
-    /// <returns></returns>
+    /// <param name="partyDto">The data transfer object representing the party to be added to the waiting list.</param>
+    /// <returns>A result object containing a WaitingListDto and any messages, such as errors or status updates, resulting from the operation.</returns>
     public ResultObject<WaitingListDto> AddPartyToWaitingList(PartyDto partyDto)
     {
         var response = new ResultObject<WaitingListDto>();
-
-        var partyEntity = partyDto.ToEntity();
         
-        var party = _partyRepository.AddParty(partyEntity);
-        if (party.IsError)
-        {
-            response.Messages.AddRange(party.Messages);
-            return response;       
-        }
-
         // Ensure that multiple parties don't try to make a request at the same time and both reserve (a) seat(s)
         lock (this._waitingListRepository)
         {
-           var waitingListResult =  _waitingListRepository.GetWaitingList(partyEntity.WaitingListId);
-           if (waitingListResult.Messages.Count == 0 && waitingListResult.Records.Count > 0)
-           {
-               var waitingList = waitingListResult.Records.First();
+            var waitingListResult =  _waitingListRepository.GetWaitingList(partyDto.WaitingListName);
+            response.Messages.AddRange(waitingListResult.Messages);
+            if (waitingListResult.Records.Count == 0)
+            {
+                return response;
+            }
+
+            var waitingList = waitingListResult.Records.First();
                
-               var hasSeatCapacity = WaitingListHasSeatCapacity(waitingList, partyEntity.Size);
-               if (hasSeatCapacity)
-               {
-                   waitingList.Parties.Add(party.Records.First());
-               }
-               else
-               {
-                   response.Messages.AddError($"There are only {WaitinglistCapacityLeft(waitingList)} seats left in the waiting list. Please try again later.");
-               }
-           }
+            var hasSeatCapacity = WaitingListHasSeatCapacity(waitingList, partyDto.Size);
+            if (!hasSeatCapacity)
+            {
+                response.Messages.AddError(
+                    $"There are only {CalculateSeatsAvailable(waitingList)} seat(s) left on the waiting list. Please try again later.");
+                return response;
+            }
+
+            var partyEntity = partyDto.ToEntity();
+            partyEntity.WaitingListId = waitingList.Id;
+        
+            var party = _partyRepository.SaveParty(partyEntity);
+            if (party.IsError)
+            {
+                response.Messages.AddRange(party.Messages);
+                return response;       
+            }
         }
         
         return response;
     }
-
-    public ResultObject<WaitingListDto> CheckIn(PartyDto partyEntity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public ResultObject<WaitingListDto> GetWaitingList(Guid id)
-    {
-        throw new NotImplementedException();
-    }
     
-    public ResultObject<WaitingListDto> GetWaitingList(string name = Constants.DefaultWaitingListName)
+    public ResultObject<WaitingListDto> GetWaitingList(string name)
     {
         var result = new ResultObject<WaitingListDto>();
-        var waitingList = _waitingListRepository.GetWaitingList();
+        var waitingList = _waitingListRepository.GetWaitingList(name);
         result.Messages = waitingList.Messages;
         var waitingListDto = GetDto(waitingList.Records.FirstOrDefault());
         if (waitingListDto != null)
@@ -103,21 +92,21 @@ public class WaitingListService : IWaitingListService
         waitingListDto.TotalSeats = waitingList.TotalSeats;
         waitingListDto.Parties = waitingList.Parties.ToDto();
         waitingListDto.Id = waitingList.Id;
-        waitingListDto.TotalSeatsAvailable = WaitinglistCapacityLeft(waitingList);
+        waitingListDto.SeatsAvailable = CalculateSeatsAvailable(waitingList);
         return waitingListDto;   
     }
 
 
     private bool WaitingListHasSeatCapacity(WaitingListEntity waitingList, int amountOfSeatsNeeded)
     {
-        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt != null);
+        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null);
         var amountOfSeatsTaken = parties.Sum((p) => p.Size);  
         return amountOfSeatsTaken + amountOfSeatsNeeded <= waitingList.TotalSeats;;
     }
 
-    private int WaitinglistCapacityLeft(WaitingListEntity waitingList)
+    private int CalculateSeatsAvailable(WaitingListEntity waitingList)
     {
-        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt != null);
+        var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null);
         var currentlySeatedAmount =  parties.Sum((p) => p.Size);  
         return waitingList.TotalSeats - currentlySeatedAmount;   
     }

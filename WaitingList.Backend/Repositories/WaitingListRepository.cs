@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using WaitingListBackend.Database;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Interfaces;
@@ -6,10 +7,10 @@ namespace WaitingListBackend.Repositories;
 
 public class WaitingListRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IWaitingListRepository
 {
-    public ResultObject<WaitingListEntity> GetWaitingList(string name = Constants.DefaultWaitingListName)
+    public ResultObject<WaitingListEntity> GetWaitingList(string name)
     {
         var result = new ResultObject<WaitingListEntity>();
-        var waitingList = _applicationDbContext.WaitingLists.SingleOrDefault((x) => x.Name == name);
+        var waitingList = _applicationDbContext.WaitingLists.Include((x) => x.Parties).SingleOrDefault((x) => x.Name == name);
         if (waitingList == null)
         {
             result.Messages.AddError($"{name} not found");
@@ -25,16 +26,15 @@ public class WaitingListRepository(ApplicationDbContext applicationDbContext) : 
     public ResultObject<WaitingListEntity> GetWaitingList(Guid id)
     {
         var result = new ResultObject<WaitingListEntity>();
-        var waitingList = _applicationDbContext.WaitingLists.SingleOrDefault((x) => x.Id == id);
+        var waitingList = _applicationDbContext.WaitingLists.Include((x) => x.Parties).SingleOrDefault((x) => x.Id == id);
         if (waitingList == null)
         {
-            result.Messages.AddError($"WaitingList.Api not found");
+            result.Messages.AddError($"Waiting list with id {id} not found");
         }
         else
         {
             result.Records.Add(waitingList);
         }
 
-        return result;
-    }
+        return result;    }
 }

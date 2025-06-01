@@ -4,7 +4,7 @@ namespace WaitingListBackend.Interfaces;
 
 public interface IPartyRepository
 {
-    ResultObject<PartyEntity> AddParty(PartyEntity request);
+    ResultObject<PartyEntity> SaveParty(PartyEntity party);
     
-    ResultObject<PartyEntity> GetParty(Guid sessionId);
+    ResultObject<PartyEntity> GetParty(string sessionId);
 }

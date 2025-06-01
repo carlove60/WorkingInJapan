@@ -1,4 +1,3 @@
-using WaitingListBackend.Entities;
 using WaitingListBackend.Enums;
 using WaitingListBackend.Models;
 
@@ -16,7 +15,7 @@ public class MessageList : List<ValidationMessage>
     /// <param name="message">The error message to be added to the message list.</param>
     public void AddError(string message)
     {
-        Add(new ValidationMessage { Type = MessageType.error, Message = message});
+        Add(new ValidationMessage { Type = MessageType.Error, Message = message});
     }
 
     /// <summary>
@@ -25,7 +24,12 @@ public class MessageList : List<ValidationMessage>
     /// <param name="message">The warning message to be added to the message list.</param>
     public void AddWarning(string message)
     {
-        Add(new ValidationMessage { Type = MessageType.warning, Message = message});
+        Add(new ValidationMessage { Type = MessageType.Warning, Message = message});
+    }
+
+    public void AddSuccess(string message)
+    {
+        Add(new ValidationMessage { Type = MessageType.Success, Message = message});   
     }
 
     /// <summary>
@@ -34,6 +38,6 @@ public class MessageList : List<ValidationMessage>
     /// <param name="message">The informational message to be added to the message list.</param>
     public void AddInfo(string message)
     {
-        Add(new ValidationMessage { Type = MessageType.info, Message = message});
+        Add(new ValidationMessage { Type = MessageType.Info, Message = message});
     }
 }

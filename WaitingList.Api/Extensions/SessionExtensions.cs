@@ -12,16 +12,20 @@ public static class SessionExtensions
     /// </summary>
     /// <param name="session">The session where the session ID is stored or created.</param>
     /// <returns>The session ID as a string. If no session ID exists, a new one is created, stored, and returned.</returns>
-    public static string GetOrCreateSessionId(this ISession session)
+    public static string? GetSessionId(this ISession session)
     {
-        var sessionId = session.GetString(Constants.WaitingListSessionKey);
-        if (!string.IsNullOrEmpty(sessionId))
-        {
-            return sessionId;
-        }
-        
-        sessionId = Guid.NewGuid().ToString();
-        session.SetString(Constants.WaitingListSessionKey, sessionId);
+        return session.GetString(WaitingListBackend.Constants.WaitingListSessionKey);
+    }
+
+    /// <summary>
+    /// Creates a new session ID, stores it in the provided session, and returns it.
+    /// </summary>
+    /// <param name="session">The session where the new session ID is stored.</param>
+    /// <returns>The newly created session ID as a string.</returns>
+    public static string CreateSessionId(this ISession session)
+    {
+        var sessionId = Guid.NewGuid().ToString();
+        session.SetString(WaitingListBackend.Constants.WaitingListSessionKey, sessionId);
         return sessionId;
     }
 }

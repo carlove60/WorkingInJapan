@@ -23,5 +23,5 @@ public class ValidationMessage
     /// - warning
     /// - error
     /// </remarks>
-    public required MessageType Type { get; set; } = MessageType.info;
+    public required MessageType Type { get; set; } = MessageType.Info;
 }

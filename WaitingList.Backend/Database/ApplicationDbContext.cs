@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using WaitingListBackend.Entities;
 
 namespace WaitingListBackend.Database;
@@ -21,6 +22,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     private static void CreateTables(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PartyEntity>().ToTable("Parties");
+        modelBuilder.Entity<WaitingListEntity>().ToTable("WaitingLists");
     }
 
     private static void SetLimits(ModelBuilder modelBuilder)
@@ -37,6 +39,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     private static void SetDefaults(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PartyEntity>().Property((u) => u.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<PartyEntity>().Property((u) => u.CreatedOn).HasColumnType("timestamp")
+            .HasDefaultValueSql("CURRENT_TIMESTAMP");
         modelBuilder.Entity<WaitingListEntity>().Property((u) => u.Id).ValueGeneratedOnAdd();
     }
 

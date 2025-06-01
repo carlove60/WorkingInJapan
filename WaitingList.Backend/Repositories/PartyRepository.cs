@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WaitingListBackend.Database;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Interfaces;
@@ -6,34 +8,37 @@ namespace WaitingListBackend.Repositories;
 
 public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IPartyRepository
 {
-    public ResultObject<PartyEntity> AddParty(PartyEntity request)
+    public ResultObject<PartyEntity> SaveParty(PartyEntity party)
     {
-        var result = new ResultObject<PartyEntity>();
+        var resultObject = new ResultObject<PartyEntity>();
         try
         {
-            var newParty = new PartyEntity
+            EntityEntry<PartyEntity> partyEntry;
+            if (party.Id  == Guid.Empty)
             {
-                Name = request.Name,
-                Size = request.Size
-            };
+                partyEntry = _applicationDbContext.Parties.Add(party);
+            }
+            else
+            {
+                partyEntry = _applicationDbContext.Parties.Update(party);
+            }
 
-            var saveResult = _applicationDbContext.Parties.Add(newParty);
             _applicationDbContext.SaveChanges();
             
-            result.Records.Add(saveResult.Entity);
+            resultObject.Records.Add(partyEntry.Entity);
         }
         catch (Exception exception)
         {
-            result.Messages.AddError(exception.Message);       
+            resultObject.Messages.AddError(exception.Message);       
         }
 
-        return result;
+        return resultObject;
     }
 
-    public ResultObject<PartyEntity> GetParty(Guid id)
+    public ResultObject<PartyEntity> GetParty(string sessionId)
     {
        var result = new ResultObject<PartyEntity>();
-       var party = _applicationDbContext.Parties.SingleOrDefault((x) => x.Id == id);
+       var party = _applicationDbContext.Parties.Include((x) => x.WaitingListEntity).SingleOrDefault((x) => x.SessionId == sessionId);
        if (party == null)
        {
            result.Messages.AddError($"Party not found");

@@ -1,6 +1,4 @@
-using WaitingList.DTO;
-using WaitingListBackend.Entities;
-using WaitingListBackend.Models;
+using WaitingList.Contracts.DTOs;
 
 namespace WaitingListBackend.Interfaces;
 
@@ -8,7 +6,5 @@ public interface IWaitingListService
 {
     public ResultObject<WaitingListDto> AddPartyToWaitingList(PartyDto partyEntity);
     
-    public ResultObject<WaitingListDto> CheckIn(PartyDto partyEntity);
-    
-    public ResultObject<WaitingListDto> GetWaitingList(string name = Constants.DefaultWaitingListName);
+    public ResultObject<WaitingListDto> GetWaitingList(string name);
 }

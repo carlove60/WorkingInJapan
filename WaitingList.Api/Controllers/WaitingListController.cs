@@ -11,35 +11,23 @@ namespace WaitingList.Controllers;
 /// Provides endpoints for retrieving and managing waiting list data.
 /// </summary>
 [ApiController]
-[Route("api/waitinglist")]
+[Route("api/waiting-list")]
 public class WaitingListController : ControllerBase
 {
     private readonly IWaitingListService _waitingListService;
+    private readonly IPartyService _partyService;
 
     /// <summary>
     /// Controller responsible for handling operations on a waiting list.
     /// Provides endpoints for retrieving the current waiting list, managing metadata,
     /// and adding parties to the waiting list.
     /// </summary>
-    public WaitingListController(IWaitingListService waitingListService)
+    public WaitingListController(IWaitingListService waitingListService, IPartyService partyService)
     {
         this._waitingListService = waitingListService;
+        this._partyService = partyService;   
     }
-
-    [HttpGet]
-    [Route("/waiting-list")]
-    public ActionResult<WaitingListMetaDataResponse> GetWaitingList()
-    {
-        var result = new WaitingListMetaDataResponse();
-        var response = _waitingListService.GetWaitingList();
-        result.Messages = response.Messages;
-        if (response.Records.Count == 1)
-        {
-            result.WaitingList = response.Records.First();
-        }
-        return Ok(result);   
-    }
-
+    
     /// <summary>
     /// Retrieves the metadata associated with the waiting list.
     ///
@@ -47,37 +35,17 @@ public class WaitingListController : ControllerBase
     /// </summary>
     /// <returns>An action result containing a response object with the metadata of the waiting list.</returns>
     [HttpGet]
-    [Route("default-waiting-list")]
-    public ActionResult<WaitingListMetaDataResponse> GetDefaultWaitingList()
+    [Route("waiting-list")]
+    public ActionResult<WaitingListResponse> GetWaitingList()
     {
-        var result = new WaitingListMetaDataResponse();
-        var response = _waitingListService.GetWaitingList();
+        var result = new WaitingListResponse();
+        var response = _waitingListService.GetWaitingList(WaitingListBackend.Constants.DefaultWaitingListName);
         result.Messages = response.Messages;
         if (response.Records.Count == 1)
         {
             result.WaitingList = response.Records.First();
         }
         return Ok(result);
-    }
-
-
-    /// <summary>
-    /// Checks in a party to the waiting list based on the request provided.
-    /// This action validates the input request and processes the check-in
-    /// operation through the waiting list service.
-    /// </summary>
-    /// <param name="request">The request object containing the details required for checking in a party.</param>
-    /// <returns>An action result containing a response object with the details of the checked-in party.</returns>
-    [Route("check-in")]
-    [HttpPost]
-    public ActionResult<CheckInResponse> CheckIn(CheckInRequest? request)
-    {
-        if (request == null)
-        {   
-            return BadRequest("No request provided");  
-        }
-        
-        return Ok(_waitingListService.CheckIn(request.Party));
     }
 
     /// <summary>
@@ -97,6 +65,13 @@ public class WaitingListController : ControllerBase
         if (request.Party == null)
         {   
             return BadRequest("No party provided"); 
+        }
+
+        request.Party.SessionId = HttpContext.Session.GetSessionId();
+        var party = _partyService.GetParty(request.Party.SessionId);
+        if (party.Records.Count > 0)
+        {
+            return Ok(party);
         }
 
         return Ok(_waitingListService.AddPartyToWaitingList(request.Party));

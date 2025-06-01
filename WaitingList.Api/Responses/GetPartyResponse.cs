@@ -1,4 +1,4 @@
-using WaitingList.DTO;
+using WaitingList.Contracts.DTOs;
 
 namespace WaitingList.Responses;
 

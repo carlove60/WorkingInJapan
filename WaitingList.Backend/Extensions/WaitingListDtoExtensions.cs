@@ -1,5 +1,6 @@
-using WaitingList.DTO;
+using WaitingList.Contracts.DTOs;
 using WaitingListBackend.Entities;
+using WaitingListBackend.Extensions;
 
 namespace WaitingList.Extensions;
 
@@ -15,6 +16,6 @@ public static class WaitingListDtoExtensions
     /// <returns>A <see cref="WaitingListDto"/> object containing the converted data.</returns>
     public static WaitingListDto ToDto(this WaitingListEntity waitingList)
     {
-        return new WaitingListDto { Name = waitingList.Name, Id = waitingList.Id, Parties = waitingList.Parties.ToDto(), TotalSeatsAvailable = waitingList.TotalSeats };
+        return new WaitingListDto { Name = waitingList.Name, Id = waitingList.Id, Parties = waitingList.Parties.ToDto(), SeatsAvailable = waitingList.TotalSeats };
     }
 }

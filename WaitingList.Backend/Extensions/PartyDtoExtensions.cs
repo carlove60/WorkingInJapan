@@ -1,4 +1,4 @@
-using WaitingList.DTO;
+using WaitingList.Contracts.DTOs;
 using WaitingListBackend.Entities;
 
 namespace WaitingListBackend.Extensions;
@@ -7,6 +7,6 @@ public static class PartyDtoExtensions
 {
     public static PartyEntity ToEntity(this PartyDto dto)
     {
-        return new PartyEntity { Name = dto.Name, Size = dto.Size, SessionId = dto.SessionId };
+        return new PartyEntity { Name = dto.Name, Size = dto.Size, SessionId = dto.SessionId};
     }
 }

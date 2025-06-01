@@ -2,8 +2,8 @@ namespace WaitingListBackend.Enums;
 
 public enum MessageType
 {
-    success,
-    info,
-    warning,
-    error
+    Success,
+    Info,
+    Warning,
+    Error
 }
