@@ -37,7 +37,7 @@ public class WaitingListService : IWaitingListService
         // Ensure that multiple parties don't try to make a request at the same time and both reserve (a) seat(s)
         lock (this._waitingListRepository)
         {
-            var waitingListResult =  _waitingListRepository.GetWaitingList(partyDto.WaitingListName);
+            var waitingListResult =  _waitingListRepository.GetWaitingList(partyDto.WaitingListName, false);
             response.Messages.AddRange(waitingListResult.Messages);
             if (waitingListResult.Records.Count == 0)
             {
@@ -78,7 +78,7 @@ public class WaitingListService : IWaitingListService
     public ResultObject<WaitingListDto> GetWaitingList(string name)
     {
         var result = new ResultObject<WaitingListDto>();
-        var waitingList = _waitingListRepository.GetWaitingList(name);
+        var waitingList = _waitingListRepository.GetWaitingList(name, false);
         result.Messages = waitingList.Messages;
         var waitingListDto = GetDto(waitingList.Records.FirstOrDefault());
         if (waitingListDto != null)

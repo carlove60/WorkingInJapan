@@ -21,30 +21,42 @@ public class ConcludeServiceBackgroundService(
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            using var scope = scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            logger.LogInformation($"Doing background work...");
-            var result =
-                dbContext.WaitingLists.Select((x) => x);
-
-            foreach (var waitingList in result.Include(waitingListEntity => waitingListEntity.Parties))
+            try
             {
-                var parties = waitingList.Parties.Where((p) => p.ServiceStartedAt != null && p.ServiceEndedAt == null);
-                foreach (var party in parties)
+                using var scope = scopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                logger.LogInformation($"Doing background work...");
+                var result =
+                    dbContext.WaitingLists.Select((x) => x);
+
+                foreach (var waitingList in result.Include(waitingListEntity => waitingListEntity.Parties))
                 {
-                    logger.LogInformation($"Checking if service has been concluded for party {party.Name} on waiting list {waitingList.Name}");
-                    var timeOfService = party.Size * Constants.TimeForServicePerPerson;
-                    if (party.ServiceStartedAt?.AddSeconds(timeOfService) < DateTime.Now)
+                    var parties =
+                        waitingList.Parties.Where((p) => p.ServiceStartedAt != null && p.ServiceEndedAt == null);
+                    foreach (var party in parties)
                     {
-                        party.ServiceEndedAt = DateTime.Now;
+                        logger.LogInformation(
+                            $"Checking if service has been concluded for party {party.Name} on waiting list {waitingList.Name}");
+                        var timeOfService = party.Size * Constants.TimeForServicePerPerson;
+                        if (party.ServiceStartedAt?.AddSeconds(timeOfService) < DateTime.Now)
+                        {
+                            party.ServiceEndedAt = DateTime.Now;
+                        }
                     }
+
                 }
 
+                dbContext.SaveChanges();
+                logger.LogInformation($"{backgroundServiceName} stopping.");
             }
-            
-            dbContext.SaveChanges();
-            logger.LogInformation($"{backgroundServiceName} stopping.");
+            catch (Exception exception)
+            {
+                logger.LogError(backgroundServiceName, exception);
+            }
+
             await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
         }
+        
+        logger.LogInformation($"{backgroundServiceName} stopping.");
     }
 }

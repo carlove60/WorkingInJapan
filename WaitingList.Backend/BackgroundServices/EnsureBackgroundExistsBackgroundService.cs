@@ -19,31 +19,38 @@ public class EnsureBackgroundExistsBackgroundService(
 
         if (!stoppingToken.IsCancellationRequested)
         {
-            using var scope = scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-            logger.LogInformation("Checking for default waiting list...");
-            var waitingListEntity = dbContext.WaitingLists.Include((wL) => wL.Parties).FirstOrDefault(wl => wl.Name == Constants.DefaultWaitingListName);
-
-            if (waitingListEntity == null)
+            try
             {
-                logger.LogInformation($"Creating WaitingList: {Constants.DefaultWaitingListName}");
-                waitingListEntity = new WaitingListEntity
+                using var scope = scopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                logger.LogInformation("Checking for default waiting list...");
+                var waitingListEntity = dbContext.WaitingLists.Include((wL) => wL.Parties)
+                    .FirstOrDefault(wl => wl.Name == Constants.DefaultWaitingListName);
+
+                if (waitingListEntity == null)
                 {
-                    Name = Constants.DefaultWaitingListName,
-                    TimeForService = Constants.TimeForServicePerPerson,
-                    TotalSeats = Constants.TotalSeatsPerWaitingList
-                };
+                    logger.LogInformation($"Creating WaitingList: {Constants.DefaultWaitingListName}");
+                    waitingListEntity = new WaitingListEntity
+                    {
+                        Name = Constants.DefaultWaitingListName,
+                        TimeForService = Constants.TimeForServicePerPerson,
+                        TotalSeats = Constants.TotalSeatsPerWaitingList
+                    };
 
-                dbContext.Add(waitingListEntity);
+                    dbContext.Add(waitingListEntity);
+                }
+                else
+                {
+                    dbContext.RemoveRange(waitingListEntity.Parties);
+                }
+
+                dbContext.SaveChanges();
             }
-            else
+            catch (Exception exception)
             {
-                dbContext.RemoveRange(waitingListEntity.Parties);
+                logger.LogError(backgroundServiceName, exception);           
             }
-            
-            dbContext.SaveChanges();
-
 
             // Run every 3 seconds
             await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);

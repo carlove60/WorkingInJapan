@@ -41,27 +41,35 @@ public class DeleteTimedOutSessionsBackgroundService(
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            using var scope = scopeFactory.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-            logger.LogInformation("Checking for default waiting list...");
-            var partiesOnWaitingList = dbContext.Parties.Where(party => party.ServiceStartedAt == null && party.CreatedOn.AddMinutes(Constants.TimeoutInMinutes) < DateTime.Now);
-            
-            var timedOutParties = new List<PartyEntity>();
-            foreach (var party in partiesOnWaitingList)
+            try
             {
-                timedOutParties.Add(party);
+                using var scope = scopeFactory.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                logger.LogInformation("Checking for default waiting list...");
+                var partiesOnWaitingList = dbContext.Parties.Where(party =>
+                    party.ServiceStartedAt == null &&
+                    party.CreatedOn.AddMinutes(Constants.TimeoutInMinutes) < DateTime.Now);
+
+                var timedOutParties = new List<PartyEntity>();
+                foreach (var party in partiesOnWaitingList)
+                {
+                    timedOutParties.Add(party);
+                }
+
+                if (timedOutParties.Any())
+                {
+                    logger.LogInformation($"Removing {timedOutParties.Count()} parties from waiting list.");
+                    dbContext.RemoveRange(timedOutParties);
+                    var result = dbContext.SaveChanges();
+                    logger.LogInformation($"Removed {result} parties from waiting list.");
+                }
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(backgroundServiceName, exception);
             }
 
-            if (timedOutParties.Any())
-            {
-                logger.LogInformation($"Removing {timedOutParties.Count()} parties from waiting list.");
-                dbContext.RemoveRange(timedOutParties);
-                var result = dbContext.SaveChanges();
-                logger.LogInformation($"Removed {result} parties from waiting list.");
-            }
-
-            // Run every second
             await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
         }
 

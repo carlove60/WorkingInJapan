@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WaitingList.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d162795cd8d92efadcde62b51b41a31fd825923")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+061e362bb466895f300bfd05dc406f4f7a784056")]
 [assembly: System.Reflection.AssemblyProductAttribute("WaitingList.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WaitingList.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

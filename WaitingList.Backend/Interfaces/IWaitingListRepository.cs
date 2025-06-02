@@ -4,6 +4,6 @@ namespace WaitingListBackend.Interfaces;
 
 public interface IWaitingListRepository
 {
-    ResultObject<WaitingListEntity> GetWaitingList(string name);
-    ResultObject<WaitingListEntity> GetWaitingList(Guid id);
+    ResultObject<WaitingListEntity> GetWaitingList(string name, bool includeCheckedIn);
+    ResultObject<WaitingListEntity> GetWaitingListWithAllParties(Guid id);
 }

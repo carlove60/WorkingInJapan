@@ -48,7 +48,7 @@ public class PartyService : IPartyService
     private ResultObject<bool> CanCheckIn(PartyEntity partyEntity)
     {
         var result = new ResultObject<bool>();
-        var waitingListResult = _waitingListRepository.GetWaitingList(partyEntity.WaitingListId);
+        var waitingListResult = _waitingListRepository.GetWaitingListWithAllParties(partyEntity.WaitingListId);
         result.Messages.AddRange(waitingListResult.Messages);
         if (!waitingListResult.Records.Any())
         {
