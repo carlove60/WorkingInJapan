@@ -3,6 +3,9 @@ using WaitingListBackend.Entities;
 
 namespace WaitingListBackend.Extensions;
 
+/// <summary>
+/// Provides extension methods for converting PartyEntity objects to PartyDto objects.
+/// </summary>
 public static class PartyEntityExtensions
 {
     public static List<PartyDto> ToDto(this List<PartyEntity> parties)

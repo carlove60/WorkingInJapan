@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WaitingListBackend.Entities;
 
+/// <summary>
+/// Represents a party entity with relevant details for a waiting list system.
+/// </summary>
 public class PartyEntity
 {
     public Guid Id { get; set; }
@@ -21,8 +24,8 @@ public class PartyEntity
     public bool CheckedIn { get; set; }
     
     [Required]
-    public string SessionId { get; set; } 
-    
+    public string SessionId { get; set; }
+
     [Required]
     public Guid WaitingListId { get; set; }
     

@@ -1,8 +1,10 @@
 using WaitingList.Contracts.DTOs;
-using WaitingListBackend.Entities;
 
 namespace WaitingListBackend.Interfaces;
 
+/// <summary>
+/// Interface for managing and interacting with party-related operations in the system.
+/// </summary>
 public interface IPartyService
 {
     ResultObject<PartyDto> GetParty(string sessionId);

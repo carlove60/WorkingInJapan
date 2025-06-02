@@ -27,10 +27,17 @@ public class PartyService : IPartyService
             result.Messages.AddError("No party found for this session. Please check if you used a different browser."); 
             return result;
         }
+
+        if (partyResult.Records.Count == 1 && partyResult.Records.First().CheckedIn)
+        {
+            result.Records.Add(partyResult.Records.First().ToDto());
+            return result;
+        }
+
         var party = partyResult.Records.First(); 
         var partyCanCheckInResult = CanCheckIn(party);
         result.Messages.AddRange(partyCanCheckInResult.Messages);
-        if (result.Messages.Count > 0)
+        if (result.Messages.Count > 0 || !partyCanCheckInResult.Records.Single())
         {
             return result;
         }
@@ -73,6 +80,7 @@ public class PartyService : IPartyService
         else
         {
             result.Records.Add(false);
+            result.Messages.AddError("Party cannot be checked in at this time.");
         }
         
         return result;

@@ -15,12 +15,6 @@ public class TestBase : IDisposable
     protected readonly IPartyRepository PartyRepository;
     protected readonly IPartyService PartyService;
 
-    public TestBase(IWaitingListRepository waitingListRepository, IWaitingListService waitingListService)
-    {
-        WaitingListRepository = waitingListRepository;
-        WaitingListService = waitingListService;
-    }
-
     protected TestBase()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -28,9 +22,7 @@ public class TestBase : IDisposable
             .Options;
 
         Context = new ApplicationDbContext(options);
-        Context.Database.EnsureDeleted();
-        Context.Database.EnsureCreated();
-        WaitingListRepository = new WaitingListRepository(Context);
+        WaitingListRepository = new Repository(Context);
         PartyRepository = new PartyRepository(Context);
         WaitingListService = new WaitingListService(WaitingListRepository, PartyRepository);
         PartyService = new PartyService(PartyRepository, WaitingListRepository);
@@ -39,7 +31,8 @@ public class TestBase : IDisposable
 
     public void Dispose()
     {
-        Context.Database.EnsureDeleted();
+        Context.RemoveRange(Context.WaitingLists);
+        Context.RemoveRange(Context.Parties);
         Context.Dispose();
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using WaitingList.Extensions;
 using WaitingList.Requests;
 using WaitingList.Responses;
+using WaitingListBackend.Enums;
 using WaitingListBackend.Interfaces;
 
 namespace WaitingList.Controllers;
@@ -30,7 +31,6 @@ public class WaitingListController : ControllerBase
     
     /// <summary>
     /// Retrieves the metadata associated with the waiting list.
-    ///
     /// This method interacts with the service layer to obtain and return metadata
     /// </summary>
     /// <returns>An action result containing a response object with the metadata of the waiting list.</returns>
@@ -77,11 +77,11 @@ public class WaitingListController : ControllerBase
         var result = new AddToWaitingListResponse();
         var addResult = _waitingListService.AddPartyToWaitingList(request.Party);
         result.Messages = addResult.Messages;
-        if (addResult.Messages.Count == 0)
+        if (addResult.Records.Count == 1)
         {
-            result.Party = _partyService.GetParty(request.Party.SessionId).Records.First();;
+            result.Party = addResult.Records.First().AddedParty;
         }
-
-        return Ok(_waitingListService.AddPartyToWaitingList(request.Party));
+        
+        return Ok(result);
     }
 }

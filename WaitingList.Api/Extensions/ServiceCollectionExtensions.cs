@@ -51,7 +51,7 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<DeleteTimedOutSessionsBackgroundService>();
         services.AddEndpointsApiExplorer();
         services.AddScoped<IWaitingListService, WaitingListService>();
-        services.AddScoped<IWaitingListRepository, WaitingListRepository>();
+        services.AddScoped<IWaitingListRepository, Repository>();
         services.AddScoped<IPartyRepository, PartyRepository>();
         services.AddScoped<IPartyService, PartyService>();
         return services;

@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Extensions;
 using Swashbuckle.AspNetCore.Swagger;
 
 /// <summary>
-/// 
+/// Contains extension methods for IServiceProvider to provide additional functionality.
 /// </summary>
 public static class ServiceProviderExtensions
 {

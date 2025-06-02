@@ -1,15 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Logging;
-using MySql.Data.MySqlClient;
 using WaitingListBackend.Database;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Interfaces;
 
 namespace WaitingListBackend.Repositories;
 
+/// <summary>
+/// Provides methods for managing and interacting with party data in the database.
+/// </summary>
 public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IPartyRepository
 {
+    /// <summary>
+    /// Saves a party entity to the database. If the entity does not exist, it will be added; otherwise, it will be updated.
+    /// </summary>
+    /// <param name="party">The party entity to be saved.</param>
+    /// <returns>A result object that contains the saved party entity and any related messages.</returns>
     public ResultObject<PartyEntity> SaveParty(PartyEntity party)
     {
         var resultObject = new ResultObject<PartyEntity>();
@@ -51,7 +57,7 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
         }
         catch (DbUpdateConcurrencyException exception)
         {
-            // No need to throw
+            // No need to throw, background task has deleted this one
         }
         catch (Exception exception)
         {
@@ -59,6 +65,11 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
         }
     }
 
+    /// <summary>
+    /// Retrieves a party entity by the given session ID from the database, including its associated waiting list entity.
+    /// </summary>
+    /// <param name="sessionId">The session ID associated with the party to retrieve.</param>
+    /// <returns>A result object containing the matching party entity, if found, along with any associated messages.</returns>
     public ResultObject<PartyEntity> GetParty(string sessionId)
     {
        var result = new ResultObject<PartyEntity>();
@@ -67,7 +78,7 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
        {
            result.Records.Add(party);
        }
-       
+
        return result;   
     }
 }

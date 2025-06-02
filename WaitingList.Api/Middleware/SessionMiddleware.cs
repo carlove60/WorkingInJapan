@@ -8,6 +8,10 @@ namespace WaitingList.Middleware;
 /// </summary>
 public class SessionMiddleware
 {
+    /// <summary>
+    /// Represents the next middleware component in the HTTP request pipeline
+    /// to be invoked after the current middleware completes its processing.
+    /// </summary>
     private readonly RequestDelegate _next;
 
     /// <summary>

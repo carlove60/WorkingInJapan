@@ -13,6 +13,4 @@ public class ResultObject<T>
     
     [Required]    
     public MessageList Messages { get; set; } = new MessageList();
-    
-    public bool IsError { get; set; }
 }

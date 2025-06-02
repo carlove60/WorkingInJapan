@@ -4,9 +4,28 @@
         <name>WaitingList.Api</name>
     </assembly>
     <members>
+        <member name="T:WaitingList.Constants">
+            <summary>
+            Provides constant values used throughout the API layer.
+            </summary>
+        </member>
+        <member name="F:WaitingList.Constants.ApiCallCorsPolicy">
+            <summary>
+            Specifies the name of the CORS policy used for handling API calls within the application.
+            This constant is utilized to configure and apply cross-origin resource sharing settings
+            to enable or restrict access to the application's API resources from specified origins.
+            </summary>
+        </member>
         <member name="T:WaitingList.Controllers.PartyController">
             <summary>
-            
+            Controller responsible for managing operations related to the waiting list system.
+            Provides endpoints for operations such as checking in and retrieving party information.
+            </summary>
+        </member>
+        <member name="F:WaitingList.Controllers.PartyController._partyService">
+            <summary>
+            Service responsible for handling operations related to party data in the waiting list system.
+            Provides methods for managing party information such as checking in and retrieving party details.
             </summary>
         </member>
         <member name="M:WaitingList.Controllers.PartyController.#ctor(WaitingListBackend.Interfaces.IPartyService)">
@@ -46,12 +65,11 @@
             </summary>
         </member>
         <member name="M:WaitingList.Controllers.WaitingListController.GetWaitingList">
-             <summary>
-             Retrieves the metadata associated with the waiting list.
-            
-             This method interacts with the service layer to obtain and return metadata
-             </summary>
-             <returns>An action result containing a response object with the metadata of the waiting list.</returns>
+            <summary>
+            Retrieves the metadata associated with the waiting list.
+            This method interacts with the service layer to obtain and return metadata
+            </summary>
+            <returns>An action result containing a response object with the metadata of the waiting list.</returns>
         </member>
         <member name="M:WaitingList.Controllers.WaitingListController.AddPartyToWaitingList(WaitingList.Requests.AddToWaitingListRequest)">
             <summary>
@@ -106,7 +124,7 @@
         </member>
         <member name="T:WaitingList.Extensions.ServiceProviderExtensions">
             <summary>
-            
+            Contains extension methods for IServiceProvider to provide additional functionality.
             </summary>
         </member>
         <member name="M:WaitingList.Extensions.ServiceProviderExtensions.GenerateSwaggerApiJson(System.IServiceProvider)">
@@ -140,6 +158,12 @@
             and included in the response headers.
             </summary>
         </member>
+        <member name="F:WaitingList.Middleware.SessionMiddleware._next">
+            <summary>
+            Represents the next middleware component in the HTTP request pipeline
+            to be invoked after the current middleware completes its processing.
+            </summary>
+        </member>
         <member name="M:WaitingList.Middleware.SessionMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
             <summary>
             
@@ -171,6 +195,48 @@
             The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> instance with the <see cref="T:WaitingList.Middleware.SessionMiddleware"/> added.
             </returns>
         </member>
+        <member name="T:WaitingList.Middleware.SessionTrackingMiddleware">
+            <summary>
+            Middleware responsible for tracking active sessions within an application.
+            It monitors incoming requests, associates them with the current session,
+            and updates a central record of active sessions.
+            </summary>
+        </member>
+        <member name="F:WaitingList.Middleware.SessionTrackingMiddleware._next">
+            <summary>
+            Represents the next middleware in the pipeline to be executed after the current middleware.
+            Responsible for forwarding the HTTP context to the subsequent middleware in the pipeline when invoked.
+            </summary>
+        </member>
+        <member name="F:WaitingList.Middleware.SessionTrackingMiddleware.ActiveSessions">
+            <summary>
+            Maintains a thread-safe collection of active sessions, where each session is represented by a unique identifier and the corresponding last activity timestamp.
+            Used by the middleware to track and update active sessions across incoming requests.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Middleware.SessionTrackingMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Middleware responsible for tracking and managing active sessions within the application.
+            It updates the record of active sessions by associating incoming HTTP requests with session data.
+            </summary>
+        </member>
+        <member name="M:WaitingList.Middleware.SessionTrackingMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Handles the processing of the incoming HTTP context within the middleware.
+            Updates the record of active sessions by retrieving or associating the session ID
+            from the current request and invoking the next middleware in the pipeline.
+            </summary>
+            <param name="context">The HTTP context representing the current request.</param>
+            <returns>A task representing the asynchronous operation of processing the HTTP request.</returns>
+        </member>
+        <member name="M:WaitingList.Middleware.SessionTrackingMiddleware.GetActiveSessions">
+            <summary>
+            Retrieves a read-only dictionary containing the currently active sessions.
+            Each session is represented as a key-value pair, where the key is the session identifier
+            and the value is the timestamp of the last activity.
+            </summary>
+            <returns>A read-only dictionary of active session identifiers and their last activity timestamps.</returns>
+        </member>
         <member name="T:WaitingList.Middleware.SessionTrackingMiddlewareExtensions">
             <summary>
             Provides extension methods for SessionValidationMiddleware to simplify its integration into an application's request pipeline.
@@ -185,6 +251,86 @@
             <returns>
             The <see cref="T:Microsoft.AspNetCore.Builder.IApplicationBuilder"/> instance with the <see cref="T:WaitingList.Middleware.SessionMiddleware"/> added.
             </returns>
+        </member>
+        <member name="T:WaitingList.Requests.AddToWaitingListRequest">
+            <summary>
+            Represents a request to add a party to the waiting list.
+            </summary>
+        </member>
+        <member name="P:WaitingList.Requests.AddToWaitingListRequest.Party">
+            <summary>
+            Gets or sets the party information associated with a request to add to the waiting list.
+            </summary>
+            <remarks>
+            This property represents the details of the party being added, including information
+            such as the party name, size, and associated session ID. The property should be provided
+            when making a request to add a party to the waiting list.
+            </remarks>
+        </member>
+        <member name="T:WaitingList.Responses.AddToWaitingListResponse">
+            <summary>
+            Represents the response provided after attempting to add a party to the waiting list.
+            </summary>
+        </member>
+        <member name="P:WaitingList.Responses.AddToWaitingListResponse.Party">
+            <summary>
+            Gets or sets the party information associated with the response.
+            This property contains details about the party that was added to the waiting list,
+            including its name, size, session ID, and check-in status.
+            </summary>
+        </member>
+        <member name="T:WaitingList.Responses.BaseResponse">
+            <summary>
+            Represents the base response for API operations. This class serves as the foundation
+            for other response types, providing a common structure for returning validation messages.
+            </summary>
+        </member>
+        <member name="P:WaitingList.Responses.BaseResponse.Messages">
+            <summary>
+            Gets or sets a collection of validation messages associated with the response.
+            These messages provide feedback on the outcome of an operation, including errors,
+            warnings, and informational messages.
+            </summary>
+        </member>
+        <member name="T:WaitingList.Responses.CheckInResponse">
+            <summary>
+            Represents the response returned when a party checks in to the waiting list.
+            This response includes details about the checked-in party as well as any
+            validation messages from the operation.
+            </summary>
+        </member>
+        <member name="P:WaitingList.Responses.CheckInResponse.Party">
+            <summary>
+            Gets or sets the details of the party that has checked in.
+            Provides information such as the party's waiting list name, session identifier,
+            party name, size, and check-in status.
+            </summary>
+        </member>
+        <member name="T:WaitingList.Responses.GetPartyResponse">
+            <summary>
+            Represents a response object containing information about a specific party,
+            including its details and any validation or informational messages.
+            Inherits from <see cref="T:WaitingList.Responses.BaseResponse"/>.
+            </summary>
+        </member>
+        <member name="P:WaitingList.Responses.GetPartyResponse.Party">
+            <summary>
+            Gets or sets the details of the party. This property contains information
+            about a specific party such as its name, size, waiting list details, session ID,
+            and check-in status. The data is encapsulated in the <see cref="T:WaitingList.Contracts.DTOs.PartyDto"/> class.
+            </summary>
+        </member>
+        <member name="T:WaitingList.Responses.WaitingListResponse">
+            <summary>
+            Represents the response returned for waiting list-related API operations.
+            This response contains the waiting list details along with any validation messages.
+            </summary>
+        </member>
+        <member name="P:WaitingList.Responses.WaitingListResponse.WaitingList">
+            <summary>
+            Gets or sets the waiting list details, which include information about the
+            parties, total seats, available seats, and the name of the waiting list.
+            </summary>
         </member>
         <member name="T:WaitingList.Swagger.EnumSchemaFilter">
             <summary>

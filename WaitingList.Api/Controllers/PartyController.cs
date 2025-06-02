@@ -5,14 +5,18 @@ using WaitingListBackend.Interfaces;
 
 namespace WaitingList.Controllers;
 
-
 /// <summary>
-/// 
+/// Controller responsible for managing operations related to the waiting list system.
+/// Provides endpoints for operations such as checking in and retrieving party information.
 /// </summary>
 [ApiController]
 [Route("api/party")]
 public class PartyController : ControllerBase
 {
+    /// <summary>
+    /// Service responsible for handling operations related to party data in the waiting list system.
+    /// Provides methods for managing party information such as checking in and retrieving party details.
+    /// </summary>
     private readonly IPartyService _partyService;
 
     /// <summary>
