@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>WaitingList</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Ardalis.SmartEnum" Version="8.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
+        <PackageReference Include="NSwag.ApiDescription.Client" Version="14.2.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="NSwag.AspNetCore" Version="14.2.0" />
+        <PackageReference Include="NSwag.CodeGeneration.TypeScript" Version="14.2.0" />
+        <PackageReference Include="NSwag.Generation.AspNetCore" Version="14.2.0" />
+        <PackageReference Include="NswagStudioSettingsForCSharpClientGenerator" Version="1.2.1" />
+        <PackageReference Include="OpenAIGenerator" Version="0.5.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="7.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WaitingList.Backend\WaitingList.Backend.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="WaitingList">
+        <HintPath>..\WaitingListTests\bin\Debug\net9.0\WaitingList.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+    <Target
+      Name="Swagger"
+      AfterTargets="Build"
+      Condition="$(Configuration)=='Gen' Or $(GEN)=='true'">
+      <Message Text="Generating OpenAPI schema file." Importance="high" />
+      <!-- Restore the tool if needed -->
+      <Exec Command="dotnet tool restore" />
+
+      <!-- (1) Generate the external API. -->
+      <Exec
+        Command="dotnet swagger tofile --output ../app/src/_api/schema-api.json $(OutputPath)$(AssemblyName).dll v1"
+        EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development"
+        WorkingDirectory="$(ProjectDir)" />
+
+      <!-- (2) Generate TS bindings for the web app -->
+      <Exec Command="yarn gen" WorkingDirectory="../app" />
+    </Target>
+</Project>
