@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WaitingList.Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbf13765ba2e9719abb3295226a1cff699f4df77")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62ac28dca81fc7774249708dba16d964efc79e38")]
 [assembly: System.Reflection.AssemblyProductAttribute("WaitingList.Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WaitingList.Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

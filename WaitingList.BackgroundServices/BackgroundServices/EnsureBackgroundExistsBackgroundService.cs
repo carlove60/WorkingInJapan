@@ -2,10 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using WaitingListBackend.Database;
+using WaitingList.Database.Database;
 using WaitingListBackend.Entities;
 
-namespace WaitingListBackend.BackgroundServices;
+namespace WaitingList.BackgroundServices.BackgroundServices;
 
 /// <summary>
 /// Represents a background service responsible for ensuring the existence

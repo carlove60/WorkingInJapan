@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using WaitingList.BackgroundServices.BackgroundServices;
+using WaitingList.Database.Database;
 using WaitingList.Swagger;
-using WaitingListBackend.BackgroundServices;
-using WaitingListBackend.Database;
 using WaitingListBackend.Interfaces;
 using WaitingListBackend.Repositories;
 using WaitingListBackend.Services;

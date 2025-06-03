@@ -694,7 +694,7 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.5": {
         "type": "package",
         "compile": {
           "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -931,23 +931,23 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/8.0.2": {
+      "Microsoft.Extensions.Logging.Abstractions/9.0.5": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.2"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.5"
         },
         "compile": {
-          "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+          "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll": {
+          "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "build": {
-          "buildTransitive/net6.0/Microsoft.Extensions.Logging.Abstractions.targets": {}
+          "buildTransitive/net8.0/Microsoft.Extensions.Logging.Abstractions.targets": {}
         }
       },
       "Microsoft.Extensions.Logging.Configuration/8.0.0": {
@@ -2295,13 +2295,29 @@
           "Microsoft.Extensions.Hosting": "8.0.0",
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
           "MySql.EntityFrameworkCore": "8.0.11",
-          "WaitingList.Contracts": "1.0.0"
+          "WaitingList.Contracts": "1.0.0",
+          "WaitingList.Database": "1.0.0"
         },
         "compile": {
           "bin/placeholder/WaitingList.Backend.dll": {}
         },
         "runtime": {
           "bin/placeholder/WaitingList.Backend.dll": {}
+        }
+      },
+      "WaitingList.BackgroundServices/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.5",
+          "WaitingList.Database": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/WaitingList.BackgroundServices.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WaitingList.BackgroundServices.dll": {}
         }
       },
       "WaitingList.Contracts/1.0.0": {
@@ -2312,6 +2328,22 @@
         },
         "runtime": {
           "bin/placeholder/WaitingList.Contracts.dll": {}
+        }
+      },
+      "WaitingList.Database/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.5",
+          "Microsoft.Extensions.Configuration.FileExtensions": "9.0.5",
+          "Microsoft.Extensions.Configuration.Json": "9.0.5",
+          "MySql.EntityFrameworkCore": "8.0.11"
+        },
+        "compile": {
+          "bin/placeholder/WaitingList.Database.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WaitingList.Database.dll": {}
         }
       }
     }
@@ -3344,10 +3376,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.0": {
-      "sha512": "+6f2qv2a3dLwd5w6JanPIPs47CxRbnk+ZocMJUhv9NxP88VlOcJYZs9jY+MYSjxvady08bUZn6qgiNh7DadGgg==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.5": {
+      "sha512": "cjnRtsEAzU73aN6W7vkWy8Phj5t3Xm78HSqgrbh/O4Q9SK/yN73wZVa21QQY6amSLQRQ/M8N+koGnY6PuvKQsw==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.0",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3369,7 +3401,7 @@
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.9.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.9.0.5.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3648,10 +3680,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/8.0.2": {
-      "sha512": "nroMDjS7hNBPtkZqVBbSiQaQjWRDxITI8Y7XnDs97rqG3EbzVTNLZQf7bIeUJcaHOV8bca47s1Uxq94+2oGdxA==",
+    "Microsoft.Extensions.Logging.Abstractions/9.0.5": {
+      "sha512": "pP1PADCrIxMYJXxFmTVbAgEU7GVpjK5i0/tyfU9DiE0oXQy3JWQaOVgCkrCiePLgS8b5sghM3Fau3EeHiVWbCg==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/8.0.2",
+      "path": "microsoft.extensions.logging.abstractions/9.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3703,20 +3735,18 @@
         "analyzers/dotnet/roslyn4.4/cs/zh-Hant/Microsoft.Extensions.Logging.Generators.resources.dll",
         "buildTransitive/net461/Microsoft.Extensions.Logging.Abstractions.targets",
         "buildTransitive/net462/Microsoft.Extensions.Logging.Abstractions.targets",
-        "buildTransitive/net6.0/Microsoft.Extensions.Logging.Abstractions.targets",
+        "buildTransitive/net8.0/Microsoft.Extensions.Logging.Abstractions.targets",
         "buildTransitive/netcoreapp2.0/Microsoft.Extensions.Logging.Abstractions.targets",
         "buildTransitive/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.targets",
         "lib/net462/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/net462/Microsoft.Extensions.Logging.Abstractions.xml",
-        "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.dll",
-        "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/net8.0/Microsoft.Extensions.Logging.Abstractions.xml",
+        "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll",
+        "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.9.0.5.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -6296,10 +6326,20 @@
       "path": "../WaitingList.Backend/WaitingList.Backend.csproj",
       "msbuildProject": "../WaitingList.Backend/WaitingList.Backend.csproj"
     },
+    "WaitingList.BackgroundServices/1.0.0": {
+      "type": "project",
+      "path": "../WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj",
+      "msbuildProject": "../WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj"
+    },
     "WaitingList.Contracts/1.0.0": {
       "type": "project",
       "path": "../WaitingList.Contracts/WaitingList.Contracts.csproj",
       "msbuildProject": "../WaitingList.Contracts/WaitingList.Contracts.csproj"
+    },
+    "WaitingList.Database/1.0.0": {
+      "type": "project",
+      "path": "../WaitingList.Database/WaitingList.Database.csproj",
+      "msbuildProject": "../WaitingList.Database/WaitingList.Database.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6318,7 +6358,8 @@
       "Swashbuckle.AspNetCore.Swagger >= 7.3.1",
       "Swashbuckle.AspNetCore.SwaggerGen >= 7.3.1",
       "Swashbuckle.AspNetCore.SwaggerUI >= 7.3.1",
-      "WaitingList.Backend >= 1.0.0"
+      "WaitingList.Backend >= 1.0.0",
+      "WaitingList.BackgroundServices >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6349,6 +6390,9 @@
           "projectReferences": {
             "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/WaitingList.Backend.csproj": {
               "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/WaitingList.Backend.csproj"
+            },
+            "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj": {
+              "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj"
             }
           }
         }

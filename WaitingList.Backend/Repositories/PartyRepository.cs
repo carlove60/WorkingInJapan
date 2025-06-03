@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using WaitingListBackend.Database;
+using WaitingList.Database.Database;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Interfaces;
 

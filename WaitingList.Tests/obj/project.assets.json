@@ -2339,7 +2339,8 @@
           "Microsoft.Extensions.Hosting": "8.0.0",
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
           "MySql.EntityFrameworkCore": "8.0.11",
-          "WaitingList.Contracts": "1.0.0"
+          "WaitingList.Contracts": "1.0.0",
+          "WaitingList.Database": "1.0.0"
         },
         "compile": {
           "bin/placeholder/WaitingList.Backend.dll": {}
@@ -2356,6 +2357,22 @@
         },
         "runtime": {
           "bin/placeholder/WaitingList.Contracts.dll": {}
+        }
+      },
+      "WaitingList.Database/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.5",
+          "Microsoft.Extensions.Configuration.FileExtensions": "9.0.5",
+          "Microsoft.Extensions.Configuration.Json": "9.0.5",
+          "MySql.EntityFrameworkCore": "8.0.11"
+        },
+        "compile": {
+          "bin/placeholder/WaitingList.Database.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WaitingList.Database.dll": {}
         }
       }
     }
@@ -6176,6 +6193,11 @@
       "type": "project",
       "path": "../WaitingList.Contracts/WaitingList.Contracts.csproj",
       "msbuildProject": "../WaitingList.Contracts/WaitingList.Contracts.csproj"
+    },
+    "WaitingList.Database/1.0.0": {
+      "type": "project",
+      "path": "../WaitingList.Database/WaitingList.Database.csproj",
+      "msbuildProject": "../WaitingList.Database/WaitingList.Database.csproj"
     }
   },
   "projectFileDependencyGroups": {

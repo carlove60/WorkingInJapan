@@ -15,7 +15,8 @@
           "Microsoft.Extensions.Hosting": "8.0.0",
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
           "MySql.EntityFrameworkCore": "8.0.11",
-          "WaitingList.Contracts": "1.0.0"
+          "WaitingList.Contracts": "1.0.0",
+          "WaitingList.Database": "1.0.0"
         },
         "runtime": {
           "WaitingList.Backend.dll": {}
@@ -1047,6 +1048,20 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "WaitingList.Database/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "9.0.5",
+          "Microsoft.Extensions.Configuration.FileExtensions": "9.0.5",
+          "Microsoft.Extensions.Configuration.Json": "9.0.5",
+          "MySql.EntityFrameworkCore": "8.0.11"
+        },
+        "runtime": {
+          "WaitingList.Database.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -1631,6 +1646,11 @@
       "hashPath": "zstdsharp.port.0.8.0.nupkg.sha512"
     },
     "WaitingList.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WaitingList.Database/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

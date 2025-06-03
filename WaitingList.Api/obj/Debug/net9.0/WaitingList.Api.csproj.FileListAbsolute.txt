@@ -100,3 +100,9 @@
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/obj/Debug/net9.0/WaitingList.Api.pdb
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/obj/Debug/net9.0/WaitingList.Api.genruntimeconfig.cache
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/obj/Debug/net9.0/ref/WaitingList.Api.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/bin/Debug/net9.0/WaitingList.Database.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/bin/Debug/net9.0/WaitingList.Database.pdb
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/bin/Debug/net9.0/WaitingList.BackgroundServices.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/bin/Debug/net9.0/WaitingList.BackgroundServices.pdb

@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using WaitingListBackend.Database;
+using WaitingList.Database.Database;
 
-namespace WaitingListBackend.BackgroundServices;
+namespace WaitingList.BackgroundServices.BackgroundServices;
 
 /// <summary>
 /// Background service responsible for processing and finalizing the parties.

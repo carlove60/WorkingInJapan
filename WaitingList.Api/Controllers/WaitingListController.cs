@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using WaitingList.Extensions;
 using WaitingList.Requests;
 using WaitingList.Responses;
-using WaitingListBackend.Enums;
 using WaitingListBackend.Interfaces;
 
 namespace WaitingList.Controllers;
@@ -39,7 +38,7 @@ public class WaitingListController : ControllerBase
     public ActionResult<WaitingListResponse> GetWaitingList()
     {
         var result = new WaitingListResponse();
-        var response = _waitingListService.GetWaitingList(WaitingListBackend.Constants.DefaultWaitingListName);
+        var response = _waitingListService.GetWaitingList(BackgroundServices.Constants.DefaultWaitingListName);
         result.Messages = response.Messages;
         if (response.Records.Count == 1)
         {

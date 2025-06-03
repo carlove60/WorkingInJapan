@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using WaitingList.Database.Database;
 using WaitingListBackend.Interfaces;
-using WaitingListBackend.Database;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Repositories;
 using WaitingListBackend.Services;
