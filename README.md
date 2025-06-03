@@ -48,7 +48,7 @@ Starting the app will ensure the database is empty and ready for an empty waitin
 Since we only have one, it is retrieved by name.
 
 Session cookies are being used to keep track of spots on the waiting list, though JWT would have been a more secure way, for this project it suffices.
-After service a background service will put the end time of service and the user can sign up again.
+After service a background service will put the end time of service and the user can sign up again. Just in case users are inactive, a background service will remove users from the queue after 10 minutes.
 
 I went with a coding style where throwing exceptions is a last-ditch effort. The client also shows system errors as a snackbar error and user / validation errors right above where the user is looking on the screen.
 Using interfaces was a bit of an overkill for the repositories and services but it was to show that I usually use these when more generic methods are introduced for more repositories; like Save and Get.
