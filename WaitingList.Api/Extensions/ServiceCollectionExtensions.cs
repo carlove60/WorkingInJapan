@@ -125,11 +125,16 @@ public static class ServiceCollectionExtensions
                 policy => 
                     policy.WithOrigins(
                             "http://localhost:5173",  // Vite default
-                            "http://localhost:5174"   // Vite now
+                            "http://localhost:5174",  // Vite now
+                            "http://localhost:5240",   // Local
+                            "http://127.0.0.1:5173",
+                            "http://127.0.0.1:5174",
+                            "http://127.0.0.1:5240"
                         )
                         .AllowCredentials()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
             );
         });
         return services;
