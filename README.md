@@ -30,6 +30,8 @@ The database is accessible from inside the `waitinglist-network` with the follow
 - **Password:** `qh734hsr05`
 - **Database:** `WaitingList`
 
+#### Troubleshooting:
+3306 has to be available for the database to run. Ensure yours is free before you build the app
 
 ## About this web-app
 Layered in 3 projects.
