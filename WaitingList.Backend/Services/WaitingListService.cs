@@ -1,5 +1,4 @@
 using WaitingList.Contracts.DTOs;
-using WaitingList.Extensions;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Extensions;
 using WaitingListBackend.Interfaces;

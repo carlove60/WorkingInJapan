@@ -1,0 +1,16 @@
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/bin/Debug/net9.0/WaitingList.BackgroundServices.deps.json
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/bin/Debug/net9.0/WaitingList.BackgroundServices.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/bin/Debug/net9.0/WaitingList.BackgroundServices.pdb
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/bin/Debug/net9.0/WaitingList.Database.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/bin/Debug/net9.0/WaitingList.Database.pdb
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.csproj.AssemblyReference.cache
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.GeneratedMSBuildEditorConfig.editorconfig
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.AssemblyInfoInputs.cache
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.AssemblyInfo.cs
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.csproj.CoreCompileInputs.cache
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.sourcelink.json
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingL.C25BD6A9.Up2Date
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/refint/WaitingList.BackgroundServices.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/WaitingList.BackgroundServices.pdb
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/obj/Debug/net9.0/ref/WaitingList.BackgroundServices.dll

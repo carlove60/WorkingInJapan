@@ -31,6 +31,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\WaitingList.Contracts\WaitingList.Contracts.csproj" />
+      <ProjectReference Include="..\WaitingList.Database\WaitingList.Database.csproj" />
     </ItemGroup>
 
 </Project>

@@ -33,6 +33,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\WaitingList.Backend\WaitingList.Backend.csproj" />
+      <ProjectReference Include="..\WaitingList.BackgroundServices\WaitingList.BackgroundServices.csproj" />
     </ItemGroup>
 
     <ItemGroup>

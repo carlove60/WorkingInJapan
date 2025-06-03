@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using WaitingListBackend.Entities;
 
-namespace WaitingListBackend.Database;
+namespace WaitingList.Database.Database;
 
 /// <summary>
 /// Represents the database context for the application. This class is responsible for managing

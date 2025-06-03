@@ -16,3 +16,5 @@
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/obj/Debug/net9.0/WaitingList.Backend.pdb
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/obj/Debug/net9.0/WaitingList.Backend.genruntimeconfig.cache
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/obj/Debug/net9.0/ref/WaitingList.Backend.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/bin/Debug/net9.0/WaitingList.Database.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/bin/Debug/net9.0/WaitingList.Database.pdb

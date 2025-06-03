@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using WaitingList.Extensions;
 using WaitingList.Middleware;
-using WaitingListBackend.Database;
 
 namespace WaitingList;
 

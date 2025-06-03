@@ -1,4 +1,4 @@
-using WaitingListBackend.Database;
+using WaitingList.Database.Database;
 
 namespace WaitingListBackend.Repositories;
 

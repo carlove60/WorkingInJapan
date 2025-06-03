@@ -1,8 +1,7 @@
 using WaitingList.Contracts.DTOs;
 using WaitingListBackend.Entities;
-using WaitingListBackend.Extensions;
 
-namespace WaitingList.Extensions;
+namespace WaitingListBackend.Extensions;
 
 /// <summary>
 /// Provides extension methods for converting entities to DTOs in the context of WaitingList.Api operations.

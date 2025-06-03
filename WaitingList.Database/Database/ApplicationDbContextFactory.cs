@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace WaitingListBackend.Database;
+namespace WaitingList.Database.Database;
 
 /// <summary>
 /// Factory class for creating instances of the <see cref="ApplicationDbContext"/> class at design time.

@@ -325,3 +325,5 @@
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Tests/bin/Debug/net9.0/Microsoft.Extensions.Logging.EventLog.dll
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Tests/bin/Debug/net9.0/Microsoft.Extensions.Logging.EventSource.dll
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Tests/bin/Debug/net9.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Tests/bin/Debug/net9.0/WaitingList.Database.dll
+/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Tests/bin/Debug/net9.0/WaitingList.Database.pdb
