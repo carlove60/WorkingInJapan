@@ -1,7 +1,12 @@
+## Welcome!
+Thank you for taking the time and effort to read, understand and review my code!
+This is a coding assignment and for that reason there is no protection nor will this be maintained. 
+Also, the commit messages will probably be very nonsensical since I am the only one working on this repo and have no intention on working on this further.
+
 ## **Pre-Requisites**
 Make sure you have the following installed:
-1. [Docker](https://www.docker.com/get-started) (with Docker Compose)
-2. [Git](https://git-scm.com/)
+[Docker](https://www.docker.com/get-started) (with Docker Compose)
+[Git](https://git-scm.com/)
 
 ## **How to Run**
 To get started quickly with Docker, follow these steps:
