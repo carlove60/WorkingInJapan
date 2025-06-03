@@ -7,10 +7,7 @@ Make sure you have the following installed:
 To get started quickly with Docker, follow these steps:
 ### **1. Clone the Repository**
 First, clone the project to your local machine:
-``` bash
-git clone <your-repository-url>
-cd <your-repository-folder>
-```
+
 ### **. Build and Start the Containers**
 Use the following command to build and start the Docker containers for the API and MySQL database:
 ``` bash
