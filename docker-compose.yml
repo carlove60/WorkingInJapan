@@ -1,0 +1,37 @@
+
+services:
+  waitinglist-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5240:80"  # Maps host port 5240 to container port 80
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=WaitingList;User=root;Password=qh734hsr05;
+    networks:
+      - waitinglist-network
+
+  db:
+    image: mysql:8.0.11
+    platform: linux/amd64  # Force using x86_64 through emulation
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=qh734hsr05
+      - MYSQL_DATABASE=WaitingList
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./migration.sql:/docker-entrypoint-initdb.d/migration.sql
+    networks:
+      - waitinglist-network
+
+networks:
+  waitinglist-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

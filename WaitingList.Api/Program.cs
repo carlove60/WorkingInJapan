@@ -1,6 +1,8 @@
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using WaitingList.Extensions;
 using WaitingList.Middleware;
+using WaitingListBackend.Database;
 
 namespace WaitingList;
 
@@ -36,11 +38,9 @@ internal static class Program
                     options.RoutePrefix = string.Empty;
                 });
 
-                app.Services.GenerateSwaggerApiJson();
+                //app.Services.GenerateSwaggerApiJson();
             }
 
-            app.UseHttpsRedirection();
-            app.UseHttpsRedirection();
             app.UseCors(Constants.ApiCallCorsPolicy);
             app.UseRouting();
             app.UseAuthorization();
