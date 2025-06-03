@@ -34,13 +34,15 @@ The database is accessible from inside the `waitinglist-network` with the follow
 3306 has to be available for the database to run. Ensure yours is free before you build the app
 
 ## About this web-app
-Layered in 3 projects.
+Layered in 6 projects.
 One for the API calls
+One for the backend
+One for the background services
 One for the contracts (DTOs)
-One for the backend with EntityFramework MySQL (basically two layers in one project)
+one for the database
+One for for tests
 
-Besides these projects there are also middleware classes and background services, these would be good to be placed in their own projects as well: WaitingList.BackgroundServices, WaitingList.Middleware and also WaitingList.Database
-But I kept it simplified since it is a simple project while still hoping to showcase know-of.
+Besides these projects there are also middleware classes that are used by the session, I decided to keep them in the API layer.
 
 Starting the app will ensure the database is empty and ready for an empty waiting list.
 Since we only have one, it is retrieved by name.
