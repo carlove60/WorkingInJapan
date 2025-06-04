@@ -50,7 +50,39 @@ public class PartyService : IPartyService
         return result;
     }
 
-    
+    /// <summary>
+    /// Cancels the check-in for a party associated with the specified session ID.
+    /// </summary>
+    /// <param name="sessionId">The session ID associated with the party to cancel check-in for.</param>
+    /// <returns>A <see cref="ResultObject{PartyDto}"/> containing the result of the operation, including any error messages or the affected party data.</returns>
+    public ResultObject<PartyDto> CancelCheckIn(string sessionId)
+    {
+        var result = new ResultObject<PartyDto>();
+        if (String.IsNullOrWhiteSpace(sessionId))
+        {
+            result.Messages.AddError("No session id found for your sign-up");
+            return result;
+        }
+        var partyResult = _partyRepository.GetParty(sessionId);
+        result.Messages.AddRange(partyResult.Messages);
+        if (partyResult.Records.Count == 0)
+        {
+            result.Messages.AddError("No party found for this session. Please check if you used a different browser.");
+            return result;
+        }
+
+        var party = partyResult.Records.Single();
+        var deleteResult = _partyRepository.RemoveParty(party);
+        result.Messages.AddRange(deleteResult.Messages);
+        if (result.Messages.Any())
+        {
+            result.Records.Add(party.ToDto());
+        }
+
+        return result;
+    }
+
+
     private ResultObject<bool> CanCheckIn(PartyEntity partyEntity)
     {
         var result = new ResultObject<bool>();
@@ -98,7 +130,7 @@ public class PartyService : IPartyService
         var partyEntity = party.Records.First();
         if (partyEntity.ServiceEndedAt != null && partyEntity.CheckedIn)
         {
-            ResetParty(partyEntity);
+            _partyRepository.RemoveParty(partyEntity);
         }
 
         var checkedInParty = CanCheckIn(partyEntity);
@@ -110,11 +142,6 @@ public class PartyService : IPartyService
         }
         result.Records.Add(partyDto);
         return result;
-    }
-    
-    private void ResetParty(PartyEntity partyEntity)
-    {
-        _partyRepository.RemoveParty(partyEntity);
     }
     
     private int CalculateRemainingServiceTime(IEnumerable<PartyEntity> partiesInService, int timeForService)

@@ -48,21 +48,21 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
     /// Possible to get an exception where the record has already been deleted by the background service
     /// </summary>
     /// <param name="party">The party entity to be removed.</param>
-    public void RemoveParty(PartyEntity party)
+    public ResultObject<PartyEntity> RemoveParty(PartyEntity party)
     {
+        var result = new ResultObject<PartyEntity>();
         _applicationDbContext.Parties.Remove(party);
         try
         {
             _applicationDbContext.SaveChanges();
-        }
-        catch (DbUpdateConcurrencyException exception)
-        {
-            // No need to throw, background task has deleted this one
+            result.Messages.AddSuccess("Removal was successful!");       
         }
         catch (Exception exception)
         {
-            throw new Exception(exception.Message, exception);
+            result.Messages.AddError(exception.Message);       
         }
+        
+        return result;   
     }
 
     /// <summary>

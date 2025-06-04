@@ -44,6 +44,13 @@
             <param name="request">The request object containing the details required for checking in a party.</param>
             <returns>An action result containing a response object with the details of the checked-in party.</returns>
         </member>
+        <member name="M:WaitingList.Controllers.PartyController.CancelCheckIn">
+            <summary>
+            Cancels an existing check-in for a session based on the session ID.
+            Validates the session, retrieves the relevant party data, and removes the check-in if applicable.
+            </summary>
+            <returns>A response containing the updated party information and any validation messages.</returns>
+        </member>
         <member name="M:WaitingList.Controllers.PartyController.GetParty">
             <summary>
             Retrieves information about the party associated with the current session.

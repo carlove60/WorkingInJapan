@@ -10,4 +10,6 @@ public interface IPartyService
     ResultObject<PartyDto> GetParty(string sessionId);
     
     ResultObject<PartyDto> CheckIn(string sessionId);
+    
+    ResultObject<PartyDto> CancelCheckIn(string sessionId);
 }
