@@ -40,12 +40,12 @@ The database is accessible from inside the `waitinglist-network` with the follow
 
 ## About this web-app
 Layered in 6 projects.
-- One for the API calls
-- One for the backend
-- One for the background services
-- One for the contracts (DTOs)
-- One for the database
-- One for for tests
+- One for the API calls (entry point, Program.cs)
+- One for the backend (used by the API layer)
+- One for the background services (initiated by the API layer)
+- One for the contracts (DTOs, used by the API and backend layers)
+- One for the database (used by the backend layer)
+- One for for tests (using the backend, contract and contract layers)
 
 Besides these projects there are also middleware classes that are used by the session, I decided to keep them in the API layer.
 
