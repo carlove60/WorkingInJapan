@@ -58,6 +58,28 @@ public class PartyController : ControllerBase
     }
 
     /// <summary>
+    /// Cancels an existing check-in for a session based on the session ID.
+    /// Validates the session, retrieves the relevant party data, and removes the check-in if applicable.
+    /// </summary>
+    /// <returns>A response containing the updated party information and any validation messages.</returns>
+    [Route("cancel-check-in")]
+    [HttpPost]
+    public ActionResult<CancelCheckInResponse> CancelCheckIn()
+    {
+        var sessionId = HttpContext.Session.GetSessionId();
+        if (string.IsNullOrWhiteSpace(sessionId))
+        {
+            return BadRequest("No session found, please fill in your name on the waiting list first");
+        }
+
+        var result = _partyService.CancelCheckIn(sessionId);
+        var response = new CancelCheckInResponse();
+        response.Messages = result.Messages;
+        return Ok(response);
+    }
+
+
+    /// <summary>
     /// Retrieves information about the party associated with the current session.
     /// If no session is found, returns a bad request response with an appropriate error message.
     /// </summary>

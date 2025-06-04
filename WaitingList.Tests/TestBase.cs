@@ -22,6 +22,11 @@ public class TestBase : IDisposable
             .Options;
 
         Context = new ApplicationDbContext(options);
+        if (!Context.Database.CanConnect())
+        {
+            Context.Database.EnsureCreated();
+        }
+
         WaitingListRepository = new Repository(Context);
         PartyRepository = new PartyRepository(Context);
         WaitingListService = new WaitingListService(WaitingListRepository, PartyRepository);

@@ -77,10 +77,6 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestTemplateMapping/=MSTest/@EntryIndexedValue">d6790ab7-33c2-4425-b2c9-51480cd1a852</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ede8b835_002D5942_002D4671_002Db4fe_002D9ed7cb3bbdeb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Given" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
-    &lt;TestId&gt;MSTest::BE19C579-E12F-4061-B16D-C405052D8601::net9.0::RepositoryTests&lt;/TestId&gt;
-    &lt;TestId&gt;MSTest::BE19C579-E12F-4061-B16D-C405052D8601::net9.0::WaitingListAndPartyServiceTests.Given_InvalidSessionId_When_RetrievingParty_Then_ShouldReturnError&lt;/TestId&gt;
-    &lt;TestId&gt;MSTest::BE19C579-E12F-4061-B16D-C405052D8601::net9.0::ServiceTests.Given_ValidSessionId_When_CheckIn_Then_MarksPartyAsCheckedIn&lt;/TestId&gt;
-    &lt;TestId&gt;MSTest::BE19C579-E12F-4061-B16D-C405052D8601::net9.0::ServiceTests.Given_TwoPartiesWithDifferentCreationTimes_When_GetWaitingList_Then_PartiesAreOrderedByCreationTime&lt;/TestId&gt;
-    &lt;TestId&gt;MSTest::BE19C579-E12F-4061-B16D-C405052D8601::net9.0::ServiceTests&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::BE19C579-E12F-4061-B16D-C405052D8601::net9.0::WaitingListTests.IntegrationTests.WaitingList.ServiceTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

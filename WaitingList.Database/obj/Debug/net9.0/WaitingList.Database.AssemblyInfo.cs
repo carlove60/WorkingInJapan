@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WaitingList.Database")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62ac28dca81fc7774249708dba16d964efc79e38")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6d3eebac07786e2963d45dae28a685eb8f4b5bf")]
 [assembly: System.Reflection.AssemblyProductAttribute("WaitingList.Database")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WaitingList.Database")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

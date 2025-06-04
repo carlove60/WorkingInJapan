@@ -51,7 +51,8 @@ public class ServiceTests : TestBase
         var result = WaitingListService.AddPartyToWaitingList(partyDto);
 
         // Then
-        Assert.AreEqual(0, result.Messages.Count);
+        Assert.AreEqual(1, result.Messages.Count);
+        Assert.AreEqual("You have been successfully added to the waiting list!", result.Messages.First().Message);
         Assert.AreEqual(1, result.Records.Count);
         Assert.IsNotNull(result.Records.First().AddedParty);
     }
@@ -402,6 +403,62 @@ public class ServiceTests : TestBase
         Assert.AreEqual(2, parties.Count);
         Assert.AreEqual("FirstParty", parties[0].Name);
         Assert.AreEqual("SecondParty", parties[1].Name);
+    }
+    
+     [TestMethod]
+    public void GivenNullSessionId_WhenCancelCheckIn_ThenReturnsError()
+    {
+        // When
+        var result = PartyService.CancelCheckIn(null);
+
+        // Then
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Messages.Count);
+        Assert.AreEqual("No session id found for your sign-up", result.Messages.First().Message);
+    }
+
+    [TestMethod]
+    public void GivenInvalidSessionId_WhenCancelCheckIn_ThenReturnsError()
+    {
+        // When
+        var result = PartyService.CancelCheckIn("NonExistentSessionId");
+
+        // Then
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Messages.Count);
+        Assert.AreEqual("No party found for this session. Please check if you used a different browser.", result.Messages.First().Message);
+    }
+
+    [TestMethod]
+    public void GivenValidSessionId_WhenCancelCheckIn_ThenPartyIsRemoved()
+    {
+        // Given
+        var waitingListName = Guid.NewGuid().ToString();
+        var sessionId = Guid.NewGuid().ToString();
+        CreateTestWaitingList(waitingListName, 10);
+
+        var partyDto = new PartyDto
+        {
+            WaitingListName = waitingListName,
+            Name = "TestParty",
+            Size = 4,
+            SessionId = sessionId
+        };
+
+        WaitingListService.AddPartyToWaitingList(partyDto);
+
+        // When
+        var result = PartyService.CancelCheckIn(sessionId);
+
+        // Then
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.Messages.Count);
+        Assert.AreEqual("Removal was successful!", result.Messages.First().Message);
+        Assert.AreEqual(1, result.Records.Count);
+        Assert.AreEqual(sessionId, result.Records.First().SessionId);
+
+        var fetchResult = PartyService.GetParty(sessionId);
+        Assert.AreEqual(0, fetchResult.Records.Count); // Ensure the party is removed
     }
 
     private WaitingListEntity CreateTestWaitingList(string name, int totalSeats)

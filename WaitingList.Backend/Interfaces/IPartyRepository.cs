@@ -11,5 +11,5 @@ public interface IPartyRepository
     
     ResultObject<PartyEntity> GetParty(string sessionId);
 
-    void RemoveParty(PartyEntity party);
+    ResultObject<PartyEntity> RemoveParty(PartyEntity party);
 }
