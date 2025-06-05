@@ -57,3 +57,5 @@ After service a background service will put the end time of service and the user
 
 I went with a coding style where throwing exceptions is a last-ditch effort. The client also shows system errors as a snackbar error and user / validation errors right above where the user is looking on the screen.
 Using interfaces was a bit of an overkill for the repositories and services but it was to show that I usually use these when more generic methods are introduced for more repositories; like Save and Get.
+
+The Database uses a code-first approach to get generated, giving a single point to check for all relations. Between the Backend and Database Entities get passed between them. The API layer only gets DTOs, to ensure to take away complexity and only showing relevant data to the receiver/user. The services are in place for data manipulation and the repositories' only job is CRUD.
