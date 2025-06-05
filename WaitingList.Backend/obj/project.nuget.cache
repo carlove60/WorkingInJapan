@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3AtWDzs2zIU=",
+  "dgSpecHash": "duC9s5xojiE=",
   "success": true,
-  "projectFilePath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/WaitingList.Backend.csproj",
+  "projectFilePath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Backend/WaitingList.Backend.csproj",
   "expectedPackageFiles": [
     "/Users/carlove/.nuget/packages/bouncycastle.cryptography/2.3.1/bouncycastle.cryptography.2.3.1.nupkg.sha512",
     "/Users/carlove/.nuget/packages/google.protobuf/3.26.1/google.protobuf.3.26.1.nupkg.sha512",

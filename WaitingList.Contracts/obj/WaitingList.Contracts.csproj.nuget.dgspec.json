@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/WaitingList.Contracts.csproj": {}
+    "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/WaitingList.Contracts.csproj": {}
   },
   "projects": {
-    "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/WaitingList.Contracts.csproj": {
+    "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/WaitingList.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/WaitingList.Contracts.csproj",
+        "projectUniqueName": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/WaitingList.Contracts.csproj",
         "projectName": "WaitingList.Contracts",
-        "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/WaitingList.Contracts.csproj",
+        "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/WaitingList.Contracts.csproj",
         "packagesPath": "/Users/carlove/.nuget/packages/",
-        "outputPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/obj/",
+        "outputPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/carlove/.nuget/NuGet/NuGet.Config"

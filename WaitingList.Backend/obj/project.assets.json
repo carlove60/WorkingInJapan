@@ -4557,11 +4557,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/WaitingList.Backend.csproj",
+      "projectUniqueName": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Backend/WaitingList.Backend.csproj",
       "projectName": "WaitingList.Backend",
-      "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/WaitingList.Backend.csproj",
+      "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Backend/WaitingList.Backend.csproj",
       "packagesPath": "/Users/carlove/.nuget/packages/",
-      "outputPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/obj/",
+      "outputPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Backend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/carlove/.nuget/NuGet/NuGet.Config"
@@ -4577,11 +4577,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/WaitingList.Contracts.csproj": {
-              "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/WaitingList.Contracts.csproj"
+            "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/WaitingList.Contracts.csproj": {
+              "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/WaitingList.Contracts.csproj"
             },
-            "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Database/WaitingList.Database.csproj": {
-              "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Database/WaitingList.Database.csproj"
+            "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Database/WaitingList.Database.csproj": {
+              "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Database/WaitingList.Database.csproj"
             }
           }
         }

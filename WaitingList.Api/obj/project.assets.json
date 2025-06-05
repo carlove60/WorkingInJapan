@@ -6368,11 +6368,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/WaitingList.Api.csproj",
+      "projectUniqueName": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Api/WaitingList.Api.csproj",
       "projectName": "WaitingList.Api",
-      "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/WaitingList.Api.csproj",
+      "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Api/WaitingList.Api.csproj",
       "packagesPath": "/Users/carlove/.nuget/packages/",
-      "outputPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/obj/",
+      "outputPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/carlove/.nuget/NuGet/NuGet.Config"
@@ -6388,11 +6388,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/WaitingList.Backend.csproj": {
-              "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Backend/WaitingList.Backend.csproj"
+            "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Backend/WaitingList.Backend.csproj": {
+              "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Backend/WaitingList.Backend.csproj"
             },
-            "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj": {
-              "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj"
+            "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj": {
+              "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj"
             }
           }
         }

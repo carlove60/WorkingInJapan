@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Database/WaitingList.Database.csproj": {}
+    "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Database/WaitingList.Database.csproj": {}
   },
   "projects": {
-    "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Database/WaitingList.Database.csproj": {
+    "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Database/WaitingList.Database.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Database/WaitingList.Database.csproj",
+        "projectUniqueName": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Database/WaitingList.Database.csproj",
         "projectName": "WaitingList.Database",
-        "projectPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Database/WaitingList.Database.csproj",
+        "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Database/WaitingList.Database.csproj",
         "packagesPath": "/Users/carlove/.nuget/packages/",
-        "outputPath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Database/obj/",
+        "outputPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Database/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/carlove/.nuget/NuGet/NuGet.Config"

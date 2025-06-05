@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "w1NX5lq+I6k=",
+  "dgSpecHash": "CRAk6x6N+QI=",
   "success": true,
-  "projectFilePath": "/Users/carlove/RiderProjects/Eeckhoven/WaitingList.Api/WaitingList.Api.csproj",
+  "projectFilePath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Api/WaitingList.Api.csproj",
   "expectedPackageFiles": [
     "/Users/carlove/.nuget/packages/ardalis.smartenum/8.2.0/ardalis.smartenum.8.2.0.nupkg.sha512",
     "/Users/carlove/.nuget/packages/bouncycastle.cryptography/2.3.1/bouncycastle.cryptography.2.3.1.nupkg.sha512",
