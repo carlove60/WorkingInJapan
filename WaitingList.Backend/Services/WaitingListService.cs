@@ -67,14 +67,13 @@ public class WaitingListService : IWaitingListService
 
             var partyEntity = partyDto.ToEntity();
             partyEntity.WaitingListId = waitingList.Id;
-            result.Messages.AddSuccess("You have been successfully added to the waiting list!");
-        
             var party = _partyRepository.SaveParty(partyEntity);
             if (party.Messages.Count > 0)
             {
                 result.Messages.AddRange(party.Messages);
                 return result;       
             }
+            result.Messages.AddSuccess("You have been successfully added to the waiting list!");
         }
         
         return result;

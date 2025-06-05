@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WaitingList.Database.Database;
 using WaitingListBackend.Entities;
 using WaitingListBackend.Interfaces;
+using WaitingListBackend.Models;
 
 namespace WaitingListBackend.Repositories;
 
@@ -19,6 +20,14 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
     public ResultObject<PartyEntity> SaveParty(PartyEntity party)
     {
         var resultObject = new ResultObject<PartyEntity>();
+        var validationResult = Validate(party);
+        resultObject.Messages.AddRange(validationResult);
+        if (resultObject.Messages.Count > 0)
+        {
+            resultObject.Records.Add(party);
+            return resultObject;
+        }
+
         try
         {
             EntityEntry<PartyEntity> partyEntry;
@@ -80,5 +89,21 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
        }
 
        return result;   
+    }
+
+    private MessageList Validate(PartyEntity party)
+    {
+        var result = new MessageList();
+        if (string.IsNullOrWhiteSpace(party.Name))
+        {
+            result.AddError("Please fill in a name");
+        }
+
+        if (party.Size == 0)
+        {
+            result.AddError("Please fill in a size above 0");       
+        }
+
+        return result;   
     }
 }
