@@ -3,7 +3,7 @@
 namespace WaitingListTests.IntegrationTests.WaitingList;
 
 [TestClass]
-public class RepositoryTests : TestBase
+public class WaitingListRepositoryTests : TestBase
 {
     [TestMethod]
     public void GivenPartySavedToRepository_WhenRetrievedBySessionId_ThenShouldReturnCorrectParty()

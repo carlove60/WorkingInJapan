@@ -10,7 +10,7 @@ namespace WaitingListBackend.Repositories;
 /// Extends the functionality of the base repository and implements the
 /// IWaitingListRepository interface.
 /// </summary>
-public class Repository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IWaitingListRepository
+public class WaitingListRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IWaitingListRepository
 {
     /// <summary>
     /// Retrieves a waiting list by its name, optionally including checked-in parties.
@@ -59,5 +59,6 @@ public class Repository(ApplicationDbContext applicationDbContext) : BaseReposit
             result.Records.Add(waitingList);
         }
 
-        return result;    }
+        return result;    
+    }
 }

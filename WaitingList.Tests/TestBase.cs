@@ -27,7 +27,7 @@ public class TestBase : IDisposable
             Context.Database.EnsureCreated();
         }
 
-        WaitingListRepository = new Repository(Context);
+        WaitingListRepository = new WaitingListRepository(Context);
         PartyRepository = new PartyRepository(Context);
         WaitingListService = new WaitingListService(WaitingListRepository, PartyRepository);
         PartyService = new PartyService(PartyRepository, WaitingListRepository);
