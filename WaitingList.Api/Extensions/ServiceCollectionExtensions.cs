@@ -46,7 +46,7 @@ public static class ServiceCollectionExtensions
     /// <returns>The service collection with the required services and repositories configured.</returns>
     public static IServiceCollection AddServicesAndRepositories(this IServiceCollection services)
     {
-        services.AddHostedService<EnsureBackgroundExistsBackgroundService>();
+        services.AddHostedService<EnsureWaitingListExistsBackgroundService>();
         services.AddHostedService<ConcludeServiceBackgroundService>();
         services.AddHostedService<DeleteTimedOutSessionsBackgroundService>();
         services.AddEndpointsApiExplorer();

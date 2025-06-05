@@ -25,7 +25,6 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
     /// appropriate configuration and options.
     /// </returns>
     /// <exception cref="InvalidOperationException">
-    /// Thrown if the connection string 'MySqlConnection
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
@@ -39,7 +38,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         
         optionsBuilder.UseMySQL((string)(connectionString ?? throw new InvalidOperationException(
             "Connection string 'MySqlConnection' not found.")));
-
+        
         return new ApplicationDbContext(optionsBuilder.Options);
     }
 }

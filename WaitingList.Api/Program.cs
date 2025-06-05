@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using WaitingList.Database.Database;
 using WaitingList.Extensions;
 using WaitingList.Middleware;
 

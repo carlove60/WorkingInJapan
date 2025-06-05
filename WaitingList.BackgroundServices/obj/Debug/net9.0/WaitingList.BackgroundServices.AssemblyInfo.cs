@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WaitingList.BackgroundServices")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88764bf2549ff49090ce8a6b0b67bd000d33a606")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e9fa3af23e571c37fc275b48896b02f0e480175")]
 [assembly: System.Reflection.AssemblyProductAttribute("WaitingList.BackgroundServices")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WaitingList.BackgroundServices")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -20,7 +20,7 @@ namespace WaitingList.BackgroundServices.BackgroundServices;
 /// <param name="logger">An instance of <see cref="ILogger"/> used for logging information about the lifecycle and operations of the service.</param>
 /// <param name="scopeFactory">A factory for creating service scopes that provide access to scoped services such as the database context.</param>
 public class DeleteTimedOutSessionsBackgroundService(
-    ILogger<EnsureBackgroundExistsBackgroundService> logger,
+    ILogger<DeleteTimedOutSessionsBackgroundService> logger,
     IServiceScopeFactory scopeFactory)
     : BackgroundService
 {
@@ -46,7 +46,7 @@ public class DeleteTimedOutSessionsBackgroundService(
                 using var scope = scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-                logger.LogInformation("Checking for default waiting list...");
+                logger.LogInformation("Checking for parties on waiting lists...");
                 var partiesOnWaitingList = dbContext.Parties.Where(party =>
                     party.ServiceStartedAt == null &&
                     party.CreatedOn.AddMinutes(Constants.TimeoutInMinutes) < DateTime.Now);

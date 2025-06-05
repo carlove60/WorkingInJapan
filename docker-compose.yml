@@ -25,7 +25,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./migration.sql:/docker-entrypoint-initdb.d/migration.sql
+      - ./migrations.sql:/docker-entrypoint-initdb.d/migration.sql
     networks:
       - waitinglist-network
 
