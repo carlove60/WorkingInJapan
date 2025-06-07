@@ -59,3 +59,19 @@ I went with a coding style where throwing exceptions is a last-ditch effort. The
 Using interfaces was a bit of an overkill for the repositories and services but it was to show that I usually use these when more generic methods are introduced for more repositories; like Save and Get.
 
 The Database uses a code-first approach to get generated, giving a single point to check for all relations. Between the Backend and Database Entities get passed between them. The API layer only gets DTOs, to ensure to take away complexity and only showing relevant data to the receiver/user. The services are in place for data manipulation and the repositories' only job is CRUD.
+
+# Flow
+The user immediately lands on the WaitingList page, which is retrieved by name, if there are more restaurants, a new table would be created to add these and link the waiting lists. A domain driven approach.
+The page first checks if there is a party already registered with the current setting. If so, it shows the Party component, else it will show the waiting list. 
+
+The app supports multiple sessions, then can be tested with using multiple private tabs / browsers. If a party of 10 puts themselves on the waiting list the other session will not be allowed to sign-up anymore. 
+Only when the first party checks in, will there be space again on the waiting list. While being on the waiting list the user has the option to remove themselves off the list. Polling in the background ensures the user will see the check-in screen when they're up to enter the restaurant. After their service is done, they'll be able to go back to the waiting list page.
+
+
+
+
+
+
+
+
+
