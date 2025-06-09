@@ -1,7 +1,7 @@
 using WaitingList.Contracts.DTOs;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
 
-namespace WaitingListTests.IntegrationTests.WaitingList;
+namespace WaitingListTests.IntegrationTests.Tests;
 
 [TestClass]
 public class ServiceTests : TestBase
@@ -182,7 +182,7 @@ public class ServiceTests : TestBase
 
         // Then
         Assert.AreEqual(0, result.Records.Count);
-        Assert.AreEqual(0, result.Messages.Count);
+        Assert.AreEqual(1, result.Messages.Count);
     }
 
     [TestMethod]
@@ -280,6 +280,7 @@ public class ServiceTests : TestBase
         };
         
         WaitingListService.AddPartyToWaitingList(partyDto);
+        Task.Delay(500);
         WaitingListService.AddPartyToWaitingList(partyDto2);
         
         // When
@@ -358,6 +359,7 @@ public class ServiceTests : TestBase
         };
         
         WaitingListService.AddPartyToWaitingList(firstPartyDto);
+        Task.Delay(500);
         WaitingListService.AddPartyToWaitingList(secondPartyDto);
 
         // When
@@ -426,7 +428,7 @@ public class ServiceTests : TestBase
         // Then
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Messages.Count);
-        Assert.AreEqual("No party found for this session. Please check if you used a different browser.", result.Messages.First().Message);
+        Assert.AreEqual("Party with session ID NonExistentSessionId not found. Please check if you used a different browser.", result.Messages.First().Message);
     }
 
     [TestMethod]

@@ -1,6 +1,6 @@
-﻿using WaitingListBackend.Entities;
+﻿using WaitingList.Database.Entities;
 
-namespace WaitingListTests.IntegrationTests.WaitingList;
+namespace WaitingListTests.IntegrationTests.Tests;
 
 [TestClass]
 public class WaitingListRepositoryTests : TestBase

@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WaitingList.Database.Database;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
+using WaitingList.SseManager.Managers;
+using WaitingListBackend.Extensions;
 
 namespace WaitingList.BackgroundServices.BackgroundServices;
 
@@ -21,7 +24,7 @@ namespace WaitingList.BackgroundServices.BackgroundServices;
 /// <param name="scopeFactory">A factory for creating service scopes that provide access to scoped services such as the database context.</param>
 public class DeleteTimedOutSessionsBackgroundService(
     ILogger<DeleteTimedOutSessionsBackgroundService> logger,
-    IServiceScopeFactory scopeFactory)
+    IServiceScopeFactory scopeFactory, SseChannelManager sseChannelManager)
     : BackgroundService
 {
     /// <summary>
@@ -47,14 +50,17 @@ public class DeleteTimedOutSessionsBackgroundService(
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                 logger.LogInformation("Checking for parties on waiting lists...");
-                var partiesOnWaitingList = dbContext.Parties.Where(party =>
+                var partiesOnWaitingList = dbContext.Parties.Include((p) => p.WaitingListEntity).Where(party =>
                     party.ServiceStartedAt == null &&
                     party.CreatedOn.AddMinutes(Constants.TimeoutInMinutes) < DateTime.Now);
 
                 var timedOutParties = new List<PartyEntity>();
+                var sseMessageManager = new SseMessageManager(sseChannelManager, logger);
                 foreach (var party in partiesOnWaitingList)
                 {
                     timedOutParties.Add(party);
+                    sseMessageManager.AddParty(party.ToDto());
+                    sseMessageManager.AddWaitingList(party.WaitingListEntity.ToDto());
                 }
 
                 if (timedOutParties.Any())
@@ -63,7 +69,9 @@ public class DeleteTimedOutSessionsBackgroundService(
                     dbContext.RemoveRange(timedOutParties);
                     var result = dbContext.SaveChanges();
                     logger.LogInformation($"Removed {result} parties from waiting list.");
+                    sseMessageManager.SendMessagesAndClear();
                 }
+                
             }
             catch (Exception exception)
             {

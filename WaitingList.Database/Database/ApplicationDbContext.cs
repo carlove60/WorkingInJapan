@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
 
 namespace WaitingList.Database.Database;
 

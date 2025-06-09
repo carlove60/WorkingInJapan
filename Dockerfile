@@ -6,10 +6,12 @@ WORKDIR /src
 COPY ["WaitingList.Api/WaitingList.Api.csproj", "WaitingList.Api/"]
 COPY ["WaitingList.Backend/WaitingList.Backend.csproj", "WaitingList.Backend/"]
 COPY ["WaitingList.Contracts/WaitingList.Contracts.csproj", "WaitingList.Contracts/"]
+COPY ["WaitingList.Manager/WaitingList.Manager.csproj", "WaitingList.Manager/"]
 COPY ["WaitingList.Tests/WaitingList.Tests.csproj", "WaitingList.Tests/"]
 
 # Restore packages - this is crucial
 RUN dotnet restore "WaitingList.Api/WaitingList.Api.csproj"
+RUN dotnet restore "WaitingList.Manager/WaitingList.Manager.csproj"
 
 # Copy the rest of the source code
 COPY . .

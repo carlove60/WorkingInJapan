@@ -1,4 +1,4 @@
-namespace WaitingListBackend.Entities;
+namespace WaitingList.Database.Entities;
 
 /// <summary>
 /// Represents a waiting list entity which contains details about parties,
@@ -7,7 +7,7 @@ namespace WaitingListBackend.Entities;
 /// </summary>
 public class WaitingListEntity
 {
-    public List<PartyEntity> Parties { get; set; } = new List<PartyEntity>();
+    public List<PartyEntity> Parties { get; set; } = new();
     public string Name { get; set; }
     public int TotalSeats { get; set; } = 0;
     public int TimeForService { get; set; }
