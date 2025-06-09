@@ -38,6 +38,10 @@ The database is accessible from inside the `waitinglist-network` with the follow
 #### Troubleshooting:
 3306 has to be available for the database to run. Ensure yours is free before you build the app
 
+## UPDATE
+SSE support has been added under the open branch.
+Can be ignored for this code review but I wasn't satisfied with the current implementation.
+
 ## About this web-app
 Layered in 6 projects.
 - One for the API calls (entry point, Program.cs)
