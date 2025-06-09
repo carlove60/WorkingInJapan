@@ -19,7 +19,7 @@ public class TestBase : IDisposable
     protected TestBase()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseMySQL($"server=db;uid=root;pwd=qh734hsr05;Database=WaitingListTest")
+            .UseMySQL($"server=127.0.0.1;uid=root;pwd=qh734hsr05;Database=WaitingListTest")
             .Options;
 
         Context = new ApplicationDbContext(options);

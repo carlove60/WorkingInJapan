@@ -1667,6 +1667,7 @@
       },
       "WaitingList.Manager/1.0.0": {
         "dependencies": {
+          "Microsoft.Extensions.Logging": "9.0.5",
           "Newtonsoft.Json": "13.0.3",
           "WaitingList.Contracts": "1.0.0"
         },

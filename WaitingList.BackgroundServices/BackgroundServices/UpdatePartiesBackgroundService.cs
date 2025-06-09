@@ -13,8 +13,8 @@ namespace WaitingList.BackgroundServices.BackgroundServices;
 /// runs periodically to check for and create the default waiting list if
 /// it does not exist.
 /// </summary>
-public class EnsureWaitingListExistsBackgroundService(
-    ILogger<EnsureWaitingListExistsBackgroundService> logger,
+public class UpdatePartiesBackgroundService(
+    ILogger<UpdatePartiesBackgroundService> logger,
     IServiceScopeFactory scopeFactory)
     : BackgroundService
 {
@@ -28,7 +28,7 @@ public class EnsureWaitingListExistsBackgroundService(
     /// <returns>A task that represents the asynchronous operation.</returns>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var backgroundServiceName = nameof(EnsureWaitingListExistsBackgroundService);
+        var backgroundServiceName = nameof(UpdatePartiesBackgroundService);
         logger.LogInformation($"{backgroundServiceName} started.");
         WaitingListEntity? waitingListEntity = null;
         while (!stoppingToken.IsCancellationRequested && waitingListEntity == null)
