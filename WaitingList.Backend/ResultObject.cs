@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using WaitingListBackend.Enums;
 
 namespace WaitingListBackend;
 
@@ -23,4 +24,9 @@ public class ResultObject<T>
     /// </summary>
     [Required]
     public MessageList Messages { get; set; } = new();
+
+    public bool HasErrors()
+    {
+        return Messages.Any((m) => m.Type == MessageType.Error);
+    }
 }

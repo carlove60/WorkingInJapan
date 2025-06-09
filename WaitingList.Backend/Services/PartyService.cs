@@ -40,6 +40,13 @@ public class PartyService : IPartyService
     private readonly SseChannelManager _sseChannelManager;
 
     /// <summary>
+    /// Represents the service responsible for managing waiting list operations,
+    /// such as adding parties to the waiting list and retrieving waiting list details.
+    /// This variable facilitates the integration of waiting list functionality within the PartyService.
+    /// </summary>
+    private readonly IWaitingListService _waitingListService;
+
+    /// <summary>
     /// Provides services for managing party-related operations including check-in, cancellation, retrieval,
     /// and determining eligibility for check-in.
     /// </summary>
@@ -49,11 +56,12 @@ public class PartyService : IPartyService
     /// <see cref="SseChannelManager"/> for server-sent events communication.
     /// </remarks>
     public PartyService(IPartyRepository partyRepository, IWaitingListRepository waitingListRepository,
-        SseChannelManager sseChannelManager)
+        SseChannelManager sseChannelManager, IWaitingListService waitingListService)
     {
         _partyRepository = partyRepository;
         _waitingListRepository = waitingListRepository;
         _sseChannelManager = sseChannelManager;
+        _waitingListService = waitingListService;
     }
 
     /// <summary>
@@ -78,7 +86,7 @@ public class PartyService : IPartyService
         }
 
         var party = partyResult.Records.First(); 
-        var partyCanCheckInResult = CanCheckIn(party.SessionId);
+        var partyCanCheckInResult = _waitingListService.CanCheckIn(party.SessionId);
         result.Messages.AddRange(partyCanCheckInResult.Messages);
         if (result.Messages.Count > 0 || !partyCanCheckInResult.Records.Single())
         {
@@ -91,6 +99,8 @@ public class PartyService : IPartyService
         var partyDto = party.ToDto();
         result.Records.Add(partyDto); 
         result.Messages.AddSuccess("Party checked in successfully."); 
+        var waitingList = _waitingListService.GetWaitingList(partyDto.WaitingListName).Records.First();
+        MessageWaitingList(waitingList);
         return result;
     }
 
@@ -124,52 +134,9 @@ public class PartyService : IPartyService
         {
             return result;
         }
-        var waitingList = _waitingListRepository.GetWaitingList(partyDto.WaitingListName, false).Records.First();
-        MessageWaitingList(waitingList.ToDto());
-        NotifyNextPartyToCheckIn(waitingList);
-        return result;
-    }
-
-
-    /// <summary>
-    /// Determines whether the party associated with the given session ID can be checked in at this time.
-    /// </summary>
-    /// <param name="sessionId">The session ID of the party to evaluate for check-in eligibility.</param>
-    /// <returns>A <see cref="ResultObject{Boolean}"/> indicating if the party can be checked in and including any relevant error messages.</returns>
-    public ResultObject<bool> CanCheckIn(string sessionId)
-    {
-        var result = new ResultObject<bool>();
-        var partyEntityResult = _partyRepository.GetParty(sessionId);
-        result.Messages.AddRange(partyEntityResult.Messages);
-        if (result.Messages.Count > 0)
-        {
-            result.Records.Add(false);
-            return result;
-        }
-        var party = partyEntityResult.Records.Single();
-        var waitingListResult = _waitingListRepository.GetWaitingListWithAllParties(party.WaitingListId);
-        result.Messages.AddRange(waitingListResult.Messages);
-        if (waitingListResult.Records.Count == 0)
-        {
-            result.Records.Add(false);
-            return result;       
-        }
-        
-        var waitingList = waitingListResult.Records.Single();
-        var nextPartyToCheckIn = GetNextPartyToCheckIn(waitingList.Parties);
-        var partiesInService = waitingList.Parties
-            .Where((p) => p.ServiceStartedAt != null && p.ServiceEndedAt == null);
-
-        var timeStillInService = CalculateRemainingServiceTime(partiesInService, waitingList.TimeForService);
-        if (timeStillInService == 0 && nextPartyToCheckIn != null && nextPartyToCheckIn.SessionId == sessionId && PartySizeFits(waitingList, nextPartyToCheckIn.Size))
-        {
-            result.Records.Add(true);
-        } 
-        else
-        {
-            result.Records.Add(false);
-            result.Messages.AddError("Party cannot be checked in at this time.");
-        }
+        var waitingList = _waitingListService.GetWaitingList(partyDto.WaitingListName).Records.First();
+        MessageWaitingList(waitingList);
+        NotifyNextPartyToCheckIn(waitingList.NextPartyToCheckIn);
         return result;
     }
 
@@ -189,7 +156,7 @@ public class PartyService : IPartyService
         }
         
         var partyEntity = party.Records.First();
-        var canCheckInResult = CanCheckIn(partyEntity.SessionId);
+        var canCheckInResult = _waitingListService.CanCheckIn(partyEntity.SessionId);
         result.Messages.AddRange(canCheckInResult.Messages);
         var partyDto = partyEntity.ToDto();
         partyDto.IsServiceDone = partyEntity.ServiceEndedAt != null;
@@ -201,62 +168,19 @@ public class PartyService : IPartyService
         result.Records.Add(partyDto);
         return result;
     }
-    
-    /// <summary>
-    /// Determines the next party to check in from a collection of parties.
-    /// </summary>
-    /// <param name="parties">A collection of party entities to evaluate for the next check-in.</param>
-    /// <returns>The next <see cref="PartyEntity"/> to check in based on the earliest creation time, or null if no eligible party exists.</returns>
-    public PartyEntity? GetNextPartyToCheckIn(IEnumerable<PartyEntity> parties)
-    {
-        var nextPartyToCheckIn = parties.Where((p) => !p.CheckedIn)
-            .OrderBy((p) => p.CreatedOn)
-            .FirstOrDefault();
-         return nextPartyToCheckIn;
-    }
-    
-    /// <summary>
-    /// Calculates the total remaining service time for the parties currently in service.
-    /// </summary>
-    /// <param name="partiesInService">A collection of parties currently in service.</param>
-    /// <param name="timeForService">The standard time allocated for servicing each unit of party size.</param>
-    /// <returns>The total remaining service time for all parties in service, expressed as an integer.</returns>
-    private int CalculateRemainingServiceTime(IEnumerable<PartyEntity> partiesInService, int timeForService)
-    {
-        return partiesInService.Sum((p) => p.Size) * timeForService;
-    }
 
     /// <summary>
-    /// Determines whether the size of a party can fit in the available seats of the specified waiting list.
+    /// Notifies the next party in the queue, if applicable, about their eligibility to check in.
     /// </summary>
-    /// <param name="waitingList">The waiting list entity containing the available seats and party information.</param>
-    /// <param name="partySize">The size of the party to be checked against the available seats.</param>
-    /// <returns>True if the party size can fit within the available seats; otherwise, false.</returns>
-    private bool PartySizeFits(WaitingListEntity waitingList, int partySize)
+    /// <param name="party">The party details to notify, including information such as session ID, waiting list name, and check-in status. If null, no notification will be sent.</param>
+    private void NotifyNextPartyToCheckIn(PartyDto? party)
     {
-        var waitingListDto = waitingList.ToDto();
-        return waitingListDto.SeatsAvailable >= partySize;
-    }
-
-    /// <summary>
-    /// Notifies the next party in the specified waiting list that they are eligible to check in.
-    /// </summary>
-    /// <param name="waitingList">The waiting list containing the parties to check in from.</param>
-    private void NotifyNextPartyToCheckIn(WaitingListEntity waitingList)
-    {
-        var nextPartyToCheckIn = GetNextPartyToCheckIn(waitingList.Parties);
-        if (nextPartyToCheckIn == null)
+        if (party == null)
         {
             return;
         }
 
-        var canCheckIn = CanCheckIn(nextPartyToCheckIn.SessionId).Records.First();
-        if (canCheckIn)
-        {
-            var partyDto = nextPartyToCheckIn.ToDto();
-            partyDto.CanCheckIn = canCheckIn;
-            MessageParty(partyDto);;
-        }
+        MessageParty(party);
     }
 
     /// <summary>

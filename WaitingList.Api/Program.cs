@@ -43,7 +43,7 @@ internal static class Program
                     options.RoutePrefix = string.Empty;
                 });
 
-                app.Services.GenerateSwaggerApiJson();
+                //app.Services.GenerateSwaggerApiJson();
             }
             app.UseRouting();
             app.UseSession();

@@ -13,19 +13,95 @@ public class WaitingListService : IWaitingListService
 {
     private readonly IWaitingListRepository _waitingListRepository;
     private readonly IPartyRepository _partyRepository;
-    private readonly IPartyService _partyService;
     private readonly SseChannelManager _sseChannelManager;
 
     /// <summary>
     /// Provides services for managing and interacting with waiting lists.
     /// </summary>
     public WaitingListService(IWaitingListRepository waitingListRepository, IPartyRepository partyRepository,
-        IPartyService partyService, SseChannelManager sseChannelManager)
+        SseChannelManager sseChannelManager)
     {
         _waitingListRepository = waitingListRepository;
         _partyRepository = partyRepository;
-        _partyService = partyService;   
         _sseChannelManager = sseChannelManager;  
+    }
+    
+    /// <summary>
+    /// Calculates the total remaining service time for the parties currently in service.
+    /// </summary>
+    /// <param name="partiesInService">A collection of parties currently in service.</param>
+    /// <param name="timeForService">The standard time allocated for servicing each unit of party size.</param>
+    /// <returns>The total remaining service time for all parties in service, expressed as an integer.</returns>
+    private int CalculateRemainingServiceTime(IEnumerable<PartyEntity> partiesInService, int timeForService)
+    {
+        return partiesInService.Sum((p) => p.Size) * timeForService;
+    }
+
+    /// <summary>
+    /// Determines whether the size of a party can fit in the available seats of the specified waiting list.
+    /// </summary>
+    /// <param name="waitingList">The waiting list entity containing the available seats and party information.</param>
+    /// <param name="partySize">The size of the party to be checked against the available seats.</param>
+    /// <returns>True if the party size can fit within the available seats; otherwise, false.</returns>
+    private bool PartySizeFits(WaitingListEntity waitingList, int partySize)
+    {
+        var waitingListDto = waitingList.ToDto();
+        return waitingListDto.SeatsAvailable >= partySize;
+    }
+    
+    /// <summary>
+    /// Determines whether the party associated with the given session ID can be checked in at this time.
+    /// </summary>
+    /// <param name="sessionId">The session ID of the party to evaluate for check-in eligibility.</param>
+    /// <returns>A <see cref="ResultObject{Boolean}"/> indicating if the party can be checked in and including any relevant error messages.</returns>
+    public ResultObject<bool> CanCheckIn(string sessionId)
+    {
+        var result = new ResultObject<bool>();
+        var partyEntityResult = _partyRepository.GetParty(sessionId);
+        result.Messages.AddRange(partyEntityResult.Messages);
+        if (result.Messages.Count > 0)
+        {
+            result.Records.Add(false);
+            return result;
+        }
+        var party = partyEntityResult.Records.Single();
+        var waitingListResult = _waitingListRepository.GetWaitingListWithAllParties(party.WaitingListId);
+        result.Messages.AddRange(waitingListResult.Messages);
+        if (waitingListResult.Records.Count == 0)
+        {
+            result.Records.Add(false);
+            return result;       
+        }
+        
+        var waitingList = waitingListResult.Records.Single();
+        var nextPartyToCheckIn = GetNextPartyToCheckIn(waitingList);
+        var partiesInService = waitingList.Parties
+            .Where((p) => p.ServiceStartedAt != null && p.ServiceEndedAt == null);
+
+        var timeStillInService = CalculateRemainingServiceTime(partiesInService, waitingList.TimeForService);
+        if (timeStillInService == 0 && nextPartyToCheckIn != null && nextPartyToCheckIn.SessionId == sessionId && PartySizeFits(waitingList, nextPartyToCheckIn.Size))
+        {
+            result.Records.Add(true);
+        } 
+        else
+        {
+            result.Records.Add(false);
+            result.Messages.AddError("Party cannot be checked in at this time.");
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Retrieves the next party in a waiting list that is eligible for check-in based on specific criteria.
+    /// </summary>
+    /// <param name="waitingListEntity">The waiting list entity that contains the list of parties to evaluate.</param>
+    /// <returns>The next party as a <see cref="PartyDto"/> if one is eligible for check-in; otherwise, null.</returns>
+    public PartyDto? GetNextPartyToCheckIn(WaitingListEntity waitingListEntity)
+    {
+        var nextPartyToCheckIn = waitingListEntity.Parties.Where((p) => !p.CheckedIn)
+            .OrderBy((p) => p.CreatedOn)
+            .FirstOrDefault();
+        return nextPartyToCheckIn?.ToDto();
     }
 
     /// <summary>
@@ -69,7 +145,7 @@ public class WaitingListService : IWaitingListService
             var partyEntity = partyDto.ToEntity();
             partyEntity.WaitingListId = waitingList.Id;
             var party = _partyRepository.SaveParty(partyEntity);
-            partyDto.CanCheckIn = _partyService.CanCheckIn(partyDto.SessionId).Records.First();;
+            partyDto.CanCheckIn = CanCheckIn(partyDto.SessionId).Records.First();;
             waitingListDto.AddedParty = partyDto;
             result.Records.Add(waitingListDto);
             if (party.Messages.Count > 0)
@@ -97,11 +173,14 @@ public class WaitingListService : IWaitingListService
         var result = new ResultObject<WaitingListDto>();
         var waitingList = _waitingListRepository.GetWaitingList(name, false);
         result.Messages = waitingList.Messages;
-        var waitingListDto = CreateDto(waitingList.Records.FirstOrDefault());
-        if (waitingListDto != null)
+        if (result.HasErrors())
         {
-            result.Records.Add(waitingListDto);
+            return result;
         }
+
+        var waitingListEntity = waitingList.Records.First();
+        var waitingListDto = CreateDto(waitingListEntity);
+        result.Records.Add(waitingListDto);
         return result;
     }
 
@@ -119,7 +198,7 @@ public class WaitingListService : IWaitingListService
     {
         if (waitingList == null)
         {
-            return null;  
+            return null;
         }
 
         var waitingListDto = new WaitingListDto();
@@ -128,6 +207,14 @@ public class WaitingListService : IWaitingListService
         waitingListDto.Parties = waitingList.Parties.ToDto();
         waitingListDto.Id = waitingList.Id;
         waitingListDto.SeatsAvailable = CalculateSeatsAvailable(waitingList);
+        var nextPartyToCheckIn = GetNextPartyToCheckIn(waitingList);
+        if (nextPartyToCheckIn != null)
+        {
+            var canCheckIn = CanCheckIn(nextPartyToCheckIn.SessionId).Records.First();
+            nextPartyToCheckIn.CanCheckIn = canCheckIn;
+        }
+
+        waitingListDto.NextPartyToCheckIn = nextPartyToCheckIn;
         return waitingListDto;   
     }
 

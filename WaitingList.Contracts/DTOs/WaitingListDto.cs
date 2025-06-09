@@ -9,7 +9,9 @@ public class WaitingListDto
     public Guid Id { get; set; }
     public int TotalSeats { get; set; }
     
-    public PartyDto AddedParty { get; set; }
+    public PartyDto? AddedParty { get; set; }
+    
+    public PartyDto? NextPartyToCheckIn { get; set; }
     
     [Required]
     public int SeatsAvailable { get; set; }

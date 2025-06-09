@@ -37,23 +37,4 @@ public interface IPartyService
     /// If no party exists for the given session ID, the result contains an error message.
     /// </returns>
     ResultObject<PartyDto> CancelCheckIn(string sessionId);
-
-    /// <summary>
-    /// Determines whether the party associated with the specified session ID is eligible for check-in.
-    /// </summary>
-    /// <param name="sessionId">The unique identifier of the session to evaluate for check-in eligibility.</param>
-    /// <returns>
-    /// A <see cref="ResultObject{T}"/> containing a boolean value indicating whether the party can check in.
-    /// True if the party is eligible, otherwise false.
-    /// </returns>
-    ResultObject<bool> CanCheckIn(string sessionId);
-
-    /// <summary>
-    /// Retrieves the next party eligible for check-in from the provided list of parties.
-    /// </summary>
-    /// <param name="parties">The collection of party entities to evaluate for the next eligible party to check in.</param>
-    /// <returns>
-    /// The next party entity that is not yet checked in, ordered by the earliest creation date, or null if no such party exists.
-    /// </returns>
-    PartyEntity? GetNextPartyToCheckIn(IEnumerable<PartyEntity> parties);
 }

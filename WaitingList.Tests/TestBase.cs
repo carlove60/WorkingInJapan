@@ -19,7 +19,7 @@ public class TestBase : IDisposable
     protected TestBase()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseMySQL($"server=127.0.0.1;uid=root;pwd=qh734hsr05;Database=WaitingListTest")
+            .UseMySQL($"server=db;uid=root;pwd=qh734hsr05;Database=WaitingListTest")
             .Options;
 
         Context = new ApplicationDbContext(options);
@@ -30,8 +30,8 @@ public class TestBase : IDisposable
         SseChannelManager = new SseChannelManager();
         WaitingListRepository = new WaitingListRepository(Context, SseChannelManager);
         PartyRepository = new PartyRepository(Context, SseChannelManager);
-        PartyService = new PartyService(PartyRepository, WaitingListRepository, SseChannelManager);
-        WaitingListService = new WaitingListService(WaitingListRepository, PartyRepository, PartyService, SseChannelManager);
+        WaitingListService = new WaitingListService(WaitingListRepository, PartyRepository, SseChannelManager);
+        PartyService = new PartyService(PartyRepository, WaitingListRepository, SseChannelManager, WaitingListService);
     }
     
 
