@@ -13,5 +13,5 @@ public class WaitingListDto
     
     [Required]
     public int SeatsAvailable { get; set; }
-    public List<PartyDto> Parties { get; set; } = new List<PartyDto>();
+    public List<PartyDto> Parties { get; set; } = new();
 }

@@ -1,5 +1,3 @@
-using WaitingListBackend;
-
 namespace WaitingList.Extensions;
 
 /// <summary>
@@ -14,6 +12,7 @@ public static class SessionExtensions
     /// <returns>The session ID as a string. If no session ID exists, a new one is created, stored, and returned.</returns>
     public static string? GetSessionId(this ISession session)
     {
+        Console.WriteLine($"SessionId is {session.GetString(WaitingListBackend.Constants.WaitingListSessionKey)}");
         return session.GetString(WaitingListBackend.Constants.WaitingListSessionKey);
     }
 

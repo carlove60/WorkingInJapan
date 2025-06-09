@@ -1,6 +1,5 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
-using WaitingList.Database.Database;
 using WaitingList.Extensions;
 using WaitingList.Middleware;
 
@@ -15,6 +14,7 @@ internal static class Program
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
             var configuration = builder.Configuration;
             var connectionString = configuration.GetConnectionString("MySqlConnection") ?? "";
@@ -24,6 +24,11 @@ internal static class Program
                 .AddServicesAndRepositories()
                 .AddUserSession()
                 .AddWebCors();
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(10); // Extend keep-alive for SSE
+            });
+
         }
         
         var app = builder.Build();
@@ -38,15 +43,13 @@ internal static class Program
                     options.RoutePrefix = string.Empty;
                 });
 
-                //app.Services.GenerateSwaggerApiJson();
+                app.Services.GenerateSwaggerApiJson();
             }
-
-            app.UseCors(Constants.ApiCallCorsPolicy);
             app.UseRouting();
-            app.UseAuthorization();
             app.UseSession();
+            app.UseCors(Constants.ApiCallCorsPolicy);
+            app.UseAuthorization();
             app.UseSessionMiddleware();
-            app.useSessionTrackingMiddleware();
             app.MapControllers();
             app.Run();
         }

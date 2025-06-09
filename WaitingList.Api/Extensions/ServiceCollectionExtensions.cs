@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WaitingList.BackgroundServices.BackgroundServices;
 using WaitingList.Database.Database;
+using WaitingList.SseManager.Managers;
 using WaitingList.Swagger;
 using WaitingListBackend.Interfaces;
 using WaitingListBackend.Repositories;
@@ -46,6 +47,7 @@ public static class ServiceCollectionExtensions
     /// <returns>The service collection with the required services and repositories configured.</returns>
     public static IServiceCollection AddServicesAndRepositories(this IServiceCollection services)
     {
+        services.AddHostedService<NotifyNextPartyForCheckInBackgroundServer>();
         services.AddHostedService<EnsureWaitingListExistsBackgroundService>();
         services.AddHostedService<ConcludeServiceBackgroundService>();
         services.AddHostedService<DeleteTimedOutSessionsBackgroundService>();
@@ -54,6 +56,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IWaitingListRepository, WaitingListRepository>();
         services.AddScoped<IPartyRepository, PartyRepository>();
         services.AddScoped<IPartyService, PartyService>();
+        services.AddSingleton<SseChannelManager>();
         return services;
     }
 
@@ -92,7 +95,7 @@ public static class ServiceCollectionExtensions
                 Description = "JWT Authorization header using the Bearer scheme.",
             });
 
-            c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
                     new OpenApiSecurityScheme
@@ -121,7 +124,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddCors(options =>
         {
-            options.AddPolicy(WaitingList.Constants.ApiCallCorsPolicy,
+            options.AddPolicy(Constants.ApiCallCorsPolicy,
                 policy => 
                     policy.WithOrigins(
                             "http://localhost:5173",  // Vite default

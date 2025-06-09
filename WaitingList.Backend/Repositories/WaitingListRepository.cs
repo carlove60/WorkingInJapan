@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WaitingList.Database.Database;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
+using WaitingList.SseManager.Managers;
 using WaitingListBackend.Interfaces;
 
 namespace WaitingListBackend.Repositories;
@@ -10,7 +11,7 @@ namespace WaitingListBackend.Repositories;
 /// Extends the functionality of the base repository and implements the
 /// IWaitingListRepository interface.
 /// </summary>
-public class WaitingListRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IWaitingListRepository
+public class WaitingListRepository(ApplicationDbContext applicationDbContext, SseChannelManager sseChannelManager) : BaseRepository(applicationDbContext, sseChannelManager), IWaitingListRepository
 {
     /// <summary>
     /// Retrieves a waiting list by its name, optionally including checked-in parties.
@@ -26,7 +27,8 @@ public class WaitingListRepository(ApplicationDbContext applicationDbContext) : 
     public ResultObject<WaitingListEntity> GetWaitingList(string name, bool includeCheckedIn)
     {
         var result = new ResultObject<WaitingListEntity>();
-        var waitingList = _applicationDbContext.WaitingLists
+        var waitingList = ApplicationDbContext.WaitingLists
+            .AsNoTracking()
             .Include((x) => x.Parties.Where((p) => p.ServiceEndedAt == null && p.CheckedIn == includeCheckedIn))
             .SingleOrDefault((x) => x.Name == name);
         if (waitingList == null)
@@ -49,7 +51,7 @@ public class WaitingListRepository(ApplicationDbContext applicationDbContext) : 
     public ResultObject<WaitingListEntity> GetWaitingListWithAllParties(Guid id)
     {
         var result = new ResultObject<WaitingListEntity>();
-        var waitingList = _applicationDbContext.WaitingLists.Include((x) => x.Parties).SingleOrDefault((x) => x.Id == id);
+        var waitingList = ApplicationDbContext.WaitingLists.AsNoTracking().Include((x) => x.Parties).SingleOrDefault((x) => x.Id == id);
         if (waitingList == null)
         {
             result.Messages.AddError($"Waiting list with id {id} not found");

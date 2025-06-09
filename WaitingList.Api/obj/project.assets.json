@@ -2296,7 +2296,8 @@
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
           "MySql.EntityFrameworkCore": "8.0.11",
           "WaitingList.Contracts": "1.0.0",
-          "WaitingList.Database": "1.0.0"
+          "WaitingList.Database": "1.0.0",
+          "WaitingList.Manager": "1.0.0"
         },
         "compile": {
           "bin/placeholder/WaitingList.Backend.dll": {}
@@ -2311,6 +2312,8 @@
         "dependencies": {
           "Microsoft.Extensions.Hosting.Abstractions": "8.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.5",
+          "WaitingList.Backend": "1.0.0",
+          "WaitingList.Contracts": "1.0.0",
           "WaitingList.Database": "1.0.0"
         },
         "compile": {
@@ -2344,6 +2347,20 @@
         },
         "runtime": {
           "bin/placeholder/WaitingList.Database.dll": {}
+        }
+      },
+      "WaitingList.Manager/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3",
+          "WaitingList.Contracts": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/WaitingList.Manager.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WaitingList.Manager.dll": {}
         }
       }
     }
@@ -6340,6 +6357,11 @@
       "type": "project",
       "path": "../WaitingList.Database/WaitingList.Database.csproj",
       "msbuildProject": "../WaitingList.Database/WaitingList.Database.csproj"
+    },
+    "WaitingList.Manager/1.0.0": {
+      "type": "project",
+      "path": "../WaitingList.Manager/WaitingList.Manager.csproj",
+      "msbuildProject": "../WaitingList.Manager/WaitingList.Manager.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6359,7 +6381,8 @@
       "Swashbuckle.AspNetCore.SwaggerGen >= 7.3.1",
       "Swashbuckle.AspNetCore.SwaggerUI >= 7.3.1",
       "WaitingList.Backend >= 1.0.0",
-      "WaitingList.BackgroundServices >= 1.0.0"
+      "WaitingList.BackgroundServices >= 1.0.0",
+      "WaitingList.Manager >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -6393,6 +6416,9 @@
             },
             "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj": {
               "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.BackgroundServices/WaitingList.BackgroundServices.csproj"
+            },
+            "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Manager/WaitingList.Manager.csproj": {
+              "projectPath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Manager/WaitingList.Manager.csproj"
             }
           }
         }

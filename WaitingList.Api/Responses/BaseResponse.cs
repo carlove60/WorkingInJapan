@@ -15,5 +15,5 @@ public class BaseResponse
     /// warnings, and informational messages.
     /// </summary>
     [Required]
-    public List<ValidationMessage> Messages { get; set; } = new List<ValidationMessage>();
+    public List<ValidationMessage> Messages { get; set; } = new();
 }

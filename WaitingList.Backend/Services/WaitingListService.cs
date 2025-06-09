@@ -1,27 +1,31 @@
 using WaitingList.Contracts.DTOs;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
+using WaitingList.SseManager.Managers;
 using WaitingListBackend.Extensions;
 using WaitingListBackend.Interfaces;
 
 namespace WaitingListBackend.Services;
 
 /// <summary>
-/// 
+/// Service responsible for handling operations related to the waiting list functionality in the application.
 /// </summary>
 public class WaitingListService : IWaitingListService
 {
     private readonly IWaitingListRepository _waitingListRepository;
     private readonly IPartyRepository _partyRepository;
+    private readonly IPartyService _partyService;
+    private readonly SseChannelManager _sseChannelManager;
 
     /// <summary>
-    /// 
+    /// Provides services for managing and interacting with waiting lists.
     /// </summary>
-    /// <param name="waitingListRepository"></param>
-    /// <param name="partyRepository"></param>
-    public WaitingListService(IWaitingListRepository waitingListRepository, IPartyRepository partyRepository)
+    public WaitingListService(IWaitingListRepository waitingListRepository, IPartyRepository partyRepository,
+        IPartyService partyService, SseChannelManager sseChannelManager)
     {
         _waitingListRepository = waitingListRepository;
         _partyRepository = partyRepository;
+        _partyService = partyService;   
+        _sseChannelManager = sseChannelManager;  
     }
 
     /// <summary>
@@ -34,7 +38,7 @@ public class WaitingListService : IWaitingListService
         var result = new ResultObject<WaitingListDto>();
         
         // Ensure that multiple parties don't try to make a request at the same time and both reserve (a) seat(s)
-        lock (this._waitingListRepository)
+        lock (_waitingListRepository)
         {
             var waitingListResult =  _waitingListRepository.GetWaitingList(partyDto.WaitingListName, false);
             result.Messages.AddRange(waitingListResult.Messages);
@@ -54,9 +58,6 @@ public class WaitingListService : IWaitingListService
                 return result;  
             }
             
-            waitingListDto.AddedParty = partyDto;
-            result.Records.Add(waitingListDto);
-            
             var hasSeatCapacity = WaitingListHasSeatCapacity(waitingList, partyDto.Size);
             if (!hasSeatCapacity)
             {
@@ -68,23 +69,35 @@ public class WaitingListService : IWaitingListService
             var partyEntity = partyDto.ToEntity();
             partyEntity.WaitingListId = waitingList.Id;
             var party = _partyRepository.SaveParty(partyEntity);
+            partyDto.CanCheckIn = _partyService.CanCheckIn(partyDto.SessionId).Records.First();;
+            waitingListDto.AddedParty = partyDto;
+            result.Records.Add(waitingListDto);
             if (party.Messages.Count > 0)
             {
                 result.Messages.AddRange(party.Messages);
                 return result;       
             }
+            
+            waitingListDto = GetWaitingList(waitingList.Name).Records.First();
+            var sseWaitingListDto = new SseDto<WaitingListDto>(waitingListDto, nameof(WaitingListDto));
+            _sseChannelManager.BroadcastDto(sseWaitingListDto);
             result.Messages.AddSuccess("You have been successfully added to the waiting list!");
         }
         
         return result;
     }
-    
+
+    /// <summary>
+    /// Retrieves a waiting list by its name.
+    /// </summary>
+    /// <param name="name">The name of the waiting list to retrieve.</param>
+    /// <returns>A result object containing the information of the requested waiting list as a <see cref="WaitingListDto"/> and any relevant messages.</returns>
     public ResultObject<WaitingListDto> GetWaitingList(string name)
     {
         var result = new ResultObject<WaitingListDto>();
         var waitingList = _waitingListRepository.GetWaitingList(name, false);
         result.Messages = waitingList.Messages;
-        var waitingListDto = GetDto(waitingList.Records.FirstOrDefault());
+        var waitingListDto = CreateDto(waitingList.Records.FirstOrDefault());
         if (waitingListDto != null)
         {
             result.Records.Add(waitingListDto);
@@ -92,7 +105,17 @@ public class WaitingListService : IWaitingListService
         return result;
     }
 
-    private WaitingListDto? GetDto(WaitingListEntity? waitingList)
+    /// <summary>
+    /// Converts a <see cref="WaitingListEntity"/> object into a <see cref="WaitingListDto"/> object.
+    /// </summary>
+    /// <param name="waitingList">
+    /// The <see cref="WaitingListEntity"/> instance to be converted. If null, the method returns null.
+    /// </param>
+    /// <returns>
+    /// A <see cref="WaitingListDto"/> object containing the data from the given <see cref="WaitingListEntity"/>.
+    /// Returns null if the input <see cref="WaitingListEntity"/> is null.
+    /// </returns>
+    private WaitingListDto? CreateDto(WaitingListEntity? waitingList)
     {
         if (waitingList == null)
         {
@@ -108,7 +131,12 @@ public class WaitingListService : IWaitingListService
         return waitingListDto;   
     }
 
-
+    /// <summary>
+    /// Determines if a waiting list has enough available seat capacity to accommodate a specified number of seats.
+    /// </summary>
+    /// <param name="waitingList">The waiting list entity that contains the parties and the total seat count.</param>
+    /// <param name="amountOfSeatsNeeded">The number of seats required.</param>
+    /// <returns>True if the waiting list has enough available capacity; otherwise, false.</returns>
     private bool WaitingListHasSeatCapacity(WaitingListEntity waitingList, int amountOfSeatsNeeded)
     {
         var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null && !p.CheckedIn);
@@ -116,6 +144,12 @@ public class WaitingListService : IWaitingListService
         return amountOfSeatsTaken + amountOfSeatsNeeded <= waitingList.TotalSeats;;
     }
 
+    /// <summary>
+    /// Calculates the number of seats available on the waiting list by subtracting
+    /// the total size of active unseated parties from the total seats of the waiting list.
+    /// </summary>
+    /// <param name="waitingList">The waiting list entity containing parties and total seats.</param>
+    /// <returns>The number of seats currently available.</returns>
     private int CalculateSeatsAvailable(WaitingListEntity waitingList)
     {
         var parties = waitingList.Parties.Where((p) => p.ServiceEndedAt == null && !p.CheckedIn);

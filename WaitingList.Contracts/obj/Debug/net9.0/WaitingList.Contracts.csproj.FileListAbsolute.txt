@@ -10,3 +10,15 @@
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/obj/Debug/net9.0/refint/WaitingList.Contracts.dll
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.pdb
 /Users/carlove/RiderProjects/Eeckhoven/WaitingList.Contracts/obj/Debug/net9.0/ref/WaitingList.Contracts.dll
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/bin/Debug/net9.0/WaitingList.Contracts.deps.json
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/bin/Debug/net9.0/WaitingList.Contracts.dll
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/bin/Debug/net9.0/WaitingList.Contracts.pdb
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.AssemblyInfoInputs.cache
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.AssemblyInfo.cs
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.csproj.CoreCompileInputs.cache
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.sourcelink.json
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.dll
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/refint/WaitingList.Contracts.dll
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/WaitingList.Contracts.pdb
+/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Contracts/obj/Debug/net9.0/ref/WaitingList.Contracts.dll

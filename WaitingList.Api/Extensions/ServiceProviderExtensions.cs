@@ -19,6 +19,5 @@ public static class ServiceProviderExtensions
         var doc = sw.GetSwagger("v1", null, "/");
         var swaggerFile = doc.SerializeAsJson(Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0);
         File.WriteAllText("../../../WebstormProjects/eeckhoven/swaggerfile.json", swaggerFile);
-       // _ = GenerateNSwagClientCode.Run();
     }
 }

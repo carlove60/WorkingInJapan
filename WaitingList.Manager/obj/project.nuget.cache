@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HlcJkby97KA=",
+  "success": true,
+  "projectFilePath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Manager/WaitingList.Manager.csproj",
+  "expectedPackageFiles": [
+    "/Users/carlove/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

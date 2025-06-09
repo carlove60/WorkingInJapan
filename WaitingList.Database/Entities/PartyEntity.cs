@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WaitingListBackend.Entities;
+namespace WaitingList.Database.Entities;
 
 /// <summary>
 /// Represents a party entity with relevant details for a waiting list system.

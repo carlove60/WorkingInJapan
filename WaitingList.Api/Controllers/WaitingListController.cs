@@ -24,8 +24,8 @@ public class WaitingListController : ControllerBase
     /// </summary>
     public WaitingListController(IWaitingListService waitingListService, IPartyService partyService)
     {
-        this._waitingListService = waitingListService;
-        this._partyService = partyService;   
+        _waitingListService = waitingListService;
+        _partyService = partyService;   
     }
     
     /// <summary>

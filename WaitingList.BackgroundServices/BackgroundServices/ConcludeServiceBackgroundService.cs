@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WaitingList.Database.Database;
+using WaitingList.SseManager.Managers;
+using WaitingListBackend.Extensions;
 
 namespace WaitingList.BackgroundServices.BackgroundServices;
 
@@ -13,7 +15,8 @@ namespace WaitingList.BackgroundServices.BackgroundServices;
 /// </summary>
 public class ConcludeServiceBackgroundService(
     ILogger<ConcludeServiceBackgroundService> logger,
-    IServiceScopeFactory scopeFactory)
+    IServiceScopeFactory scopeFactory, 
+    SseChannelManager sseChannelManager)
     : BackgroundService
 {
     /// <summary>
@@ -36,12 +39,18 @@ public class ConcludeServiceBackgroundService(
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 logger.LogInformation($"Doing background work...");
                 var result =
-                    dbContext.WaitingLists.Select((x) => x);
-
-                foreach (var waitingList in result.Include(waitingListEntity => waitingListEntity.Parties))
+                    dbContext.WaitingLists.Select((x) => x)
+                        .Include(waitingListEntity => waitingListEntity
+                            .Parties.Where((p) => p.ServiceEndedAt == null && p.ServiceStartedAt != null));
+                var sseMessageManager = new SseMessageManager(sseChannelManager, logger);
+                foreach (var waitingList in result)
                 {
-                    var parties =
-                        waitingList.Parties.Where((p) => p.ServiceStartedAt != null && p.ServiceEndedAt == null);
+                    var parties = waitingList.Parties;
+                    if (parties.Any())
+                    {
+                        sseMessageManager.AddWaitingList(waitingList.ToDto());   
+                    }
+
                     foreach (var party in parties)
                     {
                         logger.LogInformation(
@@ -50,13 +59,13 @@ public class ConcludeServiceBackgroundService(
                         if (party.ServiceStartedAt?.AddSeconds(timeOfService) < DateTime.Now)
                         {
                             party.ServiceEndedAt = DateTime.Now;
+                            sseMessageManager.AddParty(party.ToDto());
                         }
                     }
-
                 }
-
-                dbContext.SaveChanges();
-                logger.LogInformation($"{backgroundServiceName} stopping.");
+                await dbContext.SaveChangesAsync(stoppingToken);
+                sseMessageManager.SendMessagesAndClear();
+                logger.LogInformation($"{backgroundServiceName} messaged.");
             }
             catch (Exception exception)
             {

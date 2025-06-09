@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WaitingList.Database.Database;
+using WaitingList.SseManager.Managers;
 using WaitingListBackend.Interfaces;
-using WaitingListBackend.Entities;
 using WaitingListBackend.Repositories;
 using WaitingListBackend.Services;
 
@@ -14,11 +14,12 @@ public class TestBase : IDisposable
     protected readonly IWaitingListRepository WaitingListRepository;
     protected readonly IPartyRepository PartyRepository;
     protected readonly IPartyService PartyService;
+    protected readonly SseChannelManager SseChannelManager;
 
     protected TestBase()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseMySQL($"server=db;uid=root;pwd=qh734hsr05;Database=WaitingListTest")
+            .UseMySQL($"server=127.0.0.1;uid=root;pwd=qh734hsr05;Database=WaitingListTest")
             .Options;
 
         Context = new ApplicationDbContext(options);
@@ -26,11 +27,11 @@ public class TestBase : IDisposable
         {
             Context.Database.EnsureCreated();
         }
-
-        WaitingListRepository = new WaitingListRepository(Context);
-        PartyRepository = new PartyRepository(Context);
-        WaitingListService = new WaitingListService(WaitingListRepository, PartyRepository);
-        PartyService = new PartyService(PartyRepository, WaitingListRepository);
+        SseChannelManager = new SseChannelManager();
+        WaitingListRepository = new WaitingListRepository(Context, SseChannelManager);
+        PartyRepository = new PartyRepository(Context, SseChannelManager);
+        PartyService = new PartyService(PartyRepository, WaitingListRepository, SseChannelManager);
+        WaitingListService = new WaitingListService(WaitingListRepository, PartyRepository, PartyService, SseChannelManager);
     }
     
 

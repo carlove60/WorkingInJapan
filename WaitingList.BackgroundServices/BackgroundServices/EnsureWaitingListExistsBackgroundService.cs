@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WaitingList.Database.Database;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
 
 namespace WaitingList.BackgroundServices.BackgroundServices;
 
@@ -37,7 +37,7 @@ public class EnsureWaitingListExistsBackgroundService(
             {
                 using var scope = scopeFactory.CreateScope();
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                waitingListEntity = dbContext.WaitingLists.Include((wl) => wl.Parties)
+                waitingListEntity = dbContext.WaitingLists.Include((wl) => wl.Parties).AsNoTracking()
                     .FirstOrDefault(wl => wl.Name == Constants.DefaultWaitingListName);
                 
                     logger.LogInformation("Checking whether default waiting list exists...");
