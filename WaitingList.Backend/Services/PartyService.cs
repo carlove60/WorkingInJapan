@@ -1,29 +1,81 @@
 using WaitingList.Contracts.DTOs;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
+using WaitingList.SseManager.Managers;
+using WaitingListBackend.Enums;
 using WaitingListBackend.Extensions;
 using WaitingListBackend.Interfaces;
 
 namespace WaitingListBackend.Services;
 
+/// <summary>
+/// Provides services for managing party-related operations including check-in, cancellation, retrieval,
+/// and determining eligibility for check-in.
+/// </summary>
+/// <remarks>
+/// This service interacts with <c>IPartyRepository</c> for managing party data,
+/// <c>IWaitingListRepository</c> for waiting list operations, and
+/// <c>SseChannelManager</c> for server-sent events communication.
+/// </remarks>
 public class PartyService : IPartyService
 {
+    /// <summary>
+    /// Represents the repository abstraction for party-related data access operations.
+    /// This variable allows the PartyService to interact with the data layer for performing
+    /// operations such as retrieving, saving, or removing party entities.
+    /// </summary>
     private readonly IPartyRepository _partyRepository;
+
+    /// <summary>
+    /// Represents the repository abstraction for waiting list-related data access operations.
+    /// This variable facilitates interaction with the data layer, enabling operations such as
+    /// retrieving and managing waiting list entities within the PartyService.
+    /// </summary>
     private readonly IWaitingListRepository _waitingListRepository;
-    
-    public PartyService(IPartyRepository partyRepository, IWaitingListRepository waitingListRepository)
+
+    /// <summary>
+    /// Represents the manager responsible for handling server-sent events (SSE) communication.
+    /// This variable is used to manage the lifecycle of SSE channels, send targeted messages
+    /// to specific clients, or broadcast information to all connected clients.
+    /// </summary>
+    private readonly SseChannelManager _sseChannelManager;
+
+    /// <summary>
+    /// Represents the service responsible for managing waiting list operations,
+    /// such as adding parties to the waiting list and retrieving waiting list details.
+    /// This variable facilitates the integration of waiting list functionality within the PartyService.
+    /// </summary>
+    private readonly IWaitingListService _waitingListService;
+
+    /// <summary>
+    /// Provides services for managing party-related operations including check-in, cancellation, retrieval,
+    /// and determining eligibility for check-in.
+    /// </summary>
+    /// <remarks>
+    /// This service interacts with <see cref="IPartyRepository"/> for managing party data,
+    /// <see cref="IWaitingListRepository"/> for waiting list operations, and
+    /// <see cref="SseChannelManager"/> for server-sent events communication.
+    /// </remarks>
+    public PartyService(IPartyRepository partyRepository, IWaitingListRepository waitingListRepository,
+        SseChannelManager sseChannelManager, IWaitingListService waitingListService)
     {
         _partyRepository = partyRepository;
         _waitingListRepository = waitingListRepository;
+        _sseChannelManager = sseChannelManager;
+        _waitingListService = waitingListService;
     }
-    
+
+    /// <summary>
+    /// Checks in the party associated with the specified session ID.
+    /// </summary>
+    /// <param name="sessionId">The session ID associated with the party to check in.</param>
+    /// <returns>A <see cref="ResultObject{PartyDto}"/> containing the result of the check-in operation, including success or error messages and the updated party data.</returns>
     public ResultObject<PartyDto> CheckIn(string sessionId)
-    { 
+    {
         var result = new ResultObject<PartyDto>(); 
         var partyResult = _partyRepository.GetParty(sessionId); 
-        result.Messages.AddRange(result.Messages);
-        if (partyResult.Records.Count == 0)
+        result.Messages.AddRange(partyResult.Messages);
+        if (result.Messages.Count > 0)
         {
-            result.Messages.AddError("No party found for this session. Please check if you used a different browser."); 
             return result;
         }
 
@@ -34,7 +86,7 @@ public class PartyService : IPartyService
         }
 
         var party = partyResult.Records.First(); 
-        var partyCanCheckInResult = CanCheckIn(party);
+        var partyCanCheckInResult = _waitingListService.CanCheckIn(party.SessionId);
         result.Messages.AddRange(partyCanCheckInResult.Messages);
         if (result.Messages.Count > 0 || !partyCanCheckInResult.Records.Single())
         {
@@ -44,9 +96,11 @@ public class PartyService : IPartyService
         party.ServiceStartedAt = DateTime.Now;
         party.CheckedIn = true;
         _partyRepository.SaveParty(party); 
-        result.Records.Add(party.ToDto()); 
+        var partyDto = party.ToDto();
+        result.Records.Add(partyDto); 
         result.Messages.AddSuccess("Party checked in successfully."); 
-   
+        var waitingList = _waitingListService.GetWaitingList(partyDto.WaitingListName).Records.First();
+        MessageWaitingList(waitingList);
         return result;
     }
 
@@ -65,58 +119,32 @@ public class PartyService : IPartyService
         }
         var partyResult = _partyRepository.GetParty(sessionId);
         result.Messages.AddRange(partyResult.Messages);
-        if (partyResult.Records.Count == 0)
+        if (partyResult.Messages.Count > 0)
         {
-            result.Messages.AddError("No party found for this session. Please check if you used a different browser.");
             return result;
         }
 
         var party = partyResult.Records.Single();
         var deleteResult = _partyRepository.RemoveParty(party);
         result.Messages.AddRange(deleteResult.Messages);
-        if (result.Messages.Any())
+        var partyDto = party.ToDto();
+        result.Records.Add(partyDto);
+        var hasErrorMessages = result.Messages.Count((x) => x.Type == MessageType.Error) > 0;
+        if (hasErrorMessages)
         {
-            result.Records.Add(party.ToDto());
+            return result;
         }
-
+        var waitingList = _waitingListService.GetWaitingList(partyDto.WaitingListName).Records.First();
+        MessageWaitingList(waitingList);
+        NotifyNextPartyToCheckIn(waitingList.NextPartyToCheckIn);
         return result;
     }
 
-
-    private ResultObject<bool> CanCheckIn(PartyEntity partyEntity)
-    {
-        var result = new ResultObject<bool>();
-        var waitingListResult = _waitingListRepository.GetWaitingListWithAllParties(partyEntity.WaitingListId);
-        result.Messages.AddRange(waitingListResult.Messages);
-        if (!waitingListResult.Records.Any())
-        {
-            result.Records.Add(false);
-            return result;       
-        }
-        
-        var waitingList = waitingListResult.Records.Single();
-        var nextPartyToCheckIn = waitingList.Parties.Where((p) => !p.CheckedIn)
-            .OrderBy((p) => p.CreatedOn)
-            .FirstOrDefault();
-
-        var party = partyEntity.ToDto();
-        var partiesInService = waitingList.Parties
-            .Where((p) => p.ServiceStartedAt != null && p.ServiceEndedAt == null);
-
-        var timeStillInService = CalculateRemainingServiceTime(partiesInService, waitingList.TimeForService);
-        if (timeStillInService == 0 && nextPartyToCheckIn != null && nextPartyToCheckIn.SessionId == party.SessionId && PartySizeFits(waitingList, nextPartyToCheckIn.Size))
-        {
-            result.Records.Add(true);
-        } 
-        else
-        {
-            result.Records.Add(false);
-            result.Messages.AddError("Party cannot be checked in at this time.");
-        }
-        
-        return result;
-    }
-
+    /// <summary>
+    /// Retrieves the party details associated with the specified session ID.
+    /// </summary>
+    /// <param name="sessionId">The session ID used to identify the party to retrieve.</param>
+    /// <returns>A <see cref="ResultObject{PartyDto}"/> containing the party details and any relevant messages.</returns>
     public ResultObject<PartyDto> GetParty(string sessionId)
     {
         var result = new ResultObject<PartyDto>();
@@ -128,30 +156,48 @@ public class PartyService : IPartyService
         }
         
         var partyEntity = party.Records.First();
-        if (partyEntity.ServiceEndedAt != null && partyEntity.CheckedIn)
+        var canCheckInResult = _waitingListService.CanCheckIn(partyEntity.SessionId);
+        result.Messages.AddRange(canCheckInResult.Messages);
+        var partyDto = partyEntity.ToDto();
+        partyDto.IsServiceDone = partyEntity.ServiceEndedAt != null;
+        if (!partyDto.IsServiceDone)
         {
-            _partyRepository.RemoveParty(partyEntity);
+            partyDto.CanCheckIn = canCheckInResult.Records.First();
         }
 
-        var checkedInParty = CanCheckIn(partyEntity);
-        result.Messages.AddRange(checkedInParty.Messages);
-        var partyDto = partyEntity.ToDto();
-        if (checkedInParty.Records.Count == 1)
-        {
-            partyDto.CanCheckIn = checkedInParty.Records.First();
-        }
         result.Records.Add(partyDto);
         return result;
     }
-    
-    private int CalculateRemainingServiceTime(IEnumerable<PartyEntity> partiesInService, int timeForService)
+
+    /// <summary>
+    /// Notifies the next party in the queue, if applicable, about their eligibility to check in.
+    /// </summary>
+    /// <param name="party">The party details to notify, including information such as session ID, waiting list name, and check-in status. If null, no notification will be sent.</param>
+    private void NotifyNextPartyToCheckIn(PartyDto? party)
     {
-        return partiesInService.Sum((p) => p.Size) * timeForService;
+        if (party == null)
+        {
+            return;
+        }
+
+        MessageParty(party);
     }
 
-    private bool PartySizeFits(WaitingListEntity waitingList, int partySize)
+    /// <summary>
+    /// Sends a message containing the specified party data to the associated client through the server-sent events (SSE) channel.
+    /// </summary>
+    /// <param name="party">The <see cref="PartyDto"/> containing the party information to be sent via the SSE channel.</param>
+    private void MessageParty(PartyDto party)
     {
-        var waitingListDto = waitingList.ToDto();
-        return waitingListDto.SeatsAvailable >= partySize;
+        _sseChannelManager.SendDto(party.SessionId, new SseDto<PartyDto>(party, nameof(PartyDto)));
+    }
+
+    /// <summary>
+    /// Sends the updated waiting list details to all active clients using Server-Sent Events (SSE).
+    /// </summary>
+    /// <param name="waitingList">The updated waiting list information to broadcast, represented as a <see cref="WaitingListDto"/>.</param>
+    private void MessageWaitingList(WaitingListDto waitingList)
+    {
+        _sseChannelManager.BroadcastDto(new SseDto<WaitingListDto>(waitingList, nameof(WaitingListDto)));
     }
 }

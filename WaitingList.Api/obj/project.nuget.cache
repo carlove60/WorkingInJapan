@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "CRAk6x6N+QI=",
+  "dgSpecHash": "yYoT0bbF140=",
   "success": true,
   "projectFilePath": "/Users/carlove/RiderProjects/WorkingInJapan/WaitingList.Api/WaitingList.Api.csproj",
   "expectedPackageFiles": [
@@ -43,7 +43,7 @@
     "/Users/carlove/.nuget/packages/microsoft.extensions.configuration.fileextensions/9.0.5/microsoft.extensions.configuration.fileextensions.9.0.5.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.configuration.json/9.0.5/microsoft.extensions.configuration.json.9.0.5.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.configuration.usersecrets/8.0.0/microsoft.extensions.configuration.usersecrets.8.0.0.nupkg.sha512",
-    "/Users/carlove/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.1/microsoft.extensions.dependencyinjection.8.0.1.nupkg.sha512",
+    "/Users/carlove/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.0/microsoft.extensions.dependencyinjection.9.0.0.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.5/microsoft.extensions.dependencyinjection.abstractions.9.0.5.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.diagnostics/8.0.0/microsoft.extensions.diagnostics.8.0.0.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.diagnostics.abstractions/8.0.1/microsoft.extensions.diagnostics.abstractions.8.0.1.nupkg.sha512",
@@ -54,7 +54,7 @@
     "/Users/carlove/.nuget/packages/microsoft.extensions.hosting/8.0.0/microsoft.extensions.hosting.8.0.0.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.hosting.abstractions/8.0.1/microsoft.extensions.hosting.abstractions.8.0.1.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.http/2.1.0/microsoft.extensions.http.2.1.0.nupkg.sha512",
-    "/Users/carlove/.nuget/packages/microsoft.extensions.logging/8.0.1/microsoft.extensions.logging.8.0.1.nupkg.sha512",
+    "/Users/carlove/.nuget/packages/microsoft.extensions.logging/9.0.0/microsoft.extensions.logging.9.0.0.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.5/microsoft.extensions.logging.abstractions.9.0.5.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.logging.configuration/8.0.0/microsoft.extensions.logging.configuration.8.0.0.nupkg.sha512",
     "/Users/carlove/.nuget/packages/microsoft.extensions.logging.console/8.0.0/microsoft.extensions.logging.console.8.0.0.nupkg.sha512",

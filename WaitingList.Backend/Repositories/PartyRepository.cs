@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using WaitingList.Database.Database;
-using WaitingListBackend.Entities;
+using WaitingList.Database.Entities;
+using WaitingList.SseManager.Managers;
 using WaitingListBackend.Interfaces;
 using WaitingListBackend.Models;
 
@@ -10,7 +11,7 @@ namespace WaitingListBackend.Repositories;
 /// <summary>
 /// Provides methods for managing and interacting with party data in the database.
 /// </summary>
-public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRepository(applicationDbContext), IPartyRepository
+public class PartyRepository(ApplicationDbContext applicationDbContext, SseChannelManager sseChannelManager) : BaseRepository(applicationDbContext, sseChannelManager), IPartyRepository
 {
     /// <summary>
     /// Saves a party entity to the database. If the entity does not exist, it will be added; otherwise, it will be updated.
@@ -33,15 +34,14 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
             EntityEntry<PartyEntity> partyEntry;
             if (party.Id  == Guid.Empty)
             {
-                partyEntry = _applicationDbContext.Parties.Add(party);
+                partyEntry = ApplicationDbContext.Parties.Add(party);
             }
             else
             {
-                partyEntry = _applicationDbContext.Parties.Update(party);
+                partyEntry = ApplicationDbContext.Parties.Update(party);
             }
 
-            _applicationDbContext.SaveChanges();
-            
+            ApplicationDbContext.SaveChanges();
             resultObject.Records.Add(partyEntry.Entity);
         }
         catch (Exception exception)
@@ -60,10 +60,11 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
     public ResultObject<PartyEntity> RemoveParty(PartyEntity party)
     {
         var result = new ResultObject<PartyEntity>();
-        _applicationDbContext.Parties.Remove(party);
+        ApplicationDbContext.Parties.Remove(party);
         try
         {
-            _applicationDbContext.SaveChanges();
+            ApplicationDbContext.SaveChanges();
+            ApplicationDbContext.Entry(party).State = EntityState.Deleted;
             result.Messages.AddSuccess("Removal was successful!");       
         }
         catch (Exception exception)
@@ -82,15 +83,24 @@ public class PartyRepository(ApplicationDbContext applicationDbContext) : BaseRe
     public ResultObject<PartyEntity> GetParty(string sessionId)
     {
        var result = new ResultObject<PartyEntity>();
-       var party = _applicationDbContext.Parties.Include((x) => x.WaitingListEntity).SingleOrDefault((x) => x.SessionId == sessionId);
+       var party = ApplicationDbContext.Parties.Include((x) => x.WaitingListEntity).SingleOrDefault((x) => x.SessionId == sessionId && x.ServiceEndedAt == null);
        if (party != null)
        {
            result.Records.Add(party);
+       }
+       else
+       {
+           result.Messages.AddError($"Party with session ID {sessionId} not found. Please check if you used a different browser.");      
        }
 
        return result;   
     }
 
+    /// <summary>
+    /// Validates the provided party entity for required fields and business rules.
+    /// </summary>
+    /// <param name="party">The party entity to be validated.</param>
+    /// <returns>A collection of validation messages indicating errors, warnings, or other relevant information.</returns>
     private MessageList Validate(PartyEntity party)
     {
         var result = new MessageList();
